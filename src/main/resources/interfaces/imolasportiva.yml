@@ -1,0 +1,342 @@
+openapi: 3.0.0
+info:
+  title: ImolaSportivaApi
+  description: ImolaSportivaApi
+  version: 1.0.0
+servers:
+  - url: '/api/v1'
+tags:
+  - name: Prenotazioni
+  - name: Utenti
+
+paths:
+
+  '/utenti/nuovoUtente':
+    post:
+      tags:
+        - "Utenti"
+      operationId: postUtente
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Utente"
+      responses:
+        '200':
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Utente"
+        '400':
+          description: "Bad Request"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        '401':
+          description: "Unauthorized"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        '500':
+          description: "Internal Server Error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        '503':
+          description: "Service Unavailable"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+
+  '/utenti/{idUtente}':
+    get:
+      tags:
+        - "Utenti"
+      operationId: getUtenteById
+      parameters:
+        - in: path
+          name: idUtente
+          required: true
+          description: "restituisce l'utente tramite il suo Id"
+          schema:
+            type: string
+      responses:
+        '200':
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Utente"
+        '400':
+          description: "Bad Request"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        '401':
+          description: "Unauthorized"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        '500':
+          description: "Internal Server Error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        '503':
+          description: "Service Unavailable"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+
+  '/prenotazioni':
+    get:
+      tags:
+        - "Prenotazioni"
+      operationId: getAllPrenotazioni
+      responses:
+        '200':
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListaPrenotazioni"
+        '400':
+          description: "Bad Request"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        '401':
+          description: "Unauthorized"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        '500':
+          description: "Internal Server Error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        '503':
+          description: "Service Unavailable"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  '/prenotazioni/anno/{anno}':
+    get:
+      tags:
+        - "Prenotazioni"
+      operationId: getPrenotazioniAnno
+      parameters:
+       - in: path
+         name: anno
+         required: true
+         description: "anno per la chiamata delle prenotazioni in quell'anno"
+         schema:
+           type: integer
+      responses:
+        '200':
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListaPrenotazioni"
+        '400':
+          description: "Bad Request"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        '401':
+          description: "Unauthorized"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        '500':
+          description: "Internal Server Error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        '503':
+          description: "Service Unavailable"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  '/prenotazioni/anno/{anno}/mese/{mese}':
+    get:
+      tags:
+        - "Prenotazioni"
+      operationId: getPrenotazioniMese
+      parameters:
+        - in: path
+          name: anno
+          required: true
+          description: "anno per la chiamata delle prenotazioni in quell'anno"
+          schema:
+            type: integer
+        - in: path
+          name: mese
+          required: true
+          description: "mese per la chiamata delle prenotazioni in quell'anno e quel mese"
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListaPrenotazioni"
+        '400':
+          description: "Bad Request"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        '401':
+          description: "Unauthorized"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        '500':
+          description: "Internal Server Error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        '503':
+          description: "Service Unavailable"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  '/prenotazioni/nuovaPrenotazione':
+    post:
+      tags:
+        - "Prenotazioni"
+      operationId: postPrenotazione
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Prenotazione"
+      responses:
+        '200':
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Prenotazione"
+        '400':
+          description: "Bad Request"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        '401':
+          description: "Unauthorized"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        '500':
+          description: "Internal Server Error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        '503':
+          description: "Service Unavailable"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+components:
+
+  schemas:
+
+    Utente:
+      type: object
+      required:
+        - id
+        - nome
+        - cognome
+        - dataNascita
+        - telefono
+      properties:
+        id:
+          type: string
+        nome:
+          type: string
+        cognome:
+          type: string
+        dataNascita:
+          type: string
+        telefono:
+          type: string
+
+    Prenotazione:
+      type: object
+      required:
+        - id
+        - idUtentePrenotato
+        - durataPrenotazioneOre
+        - durataDeadlineCancellazione
+        - campo
+      properties:
+        id:
+          type: string
+        idUtentePrenotato:
+          type: string
+        durataPrenotazioneOre:
+          type: integer
+        durataDeadlineCancellazioneOre:
+          type: integer
+        campo:
+          type: string
+          enum: [CAMPO1, CAMPO2, CAMPO3, CAMPO4, CAMPO5]
+
+    ListaPrenotazioni:
+      type: array
+      items:
+        $ref: "#/components/schemas/Prenotazione"
+
+    Error:
+      type: object
+      required:
+        - code
+        - message
+        - layer
+        - component
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        layer:
+          type: string
+        component:
+          type: string
