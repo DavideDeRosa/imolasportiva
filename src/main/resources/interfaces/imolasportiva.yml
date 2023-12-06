@@ -21,14 +21,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/UtenteEntity"
+              $ref: "#/components/schemas/Utente"
       responses:
         '200':
           description: "Success"
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/UtenteEntity"
+                $ref: "#/components/schemas/Utente"
         '400':
           description: "Bad Request"
           content:
@@ -73,7 +73,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/UtenteEntity"
+                $ref: "#/components/schemas/Utente"
         '400':
           description: "Bad Request"
           content:
@@ -241,14 +241,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/PrenotazioneEntity"
+              $ref: "#/components/schemas/Prenotazione"
       responses:
         '200':
           description: "Success"
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/PrenotazioneEntity"
+                $ref: "#/components/schemas/Prenotazione"
         '400':
           description: "Bad Request"
           content:
@@ -278,7 +278,7 @@ components:
 
   schemas:
 
-    UtenteEntity:
+    Utente:
       type: object
       required:
         - id
@@ -298,7 +298,7 @@ components:
         telefono:
           type: string
 
-    PrenotazioneEntity:
+    Prenotazione:
       type: object
       required:
         - id
@@ -322,7 +322,7 @@ components:
     ListaPrenotazioni:
       type: array
       items:
-        $ref: "#/components/schemas/PrenotazioneEntity"
+        $ref: "#/components/schemas/Prenotazione"
 
     Error:
       type: object

@@ -1,7 +1,7 @@
 package it.imolasportiva.progetto.api;
 
 import imolasportiva.api.UtentiApi;
-import imolasportiva.model.UtenteEntity;
+import imolasportiva.model.Utente;
 import it.imolasportiva.progetto.repository.UtenteRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,13 +17,13 @@ public class UtentiApiImpl implements UtentiApi {
 
     @Autowired
     private UtenteRepository utenteRepository;
-    public ResponseEntity<UtenteEntity> getUtenteById(String idUtente) {
+    public ResponseEntity<Utente> getUtenteById(String idUtente) {
         log.info("Invocazione getUtenteById()");
-        return new ResponseEntity<UtenteEntity>(utenteRepository.getUtente(idUtente), HttpStatus.OK);
+        return new ResponseEntity<Utente>(utenteRepository.getUtente(idUtente), HttpStatus.OK);
     }
 
-    public ResponseEntity<UtenteEntity> postUtente(UtenteEntity utenteEntity){
-        log.info("Invocazione postUtente()", utenteEntity);
-        return new ResponseEntity<UtenteEntity>(utenteRepository.putUtente(utenteEntity), HttpStatus.OK);
+    public ResponseEntity<Utente> postUtente(Utente utente){
+        log.info("Invocazione postUtente()", utente);
+        return new ResponseEntity<Utente>(utenteRepository.putUtente(utente), HttpStatus.OK);
     }
 }
