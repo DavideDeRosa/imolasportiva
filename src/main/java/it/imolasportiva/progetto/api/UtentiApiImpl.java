@@ -17,6 +17,7 @@ public class UtentiApiImpl implements UtentiApi {
 
     @Autowired
     private UtenteRepository utenteRepository;
+
     public ResponseEntity<Utente> getUtenteById(String idUtente) {
         log.info("Invocazione getUtenteById()");
         return new ResponseEntity<Utente>(utenteRepository.getUtente(idUtente), HttpStatus.OK);
