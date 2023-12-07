@@ -51,19 +51,23 @@ paths:
       parameters:
         - name: format
           in: query
-          description: 'Prova tra formati JSON, PDF e ICS'
+          description: 'Prova tra formati JSON e ICS'
           schema:
-           type: string
+           type: object
+           enum:
+             - json
+             - ics
       responses:
         '200':
           description: "Success"
           content:
             application/json:
               schema:
-                type: string
+                type: object
             text/calendar:
               schema:
-                type: string  # Assuming the ICS content as a string
+                type: string
+                format: binary
 
   '/utenti/nuovoUtente':
     post:

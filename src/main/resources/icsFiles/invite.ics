@@ -1,0 +1,106 @@
+BEGIN:VCALENDAR
+METHOD:REQUEST
+PRODID:Microsoft Exchange Server 2010
+VERSION:2.0
+BEGIN:VTIMEZONE
+TZID:W. Europe Standard Time
+BEGIN:STANDARD
+DTSTART:16010101T030000
+TZOFFSETFROM:+0200
+TZOFFSETTO:+0100
+RRULE:FREQ=YEARLY;INTERVAL=1;BYDAY=-1SU;BYMONTH=10
+END:STANDARD
+BEGIN:DAYLIGHT
+DTSTART:16010101T020000
+TZOFFSETFROM:+0100
+TZOFFSETTO:+0200
+RRULE:FREQ=YEARLY;INTERVAL=1;BYDAY=-1SU;BYMONTH=3
+END:DAYLIGHT
+END:VTIMEZONE
+BEGIN:VEVENT
+ORGANIZER;CN=Tommaso Cardona:mailto:tcardona@imolainformatica.it
+ATTENDEE;ROLE=REQ-PARTICIPANT;PARTSTAT=NEEDS-ACTION;RSVP=TRUE;CN=Filippo Ma
+ lvisi:mailto:fmalvisi@imolainformatica.it
+ATTENDEE;ROLE=REQ-PARTICIPANT;PARTSTAT=NEEDS-ACTION;RSVP=TRUE;CN=davidedero
+ sa22@yahoo.it:mailto:davidederosa22@yahoo.it
+ATTENDEE;ROLE=REQ-PARTICIPANT;PARTSTAT=NEEDS-ACTION;RSVP=TRUE;CN=davide.der
+ osa24@gmail.com:mailto:davide.derosa24@gmail.com
+DESCRIPTION;LANGUAGE=en-US:\n\n\n__________________________________________
+ ______________________________________\nMicrosoft Teams meeting\nJoin on y
+ our computer\, mobile app or room device\nClick here to join the meeting<h
+ ttps://teams.microsoft.com/l/meetup-join/19%3ameeting_ZDI0MzIwZWYtMDJmOS00
+ ZGNiLTkzODUtNGRiYWE3ZWFlYzlh%40thread.v2/0?context=%7b%22Tid%22%3a%2296f55
+ fcd-8885-4eae-8977-c857144d4314%22%2c%22Oid%22%3a%22840e87b0-04c0-46cc-bb3
+ 3-22856d12f67b%22%7d>\nMeeting ID: 318 020 705 462\nPasscode: ECAc2g\nDown
+ load Teams<https://www.microsoft.com/en-us/microsoft-teams/download-app> |
+  Join on the web<https://www.microsoft.com/microsoft-teams/join-a-meeting>
+ \n[https://www.imolainformatica.it/wp-content/uploads/logo_s2.png]\nLearn 
+ More<https://aka.ms/JoinTeamsMeeting> | Meeting options<https://teams.micr
+ osoft.com/meetingOptions/?organizerId=840e87b0-04c0-46cc-bb33-22856d12f67b
+ &tenantId=96f55fcd-8885-4eae-8977-c857144d4314&threadId=19_meeting_ZDI0MzI
+ wZWYtMDJmOS00ZGNiLTkzODUtNGRiYWE3ZWFlYzlh@thread.v2&messageId=0&language=e
+ n-US> | Legal<https://www.imolainformatica.it/privacy-policy/>\n__________
+ ______________________________________________________________________\n\n
+ [https://www.imolainformatica.it/imolalogo.png]<https://www.imolainformati
+ ca.it/home/>\n\nImola Informatica S.P.A.\n\nTel: +39 0542 32640\n\nVia Sel
+ ice 66/A\, 40026 Imola (BO)\n\nImola - Bologna - Milano\n\n_______________
+ _________________\n\nIl presente messaggio\, inclusi gli allegati\, contie
+ ne informazioni strettamente riservate e confidenziali destinate esclusiva
+ mente al legittimo destinatario e la cui comunicazione o diffusione a terz
+ i è vietata\, salvo non vi siano state esplicite autorizzazioni per iscri
+ tto. Le dichiarazioni\, ivi contenute\, non impegnano contrattualmente Imo
+ la Informatica S.p.A. se non nei limiti di quanto eventualmente previsto i
+ n accordi opportunamente formalizzati. Se avete ricevuto per errore questa
+  e-mail\, Vi preghiamo di darne immediata comunicazione al mittente e di p
+ rovvedere a cancellarne ogni evidenza dai vostri sistemi senza farne copia
+ \, rilevazione\, diffusione\, inoltro a terzi\, conservazione o uso alcuno
+  poiché il suo utilizzo senza averne diritto è proibito e potrebbe costi
+ tuire reato.\n
+UID:040000008200E00074C5B7101A82E008000000009BDC0237BA1EDA01000000000000000
+ 0100000003CFAEBE871679A4086A2A3ECCA0DF18A
+SUMMARY;LANGUAGE=en-US:Corso git
+DTSTART;TZID=W. Europe Standard Time:20231130T143000
+DTEND;TZID=W. Europe Standard Time:20231130T170000
+CLASS:PUBLIC
+PRIORITY:5
+DTSTAMP:20231130T130925Z
+TRANSP:OPAQUE
+STATUS:CONFIRMED
+SEQUENCE:1
+LOCATION;LANGUAGE=en-US:Microsoft Teams Meeting
+X-MICROSOFT-CDO-APPT-SEQUENCE:1
+X-MICROSOFT-CDO-OWNERAPPTID:2122039707
+X-MICROSOFT-CDO-BUSYSTATUS:TENTATIVE
+X-MICROSOFT-CDO-INTENDEDSTATUS:BUSY
+X-MICROSOFT-CDO-ALLDAYEVENT:FALSE
+X-MICROSOFT-CDO-IMPORTANCE:1
+X-MICROSOFT-CDO-INSTTYPE:0
+X-MICROSOFT-ONLINEMEETINGINFORMATION:{"OnlineMeetingChannelId":null\,"Onlin
+ eMeetingProvider":3}
+X-MICROSOFT-SKYPETEAMSMEETINGURL:https://teams.microsoft.com/l/meetup-join/
+ 19%3ameeting_ZDI0MzIwZWYtMDJmOS00ZGNiLTkzODUtNGRiYWE3ZWFlYzlh%40thread.v2/
+ 0?context=%7b%22Tid%22%3a%2296f55fcd-8885-4eae-8977-c857144d4314%22%2c%22O
+ id%22%3a%22840e87b0-04c0-46cc-bb33-22856d12f67b%22%7d
+X-MICROSOFT-SCHEDULINGSERVICEUPDATEURL:https://api.scheduler.teams.microsof
+ t.com/teams/96f55fcd-8885-4eae-8977-c857144d4314/840e87b0-04c0-46cc-bb33-2
+ 2856d12f67b/19_meeting_ZDI0MzIwZWYtMDJmOS00ZGNiLTkzODUtNGRiYWE3ZWFlYzlh@th
+ read.v2/0
+X-MICROSOFT-SKYPETEAMSPROPERTIES:{"cid":"19:meeting_ZDI0MzIwZWYtMDJmOS00ZGN
+ iLTkzODUtNGRiYWE3ZWFlYzlh@thread.v2"\,"rid":"0"\,"mid":"0"\,"private":true
+ \,"type":0}
+X-MICROSOFT-DONOTFORWARDMEETING:FALSE
+X-MICROSOFT-DISALLOW-COUNTER:FALSE
+X-MICROSOFT-REQUESTEDATTENDANCEMODE:DEFAULT
+X-MICROSOFT-LOCATIONDISPLAYNAME:Microsoft Teams Meeting
+X-MICROSOFT-LOCATIONSOURCE:None
+X-MICROSOFT-LOCATIONS:[{"DisplayName":"Microsoft Teams Meeting"\,"LocationA
+ nnotation":""\,"LocationUri":""\,"LocationStreet":""\,"LocationCity":""\,"
+ LocationState":""\,"LocationCountry":""\,"LocationPostalCode":""\,"Locatio
+ nFullAddress":""}]
+BEGIN:VALARM
+DESCRIPTION:REMINDER
+TRIGGER;RELATED=START:-PT15M
+ACTION:DISPLAY
+END:VALARM
+END:VEVENT
+END:VCALENDAR
