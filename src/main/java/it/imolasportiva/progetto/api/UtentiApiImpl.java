@@ -2,7 +2,10 @@ package it.imolasportiva.progetto.api;
 
 import imolasportiva.api.UtentiApi;
 import imolasportiva.model.Utente;
+import it.imolasportiva.progetto.dto.UtenteDTO;
 import it.imolasportiva.progetto.entity.UtenteEntity;
+import it.imolasportiva.progetto.mapper.UtenteMapper;
+import it.imolasportiva.progetto.service.UtenteBL;
 import it.imolasportiva.progetto.service.UtenteService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,25 +23,22 @@ import java.util.Optional;
 @RequestMapping("/api/v1")
 public class UtentiApiImpl implements UtentiApi {
 
-    private final UtenteService utenteService;
+    private final UtenteBL utenteBL;
+    private final UtenteMapper utenteMapper;
     @Autowired
-    public UtentiApiImpl(UtenteService utenteService) {
-        this.utenteService = utenteService;
+    public UtentiApiImpl(UtenteMapper utenteMapper, UtenteBL utenteBL) {
+        this.utenteMapper = utenteMapper;
+        this.utenteBL = utenteBL;
     }
 
     public ResponseEntity<Utente> getUtenteById(String idUtente) {
         log.info("Invocazione getUtenteById()");
-        Optional<UtenteEntity> utente = utenteService.findById(Long.valueOf(idUtente));
-        if(!utente.isPresent()){
-            return new ResponseEntity<>(null, HttpStatus.OK);
-        }
-        UtenteEntity entity = utente.get();
-        Utente utenteMapped = new Utente();
-        utenteMapped.setId(String.valueOf(entity.getId()));
-        utenteMapped.setNome(entity.getNome());
-        utenteMapped.setCognome(entity.getCognome());
-        utenteMapped.setTelefono(String.valueOf(entity.getTelefono()));
-        utenteMapped.setDataNascita(String.valueOf(entity.getDataNascita()));
+
+        Long id = Long.valueOf(idUtente); // TO-DO: gestire caso di errore conversione in Long
+
+        UtenteDTO utenteDTO = utenteBL.getUtenteDTObyId(id);
+
+        Utente utenteMapped = utenteMapper.utenteDTOToUtente(utenteDTO);
 
         return new ResponseEntity<>(utenteMapped, HttpStatus.OK);
     }
@@ -46,13 +46,10 @@ public class UtentiApiImpl implements UtentiApi {
     public ResponseEntity<Utente> postUtente(Utente utente){
         log.info("Invocazione postUtente()", utente);
 
-        UtenteEntity utenteEntity = new UtenteEntity();
-        utenteEntity.setNome(utente.getNome());
-        utenteEntity.setCognome(utente.getCognome());
-        utenteEntity.setDataNascita(Date.from(Instant.now()));
-        utenteEntity.setTelefono(Long.valueOf(utente.getTelefono()));
+        UtenteDTO utenteDTO = utenteMapper.utenteToUtenteDTO(utente);
 
-        utenteService.saveUtente(utenteEntity);
-        return new ResponseEntity<>(utente, HttpStatus.OK);
+        UtenteEntity utenteEntity = utenteBL.postUtente(utenteDTO);
+
+        return new ResponseEntity<>(utenteBL.fromUtenteEntityToUtente(utenteEntity), HttpStatus.OK);
     }
 }

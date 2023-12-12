@@ -1,22 +1,17 @@
-package it.imolasportiva.progetto.entity;
+package it.imolasportiva.progetto.dto;
 
-import javax.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import java.util.Date;
 
-@Entity
-@Table(name = "utente")
-public class UtenteEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class UtenteDTO {
     private Long id;
-    @Column(name = "nome")
     private String nome;
-    @Column(name = "cognome")
     private String cognome;
-    @Column(name = "datanascita")
-    private Date dataNascita;
-    @Column(name = "telefono")
     private String telefono;
+    private Date dataNascita;
 
     public Long getId() {
         return id;
@@ -42,19 +37,19 @@ public class UtenteEntity {
         this.cognome = cognome;
     }
 
-    public Date getDataNascita() {
-        return dataNascita;
-    }
-
-    public void setDataNascita(Date dataNascita) {
-        this.dataNascita = dataNascita;
-    }
-
     public String getTelefono() {
         return telefono;
     }
 
     public void setTelefono(String telefono) {
         this.telefono = telefono;
+    }
+
+    public Date getDataNascita() {
+        return dataNascita;
+    }
+
+    public void setDataNascita(Date dataNascita) {
+        this.dataNascita = dataNascita;
     }
 }
