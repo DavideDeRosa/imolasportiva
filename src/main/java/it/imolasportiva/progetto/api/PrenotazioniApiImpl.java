@@ -10,4 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/api/v1/prenotazioni")
 public class PrenotazioniApiImpl implements PrenotazioniApi {
 
+
+
 }

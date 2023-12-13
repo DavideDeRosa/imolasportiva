@@ -1,9 +1,5 @@
 package it.imolasportiva.progetto.dto;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
 import java.util.Date;
 
 public class UtenteDTO {

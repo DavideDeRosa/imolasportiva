@@ -69,7 +69,7 @@ paths:
                 type: string
                 format: binary
 
-  '/utenti/nuovoUtente':
+  '/utenti':
     post:
       tags:
         - "Utenti"
@@ -111,7 +111,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-
 
   '/utenti/{idUtente}':
     get:
@@ -157,56 +156,24 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
 
-
   '/prenotazioni':
     get:
       tags:
         - "Prenotazioni"
-      operationId: getAllPrenotazioni
-      responses:
-        '200':
-          description: "Success"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ListaPrenotazioni"
-        '400':
-          description: "Bad Request"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-        '401':
-          description: "Unauthorized"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-        '500':
-          description: "Internal Server Error"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-        '503':
-          description: "Service Unavailable"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-
-  '/prenotazioni/anno/{anno}':
-    get:
-      tags:
-        - "Prenotazioni"
-      operationId: getPrenotazioniAnno
+      operationId: getPrenotazioni
       parameters:
-       - in: path
-         name: anno
-         required: true
-         description: "anno per la chiamata delle prenotazioni in quell'anno"
-         schema:
-           type: integer
+        - name: anno
+          in: query
+          description: 'filtro anno'
+          schema:
+            type: string
+          required: false
+        - name: mese
+          in: query
+          description: 'filtro mese'
+          schema:
+            type: string
+          required: false
       responses:
         '200':
           description: "Success"
@@ -238,58 +205,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-
-  '/prenotazioni/anno/{anno}/mese/{mese}':
-    get:
-      tags:
-        - "Prenotazioni"
-      operationId: getPrenotazioniMese
-      parameters:
-        - in: path
-          name: anno
-          required: true
-          description: "anno per la chiamata delle prenotazioni in quell'anno"
-          schema:
-            type: integer
-        - in: path
-          name: mese
-          required: true
-          description: "mese per la chiamata delle prenotazioni in quell'anno e quel mese"
-          schema:
-            type: integer
-      responses:
-        '200':
-          description: "Success"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ListaPrenotazioni"
-        '400':
-          description: "Bad Request"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-        '401':
-          description: "Unauthorized"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-        '500':
-          description: "Internal Server Error"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-        '503':
-          description: "Service Unavailable"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-
-  '/prenotazioni/nuovaPrenotazione':
     post:
       tags:
         - "Prenotazioni"
@@ -300,6 +215,50 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/Prenotazione"
+      responses:
+        '200':
+          description: "Success"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Prenotazione"
+        '400':
+          description: "Bad Request"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        '401':
+          description: "Unauthorized"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        '500':
+          description: "Internal Server Error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        '503':
+          description: "Service Unavailable"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  '/prenotazioni/{idPrenotazione}':
+    get:
+      tags:
+        - "Prenotazioni"
+      operationId: getPrenotazioneById
+      parameters:
+        - in: path
+          name: idPrenotazione
+          required: true
+          description: "restituisce la prenotazione tramite il suo Id"
+          schema:
+            type: string
       responses:
         '200':
           description: "Success"
@@ -371,19 +330,24 @@ components:
         - idUtentePrenotato
         - durataPrenotazioneOre
         - durataDeadlineCancellazione
-        - campo
+        - dataPrenotazione
+        - numeroPartecipanti
+        - quota
       properties:
         id:
           type: string
         idUtentePrenotato:
           type: string
         durataPrenotazioneOre:
-          type: integer
-        durataDeadlineCancellazioneOre:
-          type: integer
-        campo:
           type: string
-          enum: [CAMPO1, CAMPO2, CAMPO3, CAMPO4, CAMPO5]
+        durataDeadlineCancellazioneOre:
+          type: string
+        dataPrenotazione:
+          type: string
+        numeroPartecipanti:
+          type: string
+        quota:
+          type: string
 
     ListaPrenotazioni:
       type: array
