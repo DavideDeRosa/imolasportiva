@@ -23,24 +23,17 @@ public class UtenteBL {
     public UtenteDTO getUtenteDTObyId(Long id){
         Optional<UtenteEntity> utente = utenteService.findById(id);
         if(!utente.isPresent()){
-            return null; //forse si potrebbe gestire diversamente questo caso!
+            return null;
         }
 
         UtenteDTO utenteDTO = utenteMapper.utenteEntityToUtenteDTO(utente.get());
         return utenteDTO;
     }
 
-    public UtenteEntity postUtente(UtenteDTO utenteDTO){
+    public UtenteDTO postUtente(UtenteDTO utenteDTO){
         UtenteEntity utenteEntity = utenteMapper.utenteDTOToUtenteEntity(utenteDTO);
-        utenteService.saveUtente(utenteEntity);
-        return utenteEntity;
+        utenteEntity = utenteService.saveUtente(utenteEntity);
+        return utenteMapper.utenteEntityToUtenteDTO(utenteEntity);
     }
 
-    //giusto come metodo? a livello logico
-    //oppure bisogna fare i due passaggi direttamente nel controller delle API?
-    public Utente fromUtenteEntityToUtente(UtenteEntity utenteEntity){
-        UtenteDTO utenteDTO = utenteMapper.utenteEntityToUtenteDTO(utenteEntity);
-        Utente utente = utenteMapper.utenteDTOToUtente(utenteDTO);
-        return utente;
-    }
 }

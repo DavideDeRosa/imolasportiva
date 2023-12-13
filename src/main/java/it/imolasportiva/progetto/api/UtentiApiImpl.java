@@ -34,13 +34,21 @@ public class UtentiApiImpl implements UtentiApi {
     public ResponseEntity<Utente> getUtenteById(String idUtente) {
         log.info("Invocazione getUtenteById()");
 
-        Long id = Long.valueOf(idUtente); // TO-DO: gestire caso di errore conversione in Long
+        Long id;
+
+        try{
+            id = Long.valueOf(idUtente);
+        }catch(NumberFormatException e){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
 
         UtenteDTO utenteDTO = utenteBL.getUtenteDTObyId(id);
 
-        Utente utenteMapped = utenteMapper.utenteDTOToUtente(utenteDTO);
+        if(utenteDTO == null){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
 
-        return new ResponseEntity<>(utenteMapped, HttpStatus.OK);
+        return new ResponseEntity<>(utenteMapper.utenteDTOToUtente(utenteDTO), HttpStatus.OK);
     }
 
     public ResponseEntity<Utente> postUtente(Utente utente){
@@ -48,8 +56,8 @@ public class UtentiApiImpl implements UtentiApi {
 
         UtenteDTO utenteDTO = utenteMapper.utenteToUtenteDTO(utente);
 
-        UtenteEntity utenteEntity = utenteBL.postUtente(utenteDTO);
+        utenteDTO = utenteBL.postUtente(utenteDTO);
 
-        return new ResponseEntity<>(utenteBL.fromUtenteEntityToUtente(utenteEntity), HttpStatus.OK);
+        return new ResponseEntity<>(utenteMapper.utenteDTOToUtente(utenteDTO), HttpStatus.OK);
     }
 }
