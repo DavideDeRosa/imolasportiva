@@ -8,6 +8,7 @@ import it.imolasportiva.progetto.entity.UtenteEntity;
 import it.imolasportiva.progetto.service.UtenteBL;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.Mappings;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.text.SimpleDateFormat;
@@ -21,14 +22,18 @@ public abstract class PrenotazioneMapper {
     @Autowired
     UtenteMapper utenteMapper;
 
-    @Mapping(target = "dataPrenotazione", expression = "java(convertStringToDate(prenotazione.getDataPrenotazione()))")
-    abstract PrenotazioneDTO prenotazioneToPrenotazioneDTO(Prenotazione prenotazione);
+    @Mappings({
+            @Mapping(target = "dataPrenotazione", expression = "java(convertStringToDate(prenotazione.getDataPrenotazione()))"),
+            @Mapping(source = "durataDeadlineCancellazioneOre", target = "durataDeadlineCancellazione")
+    })
+    public abstract PrenotazioneDTO prenotazioneToPrenotazioneDTO(Prenotazione prenotazione);
 
-    abstract PrenotazioneEntity prenotazioneDTOToPrenotazioneEntity(PrenotazioneDTO prenotazioneDTO);
+    public abstract PrenotazioneEntity prenotazioneDTOToPrenotazioneEntity(PrenotazioneDTO prenotazioneDTO);
 
-    abstract Prenotazione prenotazioneDTOToPrenotazione(PrenotazioneDTO prenotazioneDTO);
+    @Mapping(source = "durataDeadlineCancellazione", target = "durataDeadlineCancellazioneOre")
+    public abstract Prenotazione prenotazioneDTOToPrenotazione(PrenotazioneDTO prenotazioneDTO);
 
-    abstract PrenotazioneDTO prenotazioneEntityToPrenotazioneDTO(PrenotazioneEntity prenotazioneEntity);
+    public abstract PrenotazioneDTO prenotazioneEntityToPrenotazioneDTO(PrenotazioneEntity prenotazioneEntity);
 
     Date convertStringToDate(String date) {
         try {

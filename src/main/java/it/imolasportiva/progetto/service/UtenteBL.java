@@ -26,8 +26,7 @@ public class UtenteBL {
             return null;
         }
 
-        UtenteDTO utenteDTO = utenteMapper.utenteEntityToUtenteDTO(utente.get());
-        return utenteDTO;
+        return utenteMapper.utenteEntityToUtenteDTO(utente.get());
     }
 
     public UtenteDTO postUtente(UtenteDTO utenteDTO){

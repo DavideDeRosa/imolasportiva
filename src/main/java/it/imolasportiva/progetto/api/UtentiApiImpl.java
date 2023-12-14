@@ -54,6 +54,8 @@ public class UtentiApiImpl implements UtentiApi {
     public ResponseEntity<Utente> postUtente(Utente utente){
         log.info("Invocazione postUtente()", utente);
 
+        // prima di proseguire bisogna controllare il corretto inserimento dei vari valori di utente
+
         UtenteDTO utenteDTO = utenteMapper.utenteToUtenteDTO(utente);
 
         utenteDTO = utenteBL.postUtente(utenteDTO);

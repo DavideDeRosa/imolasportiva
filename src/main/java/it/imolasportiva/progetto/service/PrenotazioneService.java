@@ -5,6 +5,7 @@ import it.imolasportiva.progetto.repository.PrenotazioneRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -31,5 +32,17 @@ public class PrenotazioneService {
 
     public void deleteUtente(Long id){
         prenotazioneRepository.deleteById(id);
+    }
+
+    public List<PrenotazioneEntity> findAll(){
+        return prenotazioneRepository.findAll();
+    }
+
+    public List<PrenotazioneEntity> findByYear(int anno){
+        return prenotazioneRepository.findByYear(anno);
+    }
+
+    public List<PrenotazioneEntity> findByYearAndMonth(int anno, int mese){
+        return prenotazioneRepository.findByYearAndMonth(anno, mese);
     }
 }
