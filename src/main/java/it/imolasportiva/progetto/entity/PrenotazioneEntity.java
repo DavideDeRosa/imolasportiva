@@ -1,6 +1,5 @@
 package it.imolasportiva.progetto.entity;
 
-import imolasportiva.model.Utente;
 import javax.persistence.*;
 import java.util.Date;
 
@@ -11,7 +10,7 @@ public class PrenotazioneEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "id_utente", nullable = false)
     private UtenteEntity idUtentePrenotato;
 
@@ -38,11 +37,9 @@ public class PrenotazioneEntity {
         - codice campo (Come precendenza CAMPO1 ecc)
         - tipologia campo
 
-    vanno quindi aggiunte BL dove controllo l'esistenza di un utente,
     il campo deve essere libero (controllo con query se il campo ha gia prenotazione in quel momento),
     gestione del numero di partecipanti (se 2 o 4 prenoto tennis, altrimenti 10 prenoto calcio, errore in caso diverso),
-    in caso in cui il campo non venga specificato si prende il primo disponibile,
-    vincolo orario dalle 8 alle 24, martedi chiusi sempre.
+    in caso in cui il campo non venga specificato si prende il primo disponibile
      */
 
     public Long getId() {

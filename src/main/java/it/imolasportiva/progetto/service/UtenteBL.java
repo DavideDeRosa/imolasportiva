@@ -35,4 +35,22 @@ public class UtenteBL {
         return utenteMapper.utenteEntityToUtenteDTO(utenteEntity);
     }
 
+    public UtenteDTO putUtente(Long id, UtenteDTO utenteDTO){
+        Optional<UtenteEntity> utente = utenteService.findById(id);
+        if(!utente.isPresent()){
+            return null;
+        }
+
+        utenteDTO.setId(id);
+        UtenteEntity utenteEntity = utenteMapper.utenteDTOToUtenteEntity(utenteDTO);
+        utenteEntity = utenteService.updateUtente(utenteEntity);
+
+        return utenteMapper.utenteEntityToUtenteDTO(utenteEntity);
+    }
+
+    public void deleteUtente(Long id){
+        if(getUtenteDTObyId(id) != null){
+            utenteService.deleteUtente(id);
+        }
+    }
 }

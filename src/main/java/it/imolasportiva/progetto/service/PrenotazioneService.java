@@ -22,15 +22,15 @@ public class PrenotazioneService {
         return prenotazioneRepository.findById(id);
     }
 
-    public PrenotazioneEntity saveUtente(PrenotazioneEntity prenotazioneEntity){
+    public PrenotazioneEntity savePrenotazione(PrenotazioneEntity prenotazioneEntity){
         return prenotazioneRepository.save(prenotazioneEntity);
     }
 
-    public PrenotazioneEntity updateUtente(PrenotazioneEntity prenotazioneEntity){
+    public PrenotazioneEntity updatePrenotazione(PrenotazioneEntity prenotazioneEntity){
         return prenotazioneRepository.save(prenotazioneEntity);
     }
 
-    public void deleteUtente(Long id){
+    public void deletePrenotazione(Long id){
         prenotazioneRepository.deleteById(id);
     }
 

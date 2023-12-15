@@ -52,7 +52,7 @@ public class UtentiApiImpl implements UtentiApi {
     }
 
     public ResponseEntity<Utente> postUtente(Utente utente){
-        log.info("Invocazione postUtente()", utente);
+        log.info("Invocazione postUtente()");
 
         // prima di proseguire bisogna controllare il corretto inserimento dei vari valori di utente
 
@@ -61,5 +61,43 @@ public class UtentiApiImpl implements UtentiApi {
         utenteDTO = utenteBL.postUtente(utenteDTO);
 
         return new ResponseEntity<>(utenteMapper.utenteDTOToUtente(utenteDTO), HttpStatus.OK);
+    }
+
+    public ResponseEntity<Void> deleteUtente(String idUtente) {
+        log.info("Invocazione deleteUtente()");
+
+        Long id;
+
+        try{
+            id = Long.valueOf(idUtente);
+        }catch(NumberFormatException e){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        utenteBL.deleteUtente(id);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    public ResponseEntity<Utente> putUtente(String idUtente, Utente utente) {
+        log.info("Invocazione putUtente()");
+
+        // prima di proseguire bisogna controllare il corretto inserimento dei vari valori di utente
+
+        Long id;
+
+        try{
+            id = Long.valueOf(idUtente);
+        }catch(NumberFormatException e){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        UtenteDTO utenteDTO = utenteBL.putUtente(id, utenteMapper.utenteToUtenteDTO(utente));
+
+        if(utenteDTO == null){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }else{
+            return new ResponseEntity<>(utenteMapper.utenteDTOToUtente(utenteDTO), HttpStatus.OK);
+        }
     }
 }

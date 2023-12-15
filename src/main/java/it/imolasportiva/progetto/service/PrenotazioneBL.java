@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,7 +15,6 @@ public class PrenotazioneBL {
 
     private final PrenotazioneService prenotazioneService;
     private final PrenotazioneMapper prenotazioneMapper;
-
     @Autowired
     public PrenotazioneBL(PrenotazioneService prenotazioneService, PrenotazioneMapper prenotazioneMapper) {
         this.prenotazioneService = prenotazioneService;
@@ -34,7 +32,7 @@ public class PrenotazioneBL {
 
     public PrenotazioneDTO postPrenotazione(PrenotazioneDTO prenotazioneDTO){
         PrenotazioneEntity prenotazioneEntity = prenotazioneMapper.prenotazioneDTOToPrenotazioneEntity(prenotazioneDTO);
-        prenotazioneEntity = prenotazioneService.saveUtente(prenotazioneEntity);
+        prenotazioneEntity = prenotazioneService.savePrenotazione(prenotazioneEntity);
         return prenotazioneMapper.prenotazioneEntityToPrenotazioneDTO(prenotazioneEntity);
     }
 
