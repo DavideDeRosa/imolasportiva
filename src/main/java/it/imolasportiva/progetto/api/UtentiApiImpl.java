@@ -3,7 +3,7 @@ package it.imolasportiva.progetto.api;
 import imolasportiva.api.UtentiApi;
 import imolasportiva.model.Utente;
 import it.imolasportiva.progetto.dto.UtenteDTO;
-import it.imolasportiva.progetto.error.UserNotFoundException;
+import it.imolasportiva.progetto.error.UtenteNotFoundException;
 import it.imolasportiva.progetto.mapper.UtenteMapper;
 import it.imolasportiva.progetto.service.UtenteBL;
 import lombok.extern.slf4j.Slf4j;
@@ -33,7 +33,7 @@ public class UtentiApiImpl implements UtentiApi {
             UtenteDTO utenteDTO = utenteBL.getUtenteDTObyId(idUtente);
 
             return new ResponseEntity<>(utenteMapper.utenteDTOToUtente(utenteDTO), HttpStatus.OK);
-        }catch (UserNotFoundException e){
+        }catch (UtenteNotFoundException e){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
@@ -67,7 +67,7 @@ public class UtentiApiImpl implements UtentiApi {
             UtenteDTO utenteDTO = utenteBL.putUtente(idUtente, utenteMapper.utenteToUtenteDTO(utente));
 
             return new ResponseEntity<>(utenteMapper.utenteDTOToUtente(utenteDTO), HttpStatus.OK);
-        }catch(UserNotFoundException e){
+        }catch(UtenteNotFoundException e){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }catch (Exception e){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

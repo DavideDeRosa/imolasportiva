@@ -2,6 +2,7 @@ package it.imolasportiva.progetto.service;
 
 import it.imolasportiva.progetto.dto.PrenotazioneDTO;
 import it.imolasportiva.progetto.entity.PrenotazioneEntity;
+import it.imolasportiva.progetto.error.PrenotazioneNotFoundException;
 import it.imolasportiva.progetto.mapper.PrenotazioneMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,7 +25,7 @@ public class PrenotazioneBL {
     public PrenotazioneDTO getPrenotazioneDTOById(Long id){
         Optional<PrenotazioneEntity> prenotazione = prenotazioneService.findById(id);
         if(!prenotazione.isPresent()){
-            return null;
+            throw new PrenotazioneNotFoundException();
         }
 
         return prenotazioneMapper.prenotazioneEntityToPrenotazioneDTO(prenotazione.get());
@@ -34,6 +35,25 @@ public class PrenotazioneBL {
         PrenotazioneEntity prenotazioneEntity = prenotazioneMapper.prenotazioneDTOToPrenotazioneEntity(prenotazioneDTO);
         prenotazioneEntity = prenotazioneService.savePrenotazione(prenotazioneEntity);
         return prenotazioneMapper.prenotazioneEntityToPrenotazioneDTO(prenotazioneEntity);
+    }
+
+    public PrenotazioneDTO putPrenotazione(Long id, PrenotazioneDTO prenotazioneDTO){
+        Optional<PrenotazioneEntity> prenotazione = prenotazioneService.findById(id);
+        if(!prenotazione.isPresent()){
+            throw new PrenotazioneNotFoundException();
+        }
+
+        prenotazioneDTO.setId(id);
+        PrenotazioneEntity prenotazioneEntity = prenotazioneMapper.prenotazioneDTOToPrenotazioneEntity(prenotazioneDTO);
+        prenotazioneEntity = prenotazioneService.updatePrenotazione(prenotazioneEntity);
+
+        return prenotazioneMapper.prenotazioneEntityToPrenotazioneDTO(prenotazioneEntity);
+    }
+
+    public void deletePrenotazione(Long id){
+        if(getPrenotazioneDTOById(id) != null){
+            prenotazioneService.deletePrenotazione(id);
+        }
     }
 
     public List<PrenotazioneDTO> findAll(){

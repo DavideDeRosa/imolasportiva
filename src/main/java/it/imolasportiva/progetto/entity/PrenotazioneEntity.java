@@ -10,7 +10,7 @@ public class PrenotazioneEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(cascade = CascadeType.REMOVE)
+    @ManyToOne
     @JoinColumn(name = "id_utente", nullable = false)
     private UtenteEntity idUtentePrenotato;
 

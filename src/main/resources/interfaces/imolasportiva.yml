@@ -255,13 +255,13 @@ paths:
           in: query
           description: 'filtro anno'
           schema:
-            type: string
+            type: integer
           required: false
         - name: mese
           in: query
           description: 'filtro mese'
           schema:
-            type: string
+            type: integer
           required: false
       responses:
         '200':
@@ -347,7 +347,8 @@ paths:
           required: true
           description: "restituisce la prenotazione tramite il suo Id"
           schema:
-            type: string
+            type: integer
+            format: int64
       responses:
         '200':
           description: "Success"
@@ -389,7 +390,8 @@ paths:
           required: true
           description: "elimina la prenotazione tramite il suo Id"
           schema:
-            type: string
+            type: integer
+            format: int64
       responses:
         '200':
           description: "Success"
@@ -427,7 +429,8 @@ paths:
           required: true
           description: "aggiorna la prenotazione tramite il suo Id"
           schema:
-            type: string
+            type: integer
+            format: int64
       requestBody:
         required: true
         content:
@@ -511,9 +514,11 @@ components:
         - quota
       properties:
         id:
-          type: string
+          type: integer
+          format: int64
         idUtentePrenotato:
-          type: string
+          type: integer
+          format: int64
         durataPrenotazioneOre:
           type: string
         durataDeadlineCancellazioneOre:

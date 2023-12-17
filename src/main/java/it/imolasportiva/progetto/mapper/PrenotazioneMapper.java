@@ -43,12 +43,12 @@ public abstract class PrenotazioneMapper {
         }
     }
 
-    UtenteEntity map(String idUtente) {
-        UtenteDTO utenteDTO = utenteBL.getUtenteDTObyId(Long.valueOf(idUtente));
+    UtenteEntity map(Long idUtente) {
+        UtenteDTO utenteDTO = utenteBL.getUtenteDTObyId(idUtente);
         return utenteMapper.utenteDTOToUtenteEntity(utenteDTO);
     }
 
-    String map(UtenteEntity utenteEntity) {
-        return utenteEntity.getId().toString();
+    Long map(UtenteEntity utenteEntity) {
+        return utenteEntity.getId();
     }
 }

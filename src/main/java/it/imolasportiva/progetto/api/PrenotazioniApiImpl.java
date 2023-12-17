@@ -3,6 +3,7 @@ package it.imolasportiva.progetto.api;
 import imolasportiva.api.PrenotazioniApi;
 import imolasportiva.model.Prenotazione;
 import it.imolasportiva.progetto.dto.PrenotazioneDTO;
+import it.imolasportiva.progetto.error.PrenotazioneNotFoundException;
 import it.imolasportiva.progetto.mapper.PrenotazioneMapper;
 import it.imolasportiva.progetto.service.PrenotazioneBL;
 import lombok.extern.slf4j.Slf4j;
@@ -29,31 +30,25 @@ public class PrenotazioniApiImpl implements PrenotazioniApi {
         this.prenotazioneMapper = prenotazioneMapper;
     }
 
-    public ResponseEntity<Prenotazione> getPrenotazioneById(String idPrenotazione) {
+    public ResponseEntity<Prenotazione> getPrenotazioneById(Long idPrenotazione) {
         log.info("Invocazione getPrenotazioneById()");
 
         try{
-            Long.valueOf(idPrenotazione);
-        }catch(NumberFormatException e){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+            PrenotazioneDTO prenotazioneDTO = prenotazioneBL.getPrenotazioneDTOById(idPrenotazione);
 
-        PrenotazioneDTO prenotazioneDTO = prenotazioneBL.getPrenotazioneDTOById(Long.valueOf(idPrenotazione));
-
-        if(prenotazioneDTO == null){
+            return new ResponseEntity<>(prenotazioneMapper.prenotazioneDTOToPrenotazione(prenotazioneDTO), HttpStatus.OK);
+        }catch (PrenotazioneNotFoundException e){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-
-        return new ResponseEntity<>(prenotazioneMapper.prenotazioneDTOToPrenotazione(prenotazioneDTO), HttpStatus.OK);
     }
 
-    public ResponseEntity<List<Prenotazione>> getPrenotazioni(String anno, String mese) {
+    public ResponseEntity<List<Prenotazione>> getPrenotazioni(Integer anno, Integer mese) {
         log.info("Invocazione getPrenotazioni()");
+
+        List<Prenotazione> prenotazioneList = new ArrayList<>();
 
         if(anno == null){
             if(mese == null){
-                List<Prenotazione> prenotazioneList = new ArrayList<>();
-
                 for (PrenotazioneDTO x : prenotazioneBL.findAll()) {
                     prenotazioneList.add(prenotazioneMapper.prenotazioneDTOToPrenotazione(x));
                 }
@@ -65,34 +60,21 @@ public class PrenotazioniApiImpl implements PrenotazioniApi {
         }
 
         if(mese == null){
-            List<Prenotazione> prenotazioneList = new ArrayList<>();
-
-            try{
-                Integer.parseInt(anno);
-            }catch(Exception e){
-                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-            }
-
-            for (PrenotazioneDTO x : prenotazioneBL.getPrenotazioneAnno(Integer.parseInt(anno))) {
+            for (PrenotazioneDTO x : prenotazioneBL.getPrenotazioneAnno(anno)) {
                 prenotazioneList.add(prenotazioneMapper.prenotazioneDTOToPrenotazione(x));
             }
 
             return new ResponseEntity<>(prenotazioneList, HttpStatus.OK);
         }else{
-            List<Prenotazione> prenotazioneList = new ArrayList<>();
-
             try{
-                Integer.parseInt(anno);
-                int meseN = Integer.parseInt(mese);
-
-                if(meseN <= 0 || meseN > 12){
+                if(mese <= 0 || mese > 12){
                     throw new RuntimeException();
                 }
             }catch(Exception e){
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             }
 
-            for (PrenotazioneDTO x : prenotazioneBL.getPrenotazioneAnnoMese(Integer.parseInt(anno), Integer.parseInt(mese))) {
+            for (PrenotazioneDTO x : prenotazioneBL.getPrenotazioneAnnoMese(anno, mese)) {
                 prenotazioneList.add(prenotazioneMapper.prenotazioneDTOToPrenotazione(x));
             }
 
@@ -121,5 +103,27 @@ public class PrenotazioniApiImpl implements PrenotazioniApi {
         prenotazioneDTO = prenotazioneBL.postPrenotazione(prenotazioneDTO);
 
         return new ResponseEntity<>(prenotazioneMapper.prenotazioneDTOToPrenotazione(prenotazioneDTO), HttpStatus.OK);
+    }
+
+    public ResponseEntity<Void> deletePrenotazione(Long idPrenotazione) {
+        log.info("Invocazione deletePrenotazione()");
+
+        prenotazioneBL.deletePrenotazione(idPrenotazione);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    public ResponseEntity<Prenotazione> putPrenotazione(Long idPrenotazione, Prenotazione prenotazione) {
+        log.info("Invocazione deletePrenotazione()");
+
+        try{
+            PrenotazioneDTO prenotazioneDTO = prenotazioneBL.putPrenotazione(idPrenotazione, prenotazioneMapper.prenotazioneToPrenotazioneDTO(prenotazione));
+
+            return new ResponseEntity<>(prenotazioneMapper.prenotazioneDTOToPrenotazione(prenotazioneDTO), HttpStatus.OK);
+        }catch (PrenotazioneNotFoundException e){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 }
