@@ -123,7 +123,8 @@ paths:
           required: true
           description: "restituisce l'utente tramite il suo Id"
           schema:
-            type: string
+            type: integer
+            format: int64
       responses:
         '200':
           description: "Success"
@@ -165,7 +166,8 @@ paths:
           required: true
           description: "elimina l'utente tramite il suo Id"
           schema:
-            type: string
+            type: integer
+            format: int64
       responses:
         '200':
           description: "Success"
@@ -203,7 +205,8 @@ paths:
           required: true
           description: "aggiorna l'utente tramite il suo Id"
           schema:
-            type: string
+            type: integer
+            format: int64
       requestBody:
         required: true
         content:
@@ -485,7 +488,8 @@ components:
         - telefono
       properties:
         id:
-          type: string
+          type: integer
+          format: int64
         nome:
           type: string
         cognome:

@@ -1,8 +1,8 @@
 package it.imolasportiva.progetto.service;
 
-import imolasportiva.model.Utente;
 import it.imolasportiva.progetto.dto.UtenteDTO;
 import it.imolasportiva.progetto.entity.UtenteEntity;
+import it.imolasportiva.progetto.error.UserNotFoundException;
 import it.imolasportiva.progetto.mapper.UtenteMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,10 +20,10 @@ public class UtenteBL {
         this.utenteMapper = utenteMapper;
     }
 
-    public UtenteDTO getUtenteDTObyId(Long id){
+    public UtenteDTO getUtenteDTObyId(Long id) {
         Optional<UtenteEntity> utente = utenteService.findById(id);
         if(!utente.isPresent()){
-            return null;
+            throw new UserNotFoundException();
         }
 
         return utenteMapper.utenteEntityToUtenteDTO(utente.get());
@@ -35,10 +35,10 @@ public class UtenteBL {
         return utenteMapper.utenteEntityToUtenteDTO(utenteEntity);
     }
 
-    public UtenteDTO putUtente(Long id, UtenteDTO utenteDTO){
+    public UtenteDTO putUtente(Long id, UtenteDTO utenteDTO) throws UserNotFoundException {
         Optional<UtenteEntity> utente = utenteService.findById(id);
         if(!utente.isPresent()){
-            return null;
+            throw new UserNotFoundException();
         }
 
         utenteDTO.setId(id);
