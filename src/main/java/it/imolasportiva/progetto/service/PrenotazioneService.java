@@ -5,6 +5,7 @@ import it.imolasportiva.progetto.repository.PrenotazioneRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -44,5 +45,9 @@ public class PrenotazioneService {
 
     public List<PrenotazioneEntity> findByYearAndMonth(int anno, int mese){
         return prenotazioneRepository.findByYearAndMonth(anno, mese);
+    }
+
+    public List<PrenotazioneEntity> findCampoOccupato(Long campo, Date data){
+        return prenotazioneRepository.findCampoOccupato(campo, data);
     }
 }

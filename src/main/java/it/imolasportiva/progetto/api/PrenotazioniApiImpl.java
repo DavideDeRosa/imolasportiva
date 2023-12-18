@@ -3,8 +3,6 @@ package it.imolasportiva.progetto.api;
 import imolasportiva.api.PrenotazioniApi;
 import imolasportiva.model.Prenotazione;
 import it.imolasportiva.progetto.dto.PrenotazioneDTO;
-import it.imolasportiva.progetto.error.ErrorEnum;
-import it.imolasportiva.progetto.error.ErrorException;
 import it.imolasportiva.progetto.mapper.PrenotazioneMapper;
 import it.imolasportiva.progetto.service.PrenotazioneBL;
 import lombok.extern.slf4j.Slf4j;
@@ -15,8 +13,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 @Slf4j
@@ -58,18 +54,7 @@ public class PrenotazioniApiImpl implements PrenotazioniApi {
 
         PrenotazioneDTO prenotazioneDTO = prenotazioneMapper.prenotazioneToPrenotazioneDTO(prenotazione);
 
-        if(prenotazioneDTO.getIdUtentePrenotato() == null){
-            throw new ErrorException(ErrorEnum.UtenteNotFound);
-        }
-
-        Calendar c = Calendar.getInstance();
-        c.setTime(prenotazioneDTO.getDataPrenotazione());
-        Calendar now = Calendar.getInstance();
-        now.setTime(new Date());
-
-        if(c.get(Calendar.DAY_OF_WEEK) == Calendar.TUESDAY || c.get(Calendar.HOUR_OF_DAY) < 8 || c.before(now)){
-            throw new ErrorException(ErrorEnum.PrenotazioneWrongTime);
-        }
+        prenotazioneDTO = prenotazioneBL.validPrenotazione(prenotazioneDTO);
 
         prenotazioneDTO = prenotazioneBL.postPrenotazione(prenotazioneDTO);
 
@@ -85,9 +70,13 @@ public class PrenotazioniApiImpl implements PrenotazioniApi {
     }
 
     public ResponseEntity<Prenotazione> putPrenotazione(Long idPrenotazione, Prenotazione prenotazione) {
-        log.info("Invocazione deletePrenotazione()");
+        log.info("Invocazione putPrenotazione()");
 
-        PrenotazioneDTO prenotazioneDTO = prenotazioneBL.putPrenotazione(idPrenotazione, prenotazioneMapper.prenotazioneToPrenotazioneDTO(prenotazione));
+        PrenotazioneDTO prenotazioneDTO = prenotazioneMapper.prenotazioneToPrenotazioneDTO(prenotazione);
+
+        prenotazioneDTO = prenotazioneBL.validPrenotazione(prenotazioneDTO);
+
+        prenotazioneDTO = prenotazioneBL.putPrenotazione(idPrenotazione, prenotazioneDTO);
 
         return new ResponseEntity<>(prenotazioneMapper.prenotazioneDTOToPrenotazione(prenotazioneDTO), HttpStatus.OK);
     }

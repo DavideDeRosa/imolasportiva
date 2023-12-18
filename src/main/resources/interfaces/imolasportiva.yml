@@ -512,6 +512,7 @@ components:
         - dataPrenotazione
         - numeroPartecipanti
         - quota
+        - idCampo
       properties:
         id:
           type: integer
@@ -529,6 +530,9 @@ components:
           type: string
         quota:
           type: string
+        idCampo:
+          type: integer
+          format: int64
 
     ListaPrenotazioni:
       type: array

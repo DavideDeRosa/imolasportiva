@@ -1,5 +1,6 @@
 package it.imolasportiva.progetto.dto;
 
+import it.imolasportiva.progetto.entity.CampoEntity;
 import it.imolasportiva.progetto.entity.UtenteEntity;
 import java.util.Date;
 
@@ -11,6 +12,7 @@ public class PrenotazioneDTO {
     private Date dataPrenotazione;
     private int numeroPartecipanti;
     private int quota;
+    private CampoEntity campo;
 
     public Long getId() {
         return id;
@@ -66,5 +68,13 @@ public class PrenotazioneDTO {
 
     public void setQuota(int quota) {
         this.quota = quota;
+    }
+
+    public CampoEntity getCampo() {
+        return campo;
+    }
+
+    public void setCampo(CampoEntity campo) {
+        this.campo = campo;
     }
 }

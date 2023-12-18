@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -15,4 +16,7 @@ public interface PrenotazioneRepository extends JpaRepository<PrenotazioneEntity
 
     @Query(value = "SELECT * FROM Prenotazione p WHERE EXTRACT(YEAR FROM p.dataprenotazione) = :anno AND EXTRACT(MONTH FROM p.dataprenotazione) = :mese", nativeQuery = true)
     List<PrenotazioneEntity> findByYearAndMonth(@Param("anno") int anno, @Param("mese") int mese);
+
+    @Query(value = "SELECT * FROM Prenotazione p WHERE id_campo = :campo AND dataprenotazione = :data", nativeQuery = true)
+    List<PrenotazioneEntity> findCampoOccupato(@Param("campo") Long campo, @Param("data") Date data);
 }

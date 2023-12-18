@@ -29,18 +29,9 @@ public class PrenotazioneEntity {
     @Column(name = "quota")
     private int quota;
 
-    //private Campo campo; //opzionale
-
-    /*
-    campo diventa interfaccia, con specializ. diversi tipi di campo (calcio tennis ecc):
-        - id
-        - codice campo (Come precendenza CAMPO1 ecc)
-        - tipologia campo
-
-    il campo deve essere libero (controllo con query se il campo ha gia prenotazione in quel momento),
-    gestione del numero di partecipanti (se 2 o 4 prenoto tennis, altrimenti 10 prenoto calcio, errore in caso diverso),
-    in caso in cui il campo non venga specificato si prende il primo disponibile
-     */
+    @ManyToOne
+    @JoinColumn(name = "id_campo")
+    private CampoEntity campo;
 
     public Long getId() {
         return id;
@@ -96,5 +87,13 @@ public class PrenotazioneEntity {
 
     public void setQuota(int quota) {
         this.quota = quota;
+    }
+
+    public CampoEntity getCampo() {
+        return campo;
+    }
+
+    public void setCampo(CampoEntity campo) {
+        this.campo = campo;
     }
 }

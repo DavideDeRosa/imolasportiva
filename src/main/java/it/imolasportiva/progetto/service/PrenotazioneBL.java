@@ -1,6 +1,7 @@
 package it.imolasportiva.progetto.service;
 
 import it.imolasportiva.progetto.dto.PrenotazioneDTO;
+import it.imolasportiva.progetto.entity.CampoEntity;
 import it.imolasportiva.progetto.entity.PrenotazioneEntity;
 import it.imolasportiva.progetto.error.ErrorEnum;
 import it.imolasportiva.progetto.error.ErrorException;
@@ -8,19 +9,19 @@ import it.imolasportiva.progetto.mapper.PrenotazioneMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class PrenotazioneBL {
 
     private final PrenotazioneService prenotazioneService;
     private final PrenotazioneMapper prenotazioneMapper;
+    private final CampoService campoService;
     @Autowired
-    public PrenotazioneBL(PrenotazioneService prenotazioneService, PrenotazioneMapper prenotazioneMapper) {
+    public PrenotazioneBL(PrenotazioneService prenotazioneService, PrenotazioneMapper prenotazioneMapper, CampoService campoService) {
         this.prenotazioneService = prenotazioneService;
         this.prenotazioneMapper = prenotazioneMapper;
+        this.campoService = campoService;
     }
 
     public PrenotazioneDTO getPrenotazioneDTOById(Long id){
@@ -108,5 +109,61 @@ public class PrenotazioneBL {
         }
 
         return prenotazioneDTOList;
+    }
+
+    public PrenotazioneDTO validPrenotazione(PrenotazioneDTO prenotazioneDTO){
+        Calendar c = Calendar.getInstance();
+        c.setTime(prenotazioneDTO.getDataPrenotazione());
+        Calendar now = Calendar.getInstance();
+        now.setTime(new Date());
+
+        if(c.get(Calendar.DAY_OF_WEEK) == Calendar.TUESDAY || c.get(Calendar.HOUR_OF_DAY) < 8 || c.before(now)){
+            throw new ErrorException(ErrorEnum.PrenotazioneWrongTime);
+        }
+
+        if(prenotazioneDTO.getNumeroPartecipanti() != 10 &&
+                prenotazioneDTO.getNumeroPartecipanti() != 2 &&
+                prenotazioneDTO.getNumeroPartecipanti() != 4){
+            throw new ErrorException(ErrorEnum.NumeroPartecipantiError);
+        }
+
+        if(prenotazioneDTO.getCampo() == null){
+            List<CampoEntity> campoList;
+
+            if(prenotazioneDTO.getNumeroPartecipanti() == 10){
+                campoList = campoService.findCampiLiberi(prenotazioneDTO.getDataPrenotazione(), "Calcio");
+            }else{
+                campoList = campoService.findCampiLiberi(prenotazioneDTO.getDataPrenotazione(), "Tennis");
+            }
+
+            if(campoList.isEmpty()){
+                throw new ErrorException(ErrorEnum.CampoNotAvailable);
+            }
+
+            prenotazioneDTO.setCampo(campoList.get(0));
+        }else{
+            if(!prenotazioneService.findCampoOccupato(prenotazioneDTO.getCampo().getId(), prenotazioneDTO.getDataPrenotazione()).isEmpty()){
+                throw new ErrorException(ErrorEnum.CampoNotAvailable);
+                /*
+                chiedere se bisogna gestire il caso del controllo delle prenotazioni in ore precedenti che vanno ad
+                occupare anche l'ora richiesta!
+                 */
+            }else{
+                CampoEntity campoEntity = campoService.findById(prenotazioneDTO.getCampo().getId()).get();
+                int numeroPrenotati = prenotazioneDTO.getNumeroPartecipanti();
+
+                if(numeroPrenotati == 10){
+                    if(!campoEntity.getTipologia().equals("Calcio")){
+                        throw new ErrorException(ErrorEnum.CampoError);
+                    }
+                }else{
+                    if(!campoEntity.getTipologia().equals("Tennis")){
+                        throw new ErrorException(ErrorEnum.CampoError);
+                    }
+                }
+            }
+        }
+
+        return prenotazioneDTO;
     }
 }
