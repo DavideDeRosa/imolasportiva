@@ -2,8 +2,8 @@ package it.imolasportiva.progetto.service;
 
 import it.imolasportiva.progetto.dto.PrenotazioneDTO;
 import it.imolasportiva.progetto.entity.PrenotazioneEntity;
-import it.imolasportiva.progetto.error.MeseErrorException;
-import it.imolasportiva.progetto.error.PrenotazioneNotFoundException;
+import it.imolasportiva.progetto.error.ErrorEnum;
+import it.imolasportiva.progetto.error.ErrorException;
 import it.imolasportiva.progetto.mapper.PrenotazioneMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,7 +26,7 @@ public class PrenotazioneBL {
     public PrenotazioneDTO getPrenotazioneDTOById(Long id){
         Optional<PrenotazioneEntity> prenotazione = prenotazioneService.findById(id);
         if(!prenotazione.isPresent()){
-            throw new PrenotazioneNotFoundException();
+            throw new ErrorException(ErrorEnum.PrenotazioneNotFound);
         }
 
         return prenotazioneMapper.prenotazioneEntityToPrenotazioneDTO(prenotazione.get());
@@ -41,7 +41,7 @@ public class PrenotazioneBL {
     public PrenotazioneDTO putPrenotazione(Long id, PrenotazioneDTO prenotazioneDTO){
         Optional<PrenotazioneEntity> prenotazione = prenotazioneService.findById(id);
         if(!prenotazione.isPresent()){
-            throw new PrenotazioneNotFoundException();
+            throw new ErrorException(ErrorEnum.PrenotazioneNotFound);
         }
 
         prenotazioneDTO.setId(id);
@@ -63,14 +63,14 @@ public class PrenotazioneBL {
                 return findAll();
             }
 
-            throw new MeseErrorException(); // custom exception dove dice che non c'è anno ma mese si
+            throw new ErrorException(ErrorEnum.AnnoNotFound);
         }
 
         if(mese == null){
             return getPrenotazioneAnno(anno);
         }else{
             if(mese <= 0 || mese > 12){
-                throw new MeseErrorException(); // dirgli il problema! mese errato
+                throw new ErrorException(ErrorEnum.MeseError);
             }
 
             return getPrenotazioneAnnoMese(anno, mese);

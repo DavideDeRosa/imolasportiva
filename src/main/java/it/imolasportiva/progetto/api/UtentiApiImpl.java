@@ -3,7 +3,6 @@ package it.imolasportiva.progetto.api;
 import imolasportiva.api.UtentiApi;
 import imolasportiva.model.Utente;
 import it.imolasportiva.progetto.dto.UtenteDTO;
-import it.imolasportiva.progetto.error.UtenteNotFoundException;
 import it.imolasportiva.progetto.mapper.UtenteMapper;
 import it.imolasportiva.progetto.service.UtenteBL;
 import lombok.extern.slf4j.Slf4j;
@@ -29,60 +28,34 @@ public class UtentiApiImpl implements UtentiApi {
     public ResponseEntity<Utente> getUtenteById(Long idUtente) {
         log.info("Invocazione getUtenteById()");
 
-        try{
-            UtenteDTO utenteDTO = utenteBL.getUtenteDTObyId(idUtente);
+        UtenteDTO utenteDTO = utenteBL.getUtenteDTObyId(idUtente);
 
-            return new ResponseEntity<>(utenteMapper.utenteDTOToUtente(utenteDTO), HttpStatus.OK);
-        }catch (UtenteNotFoundException e){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }catch (Exception e){
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        return new ResponseEntity<>(utenteMapper.utenteDTOToUtente(utenteDTO), HttpStatus.OK);
     }
 
     public ResponseEntity<Utente> postUtente(Utente utente){
         log.info("Invocazione postUtente()");
 
-        try{
-            UtenteDTO utenteDTO = utenteMapper.utenteToUtenteDTO(utente);
+        UtenteDTO utenteDTO = utenteMapper.utenteToUtenteDTO(utente);
 
-            utenteDTO = utenteBL.postUtente(utenteDTO);
+        utenteDTO = utenteBL.postUtente(utenteDTO);
 
-            return new ResponseEntity<>(utenteMapper.utenteDTOToUtente(utenteDTO), HttpStatus.OK);
-        }catch (RuntimeException e){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }catch (Exception e){
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        return new ResponseEntity<>(utenteMapper.utenteDTOToUtente(utenteDTO), HttpStatus.OK);
     }
 
     public ResponseEntity<Void> deleteUtente(Long idUtente) {
         log.info("Invocazione deleteUtente()");
 
-        try{
-            utenteBL.deleteUtente(idUtente);
+        utenteBL.deleteUtente(idUtente);
 
-            return new ResponseEntity<>(HttpStatus.OK);
-        }catch (UtenteNotFoundException e){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }catch (Exception e){
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     public ResponseEntity<Utente> putUtente(Long idUtente, Utente utente) {
         log.info("Invocazione putUtente()");
 
-        try{
-            UtenteDTO utenteDTO = utenteBL.putUtente(idUtente, utenteMapper.utenteToUtenteDTO(utente));
+        UtenteDTO utenteDTO = utenteBL.putUtente(idUtente, utenteMapper.utenteToUtenteDTO(utente));
 
-            return new ResponseEntity<>(utenteMapper.utenteDTOToUtente(utenteDTO), HttpStatus.OK);
-        }catch(UtenteNotFoundException e){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }catch (RuntimeException e){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }catch (Exception e){
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        return new ResponseEntity<>(utenteMapper.utenteDTOToUtente(utenteDTO), HttpStatus.OK);
     }
 }

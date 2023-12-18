@@ -2,7 +2,8 @@ package it.imolasportiva.progetto.service;
 
 import it.imolasportiva.progetto.dto.UtenteDTO;
 import it.imolasportiva.progetto.entity.UtenteEntity;
-import it.imolasportiva.progetto.error.UtenteNotFoundException;
+import it.imolasportiva.progetto.error.ErrorEnum;
+import it.imolasportiva.progetto.error.ErrorException;
 import it.imolasportiva.progetto.mapper.UtenteMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,7 +24,7 @@ public class UtenteBL {
     public UtenteDTO getUtenteDTObyId(Long id) {
         Optional<UtenteEntity> utente = utenteService.findById(id);
         if(!utente.isPresent()){
-            throw new UtenteNotFoundException();
+            throw new ErrorException(ErrorEnum.UtenteNotFound);
         }
 
         return utenteMapper.utenteEntityToUtenteDTO(utente.get());
@@ -38,7 +39,7 @@ public class UtenteBL {
     public UtenteDTO putUtente(Long id, UtenteDTO utenteDTO) {
         Optional<UtenteEntity> utente = utenteService.findById(id);
         if(!utente.isPresent()){
-            throw new UtenteNotFoundException();
+            throw new ErrorException(ErrorEnum.UtenteNotFound);
         }
 
         utenteDTO.setId(id);

@@ -540,14 +540,8 @@ components:
       required:
         - code
         - message
-        - layer
-        - component
       properties:
         code:
           type: string
         message:
-          type: string
-        layer:
-          type: string
-        component:
           type: string
