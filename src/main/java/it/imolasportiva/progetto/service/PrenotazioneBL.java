@@ -2,6 +2,7 @@ package it.imolasportiva.progetto.service;
 
 import it.imolasportiva.progetto.dto.PrenotazioneDTO;
 import it.imolasportiva.progetto.entity.PrenotazioneEntity;
+import it.imolasportiva.progetto.error.MeseErrorException;
 import it.imolasportiva.progetto.error.PrenotazioneNotFoundException;
 import it.imolasportiva.progetto.mapper.PrenotazioneMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,6 +54,26 @@ public class PrenotazioneBL {
     public void deletePrenotazione(Long id){
         if(getPrenotazioneDTOById(id) != null){
             prenotazioneService.deletePrenotazione(id);
+        }
+    }
+
+    public List<PrenotazioneDTO> getPrenotazioni(Integer anno, Integer mese){
+        if(anno == null){
+            if(mese == null){
+                return findAll();
+            }
+
+            throw new MeseErrorException(); // custom exception dove dice che non c'è anno ma mese si
+        }
+
+        if(mese == null){
+            return getPrenotazioneAnno(anno);
+        }else{
+            if(mese <= 0 || mese > 12){
+                throw new MeseErrorException(); // dirgli il problema! mese errato
+            }
+
+            return getPrenotazioneAnnoMese(anno, mese);
         }
     }
 

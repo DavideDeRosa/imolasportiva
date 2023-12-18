@@ -35,7 +35,7 @@ public class UtenteBL {
         return utenteMapper.utenteEntityToUtenteDTO(utenteEntity);
     }
 
-    public UtenteDTO putUtente(Long id, UtenteDTO utenteDTO) throws UtenteNotFoundException {
+    public UtenteDTO putUtente(Long id, UtenteDTO utenteDTO) {
         Optional<UtenteEntity> utente = utenteService.findById(id);
         if(!utente.isPresent()){
             throw new UtenteNotFoundException();

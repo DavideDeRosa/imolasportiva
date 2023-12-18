@@ -35,6 +35,8 @@ public class UtentiApiImpl implements UtentiApi {
             return new ResponseEntity<>(utenteMapper.utenteDTOToUtente(utenteDTO), HttpStatus.OK);
         }catch (UtenteNotFoundException e){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -47,17 +49,25 @@ public class UtentiApiImpl implements UtentiApi {
             utenteDTO = utenteBL.postUtente(utenteDTO);
 
             return new ResponseEntity<>(utenteMapper.utenteDTOToUtente(utenteDTO), HttpStatus.OK);
-        }catch (Exception e){
+        }catch (RuntimeException e){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     public ResponseEntity<Void> deleteUtente(Long idUtente) {
         log.info("Invocazione deleteUtente()");
 
-        utenteBL.deleteUtente(idUtente);
+        try{
+            utenteBL.deleteUtente(idUtente);
 
-        return new ResponseEntity<>(HttpStatus.OK);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }catch (UtenteNotFoundException e){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     public ResponseEntity<Utente> putUtente(Long idUtente, Utente utente) {
@@ -69,8 +79,10 @@ public class UtentiApiImpl implements UtentiApi {
             return new ResponseEntity<>(utenteMapper.utenteDTOToUtente(utenteDTO), HttpStatus.OK);
         }catch(UtenteNotFoundException e){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }catch (Exception e){
+        }catch (RuntimeException e){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }
