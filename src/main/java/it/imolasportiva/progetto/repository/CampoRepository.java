@@ -12,7 +12,7 @@ import java.util.List;
 @Repository
 public interface CampoRepository extends JpaRepository<CampoEntity, Long> {
 
-    @Query(value = "SELECT * FROM campo WHERE id NOT IN (SELECT id_campo FROM prenotazione WHERE dataprenotazione = :data) AND tipologia = :tipologia", nativeQuery = true)
-    List<CampoEntity> findCampiLiberi(@Param("data") Date data, @Param("tipologia") String tipologia);
+    @Query(value = "SELECT * FROM campo WHERE id NOT IN (SELECT id_campo FROM prenotazione WHERE ((dataprenotazione >= :data AND dataprenotazione < (CAST(:data AS timestamp) + :durata * INTERVAL '1 hour')) OR ((dataprenotazione + durataprenotazione * INTERVAL '1 hour') <= (CAST(:data AS timestamp) + :durata * INTERVAL '1 hour') AND (dataprenotazione + durataprenotazione * INTERVAL '1 hour') > :data))) AND tipologia = :tipologia", nativeQuery = true)
+    List<CampoEntity> findCampiLiberi(@Param("data") Date data, @Param("tipologia") String tipologia, @Param("durata") int durata);
 
 }

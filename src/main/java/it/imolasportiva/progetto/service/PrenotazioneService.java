@@ -47,7 +47,7 @@ public class PrenotazioneService {
         return prenotazioneRepository.findByYearAndMonth(anno, mese);
     }
 
-    public List<PrenotazioneEntity> findCampoOccupato(Long campo, Date data){
-        return prenotazioneRepository.findCampoOccupato(campo, data);
+    public List<PrenotazioneEntity> findCampoOccupato(Long campo, Date data, int durata){
+        return prenotazioneRepository.findCampoOccupato(campo, data, durata);
     }
 }

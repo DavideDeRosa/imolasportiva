@@ -22,7 +22,7 @@ public class CampoService {
         return campoRepository.findById(id);
     }
 
-    public List<CampoEntity> findCampiLiberi(Date data, String tipologia){
-        return campoRepository.findCampiLiberi(data, tipologia);
+    public List<CampoEntity> findCampiLiberi(Date data, String tipologia, int durata){
+        return campoRepository.findCampiLiberi(data, tipologia, durata);
     }
 }

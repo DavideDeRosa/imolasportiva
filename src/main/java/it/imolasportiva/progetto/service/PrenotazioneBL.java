@@ -6,11 +6,13 @@ import it.imolasportiva.progetto.entity.PrenotazioneEntity;
 import it.imolasportiva.progetto.error.ErrorEnum;
 import it.imolasportiva.progetto.error.ErrorException;
 import it.imolasportiva.progetto.mapper.PrenotazioneMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 
+@Slf4j
 @Service
 public class PrenotazioneBL {
 
@@ -117,7 +119,8 @@ public class PrenotazioneBL {
         Calendar now = Calendar.getInstance();
         now.setTime(new Date());
 
-        if(c.get(Calendar.DAY_OF_WEEK) == Calendar.TUESDAY || c.get(Calendar.HOUR_OF_DAY) < 8 || c.before(now)){
+        if(c.get(Calendar.DAY_OF_WEEK) == Calendar.TUESDAY || c.get(Calendar.HOUR_OF_DAY) < 8 || c.before(now)
+                || c.get(Calendar.HOUR_OF_DAY) + prenotazioneDTO.getDurataPrenotazioneOre() > 24){
             throw new ErrorException(ErrorEnum.PrenotazioneWrongTime);
         }
 
@@ -131,9 +134,9 @@ public class PrenotazioneBL {
             List<CampoEntity> campoList;
 
             if(prenotazioneDTO.getNumeroPartecipanti() == 10){
-                campoList = campoService.findCampiLiberi(prenotazioneDTO.getDataPrenotazione(), "Calcio");
+                campoList = campoService.findCampiLiberi(prenotazioneDTO.getDataPrenotazione(), "Calcio", prenotazioneDTO.getDurataPrenotazioneOre());
             }else{
-                campoList = campoService.findCampiLiberi(prenotazioneDTO.getDataPrenotazione(), "Tennis");
+                campoList = campoService.findCampiLiberi(prenotazioneDTO.getDataPrenotazione(), "Tennis", prenotazioneDTO.getDurataPrenotazioneOre());
             }
 
             if(campoList.isEmpty()){
@@ -142,12 +145,9 @@ public class PrenotazioneBL {
 
             prenotazioneDTO.setCampo(campoList.get(0));
         }else{
-            if(!prenotazioneService.findCampoOccupato(prenotazioneDTO.getCampo().getId(), prenotazioneDTO.getDataPrenotazione()).isEmpty()){
+            if(!prenotazioneService.findCampoOccupato(prenotazioneDTO.getCampo().getId(), prenotazioneDTO.getDataPrenotazione(), prenotazioneDTO.getDurataPrenotazioneOre()).isEmpty()){
+                log.info(prenotazioneDTO.getCampo().getId().toString());
                 throw new ErrorException(ErrorEnum.CampoNotAvailable);
-                /*
-                chiedere se bisogna gestire il caso del controllo delle prenotazioni in ore precedenti che vanno ad
-                occupare anche l'ora richiesta!
-                 */
             }else{
                 CampoEntity campoEntity = campoService.findById(prenotazioneDTO.getCampo().getId()).get();
                 int numeroPrenotati = prenotazioneDTO.getNumeroPartecipanti();
