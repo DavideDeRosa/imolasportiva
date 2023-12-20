@@ -22,7 +22,11 @@ public class CampoService {
         return campoRepository.findById(id);
     }
 
-    public List<CampoEntity> findCampiLiberi(Date data, String tipologia, int durata){
-        return campoRepository.findCampiLiberi(data, tipologia, durata);
+    public List<CampoEntity> findCampiLiberiPost(Date data, String tipologia, int durata){
+        return campoRepository.findCampiLiberiPost(data, tipologia, durata);
+    }
+
+    public List<CampoEntity> findCampiLiberiPut(Date data, String tipologia, int durata, Long idPrenotazione){
+        return campoRepository.findCampiLiberiPut(data, tipologia, durata, idPrenotazione);
     }
 }

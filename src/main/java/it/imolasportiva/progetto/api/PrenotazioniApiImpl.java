@@ -54,7 +54,7 @@ public class PrenotazioniApiImpl implements PrenotazioniApi {
 
         PrenotazioneDTO prenotazioneDTO = prenotazioneMapper.prenotazioneToPrenotazioneDTO(prenotazione);
 
-        prenotazioneDTO = prenotazioneBL.validPrenotazione(prenotazioneDTO);
+        prenotazioneDTO = prenotazioneBL.validPrenotazionePost(prenotazioneDTO);
 
         prenotazioneDTO = prenotazioneBL.postPrenotazione(prenotazioneDTO);
 
@@ -74,7 +74,7 @@ public class PrenotazioniApiImpl implements PrenotazioniApi {
 
         PrenotazioneDTO prenotazioneDTO = prenotazioneMapper.prenotazioneToPrenotazioneDTO(prenotazione);
 
-        prenotazioneDTO = prenotazioneBL.validPrenotazione(prenotazioneDTO);
+        prenotazioneDTO = prenotazioneBL.validPrenotazionePut(prenotazioneDTO, idPrenotazione);
 
         prenotazioneDTO = prenotazioneBL.putPrenotazione(idPrenotazione, prenotazioneDTO);
 

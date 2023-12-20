@@ -1,18 +1,17 @@
 package it.imolasportiva.progetto.service;
 
+import imolasportiva.model.Prenotazione;
 import it.imolasportiva.progetto.dto.PrenotazioneDTO;
 import it.imolasportiva.progetto.entity.CampoEntity;
 import it.imolasportiva.progetto.entity.PrenotazioneEntity;
 import it.imolasportiva.progetto.error.ErrorEnum;
 import it.imolasportiva.progetto.error.ErrorException;
 import it.imolasportiva.progetto.mapper.PrenotazioneMapper;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 
-@Slf4j
 @Service
 public class PrenotazioneBL {
 
@@ -113,7 +112,63 @@ public class PrenotazioneBL {
         return prenotazioneDTOList;
     }
 
-    public PrenotazioneDTO validPrenotazione(PrenotazioneDTO prenotazioneDTO){
+    public PrenotazioneDTO validPrenotazionePost(PrenotazioneDTO prenotazioneDTO){
+        checkDataENumeroP(prenotazioneDTO);
+
+        if(prenotazioneDTO.getCampo() == null){
+            List<CampoEntity> campoList;
+
+            if(prenotazioneDTO.getNumeroPartecipanti() == 10){
+                campoList = campoService.findCampiLiberiPost(prenotazioneDTO.getDataPrenotazione(), "Calcio", prenotazioneDTO.getDurataPrenotazioneOre());
+            }else{
+                campoList = campoService.findCampiLiberiPost(prenotazioneDTO.getDataPrenotazione(), "Tennis", prenotazioneDTO.getDurataPrenotazioneOre());
+            }
+
+            if(campoList.isEmpty()){
+                throw new ErrorException(ErrorEnum.CampoNotAvailable);
+            }
+
+            prenotazioneDTO.setCampo(campoList.get(0));
+        }else{
+            if(!prenotazioneService.findCampoOccupatoPost(prenotazioneDTO.getCampo().getId(), prenotazioneDTO.getDataPrenotazione(), prenotazioneDTO.getDurataPrenotazioneOre()).isEmpty()){
+                throw new ErrorException(ErrorEnum.CampoNotAvailable);
+            }else{
+                checkCampoTipo(prenotazioneDTO);
+            }
+        }
+
+        return prenotazioneDTO;
+    }
+
+    public PrenotazioneDTO validPrenotazionePut(PrenotazioneDTO prenotazioneDTO, Long idPrenotazione){
+        checkDataENumeroP(prenotazioneDTO);
+
+        if(prenotazioneDTO.getCampo() == null){
+            List<CampoEntity> campoList;
+
+            if(prenotazioneDTO.getNumeroPartecipanti() == 10){
+                campoList = campoService.findCampiLiberiPut(prenotazioneDTO.getDataPrenotazione(), "Calcio", prenotazioneDTO.getDurataPrenotazioneOre(), idPrenotazione);
+            }else{
+                campoList = campoService.findCampiLiberiPut(prenotazioneDTO.getDataPrenotazione(), "Tennis", prenotazioneDTO.getDurataPrenotazioneOre(), idPrenotazione);
+            }
+
+            if(campoList.isEmpty()){
+                throw new ErrorException(ErrorEnum.CampoNotAvailable);
+            }
+
+            prenotazioneDTO.setCampo(campoList.get(0));
+        }else{
+            if(!prenotazioneService.findCampoOccupatoPut(prenotazioneDTO.getCampo().getId(), prenotazioneDTO.getDataPrenotazione(), prenotazioneDTO.getDurataPrenotazioneOre(), idPrenotazione).isEmpty()){
+                throw new ErrorException(ErrorEnum.CampoNotAvailable);
+            }else{
+                checkCampoTipo(prenotazioneDTO);
+            }
+        }
+
+        return prenotazioneDTO;
+    }
+
+    private void checkDataENumeroP(PrenotazioneDTO prenotazioneDTO){
         Calendar c = Calendar.getInstance();
         c.setTime(prenotazioneDTO.getDataPrenotazione());
         Calendar now = Calendar.getInstance();
@@ -129,41 +184,20 @@ public class PrenotazioneBL {
                 prenotazioneDTO.getNumeroPartecipanti() != 4){
             throw new ErrorException(ErrorEnum.NumeroPartecipantiError);
         }
+    }
 
-        if(prenotazioneDTO.getCampo() == null){
-            List<CampoEntity> campoList;
+    private void checkCampoTipo(PrenotazioneDTO prenotazioneDTO){
+        CampoEntity campoEntity = campoService.findById(prenotazioneDTO.getCampo().getId()).get();
+        int numeroPrenotati = prenotazioneDTO.getNumeroPartecipanti();
 
-            if(prenotazioneDTO.getNumeroPartecipanti() == 10){
-                campoList = campoService.findCampiLiberi(prenotazioneDTO.getDataPrenotazione(), "Calcio", prenotazioneDTO.getDurataPrenotazioneOre());
-            }else{
-                campoList = campoService.findCampiLiberi(prenotazioneDTO.getDataPrenotazione(), "Tennis", prenotazioneDTO.getDurataPrenotazioneOre());
+        if(numeroPrenotati == 10){
+            if(!campoEntity.getTipologia().equals("Calcio")){
+                throw new ErrorException(ErrorEnum.CampoError);
             }
-
-            if(campoList.isEmpty()){
-                throw new ErrorException(ErrorEnum.CampoNotAvailable);
-            }
-
-            prenotazioneDTO.setCampo(campoList.get(0));
         }else{
-            if(!prenotazioneService.findCampoOccupato(prenotazioneDTO.getCampo().getId(), prenotazioneDTO.getDataPrenotazione(), prenotazioneDTO.getDurataPrenotazioneOre()).isEmpty()){
-                log.info(prenotazioneDTO.getCampo().getId().toString());
-                throw new ErrorException(ErrorEnum.CampoNotAvailable);
-            }else{
-                CampoEntity campoEntity = campoService.findById(prenotazioneDTO.getCampo().getId()).get();
-                int numeroPrenotati = prenotazioneDTO.getNumeroPartecipanti();
-
-                if(numeroPrenotati == 10){
-                    if(!campoEntity.getTipologia().equals("Calcio")){
-                        throw new ErrorException(ErrorEnum.CampoError);
-                    }
-                }else{
-                    if(!campoEntity.getTipologia().equals("Tennis")){
-                        throw new ErrorException(ErrorEnum.CampoError);
-                    }
-                }
+            if(!campoEntity.getTipologia().equals("Tennis")){
+                throw new ErrorException(ErrorEnum.CampoError);
             }
         }
-
-        return prenotazioneDTO;
     }
 }
