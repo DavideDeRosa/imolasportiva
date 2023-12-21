@@ -20,9 +20,9 @@ import java.io.InputStream;
 @RequestMapping("/api/v1")
 public class ProveApiImpl implements ProveApi {
 
-    public ResponseEntity<Object> provaFile(Object format){
-        if("ics".equals(format)){
-            try{
+    public ResponseEntity<Object> provaFile(Object format) {
+        if ("ics".equals(format)) {
+            try {
                 log.info("Invocazione provaFile() parte ics");
 
                 ClassPathResource icsFile = new ClassPathResource("icsFiles/invite.ics");
@@ -38,18 +38,18 @@ public class ProveApiImpl implements ProveApi {
                         .headers(headers)
                         .contentLength(headers.getContentLength())
                         .body(resource);
-            }catch (IOException e){
+            } catch (IOException e) {
                 log.info(e.getMessage());
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
             }
-        }else{
+        } else {
             log.info("Invocazione provaFile() parte json");
 
             return ResponseEntity.ok("json richiamato");
         }
     }
 
-    public ResponseEntity<String> provaDiversiFontiDati(String id, String param1, TestDTO test){
+    public ResponseEntity<String> provaDiversiFontiDati(String id, String param1, TestDTO test) {
         log.info("Invocazione provaDiverseFonti()");
         return new ResponseEntity<String>("parametro url: " + id + " parametro query: " + param1 + "parametro body: " + test, HttpStatus.OK);
     }

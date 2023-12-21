@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+
 @Service
 public class UtenteBL {
 
@@ -23,14 +24,14 @@ public class UtenteBL {
 
     public UtenteDTO getUtenteDTObyId(Long id) {
         Optional<UtenteEntity> utente = utenteService.findById(id);
-        if(!utente.isPresent()){
+        if (!utente.isPresent()) {
             throw new ErrorException(ErrorEnum.UtenteNotFound);
         }
 
         return utenteMapper.utenteEntityToUtenteDTO(utente.get());
     }
 
-    public UtenteDTO postUtente(UtenteDTO utenteDTO){
+    public UtenteDTO postUtente(UtenteDTO utenteDTO) {
         UtenteEntity utenteEntity = utenteMapper.utenteDTOToUtenteEntity(utenteDTO);
         utenteEntity = utenteService.saveUtente(utenteEntity);
         return utenteMapper.utenteEntityToUtenteDTO(utenteEntity);
@@ -38,7 +39,7 @@ public class UtenteBL {
 
     public UtenteDTO putUtente(Long id, UtenteDTO utenteDTO) {
         Optional<UtenteEntity> utente = utenteService.findById(id);
-        if(!utente.isPresent()){
+        if (!utente.isPresent()) {
             throw new ErrorException(ErrorEnum.UtenteNotFound);
         }
 
@@ -49,8 +50,8 @@ public class UtenteBL {
         return utenteMapper.utenteEntityToUtenteDTO(utenteEntity);
     }
 
-    public void deleteUtente(Long id){
-        if(getUtenteDTObyId(id) != null){
+    public void deleteUtente(Long id) {
+        if (getUtenteDTObyId(id) != null) {
             utenteService.deleteUtente(id);
         }
     }

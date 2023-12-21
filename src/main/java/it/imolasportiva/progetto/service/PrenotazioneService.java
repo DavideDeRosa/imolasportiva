@@ -19,39 +19,39 @@ public class PrenotazioneService {
         this.prenotazioneRepository = prenotazioneRepository;
     }
 
-    public Optional<PrenotazioneEntity> findById(Long id){
+    public Optional<PrenotazioneEntity> findById(Long id) {
         return prenotazioneRepository.findById(id);
     }
 
-    public PrenotazioneEntity savePrenotazione(PrenotazioneEntity prenotazioneEntity){
+    public PrenotazioneEntity savePrenotazione(PrenotazioneEntity prenotazioneEntity) {
         return prenotazioneRepository.save(prenotazioneEntity);
     }
 
-    public PrenotazioneEntity updatePrenotazione(PrenotazioneEntity prenotazioneEntity){
+    public PrenotazioneEntity updatePrenotazione(PrenotazioneEntity prenotazioneEntity) {
         return prenotazioneRepository.save(prenotazioneEntity);
     }
 
-    public void deletePrenotazione(Long id){
+    public void deletePrenotazione(Long id) {
         prenotazioneRepository.deleteById(id);
     }
 
-    public List<PrenotazioneEntity> findAll(){
+    public List<PrenotazioneEntity> findAll() {
         return prenotazioneRepository.findAll();
     }
 
-    public List<PrenotazioneEntity> findByYear(int anno){
+    public List<PrenotazioneEntity> findByYear(int anno) {
         return prenotazioneRepository.findByYear(anno);
     }
 
-    public List<PrenotazioneEntity> findByYearAndMonth(int anno, int mese){
+    public List<PrenotazioneEntity> findByYearAndMonth(int anno, int mese) {
         return prenotazioneRepository.findByYearAndMonth(anno, mese);
     }
 
-    public List<PrenotazioneEntity> findCampoOccupatoPost(Long campo, Date data, int durata){
+    public List<PrenotazioneEntity> findCampoOccupatoPost(Long campo, Date data, int durata) {
         return prenotazioneRepository.findCampoOccupatoPost(campo, data, durata);
     }
 
-    public List<PrenotazioneEntity> findCampoOccupatoPut(Long campo, Date data, int durata, Long idPrenotazione){
+    public List<PrenotazioneEntity> findCampoOccupatoPut(Long campo, Date data, int durata, Long idPrenotazione) {
         return prenotazioneRepository.findCampoOccupatoPut(campo, data, durata, idPrenotazione);
     }
 }

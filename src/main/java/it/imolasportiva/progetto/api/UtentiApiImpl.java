@@ -19,6 +19,7 @@ public class UtentiApiImpl implements UtentiApi {
 
     private final UtenteBL utenteBL;
     private final UtenteMapper utenteMapper;
+
     @Autowired
     public UtentiApiImpl(UtenteMapper utenteMapper, UtenteBL utenteBL) {
         this.utenteMapper = utenteMapper;
@@ -33,7 +34,7 @@ public class UtentiApiImpl implements UtentiApi {
         return new ResponseEntity<>(utenteMapper.utenteDTOToUtente(utenteDTO), HttpStatus.OK);
     }
 
-    public ResponseEntity<Utente> postUtente(Utente utente){
+    public ResponseEntity<Utente> postUtente(Utente utente) {
         log.info("Invocazione postUtente()");
 
         UtenteDTO utenteDTO = utenteMapper.utenteToUtenteDTO(utente);

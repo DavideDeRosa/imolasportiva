@@ -18,15 +18,15 @@ public class CampoService {
         this.campoRepository = campoRepository;
     }
 
-    public Optional<CampoEntity> findById(Long id){
+    public Optional<CampoEntity> findById(Long id) {
         return campoRepository.findById(id);
     }
 
-    public List<CampoEntity> findCampiLiberiPost(Date data, String tipologia, int durata){
+    public List<CampoEntity> findCampiLiberiPost(Date data, String tipologia, int durata) {
         return campoRepository.findCampiLiberiPost(data, tipologia, durata);
     }
 
-    public List<CampoEntity> findCampiLiberiPut(Date data, String tipologia, int durata, Long idPrenotazione){
+    public List<CampoEntity> findCampiLiberiPut(Date data, String tipologia, int durata, Long idPrenotazione) {
         return campoRepository.findCampiLiberiPut(data, tipologia, durata, idPrenotazione);
     }
 }

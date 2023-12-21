@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-public class UtenteService{
+public class UtenteService {
 
     private final UtenteRepository utenteRepository;
 
@@ -17,19 +17,19 @@ public class UtenteService{
         this.utenteRepository = utenteRepository;
     }
 
-    public Optional<UtenteEntity> findById(Long id){
+    public Optional<UtenteEntity> findById(Long id) {
         return utenteRepository.findById(id);
     }
 
-    public UtenteEntity saveUtente(UtenteEntity utenteEntity){
+    public UtenteEntity saveUtente(UtenteEntity utenteEntity) {
         return utenteRepository.save(utenteEntity);
     }
 
-    public UtenteEntity updateUtente(UtenteEntity utenteEntity){
+    public UtenteEntity updateUtente(UtenteEntity utenteEntity) {
         return utenteRepository.save(utenteEntity);
     }
 
-    public void deleteUtente(Long id){
+    public void deleteUtente(Long id) {
         utenteRepository.deleteById(id);
     }
 }

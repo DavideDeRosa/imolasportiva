@@ -2,6 +2,7 @@ package it.imolasportiva.progetto.dto;
 
 import it.imolasportiva.progetto.entity.CampoEntity;
 import it.imolasportiva.progetto.entity.UtenteEntity;
+
 import java.util.Date;
 
 public class PrenotazioneDTO {

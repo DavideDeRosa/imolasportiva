@@ -64,12 +64,12 @@ public abstract class PrenotazioneMapper {
         return utenteEntity.getId();
     }
 
-    CampoEntity mapC(Long id){
-        if(id == 0){
+    CampoEntity mapC(Long id) {
+        if (id == 0) {
             return null;
-        }else{
+        } else {
             Optional<CampoEntity> campo = campoService.findById(id);
-            if(!campo.isPresent()){
+            if (!campo.isPresent()) {
                 throw new ErrorException(ErrorEnum.CampoNotFound);
             }
 
@@ -77,7 +77,7 @@ public abstract class PrenotazioneMapper {
         }
     }
 
-    Long mapC(CampoEntity campoEntity){
+    Long mapC(CampoEntity campoEntity) {
         return campoEntity.getId();
     }
 }
