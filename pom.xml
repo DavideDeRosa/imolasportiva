@@ -9,7 +9,7 @@
 		<relativePath/>
 	</parent>
 	<groupId>it.imolasportiva.progetto</groupId>
-	<artifactId>demo</artifactId>
+	<artifactId>imolasportiva</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>ImolaSportiva</name>
 	<description>Progetto tirocinio sviluppo app Java EE con l&apos;utilizzo di Spring Boot (De Rosa Davide)</description>
@@ -49,12 +49,13 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
+			<version>3.2.0</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-maven-plugin</artifactId>
-			<version>2.7.11</version>
+			<version>3.2.0</version>
 		</dependency>
 
 		<dependency>
@@ -88,11 +89,13 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
+			<version>3.2.0</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-test</artifactId>
+			<version>6.2.1</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
