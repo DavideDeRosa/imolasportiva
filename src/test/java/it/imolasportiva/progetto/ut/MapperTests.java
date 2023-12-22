@@ -7,22 +7,17 @@ import it.imolasportiva.progetto.dto.UtenteDTO;
 import it.imolasportiva.progetto.entity.CampoEntity;
 import it.imolasportiva.progetto.entity.PrenotazioneEntity;
 import it.imolasportiva.progetto.entity.UtenteEntity;
+import it.imolasportiva.progetto.error.ErrorException;
 import org.junit.jupiter.api.Test;
 
 import java.util.Date;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class MapperTests extends AbstractTests {
     @Test
     void testMapUtenteEntity() {
-        UtenteEntity utenteEntity = new UtenteEntity();
-        utenteEntity.setId(Long.valueOf(1));
-        utenteEntity.setNome("Davide");
-        utenteEntity.setCognome("De Rosa");
-        utenteEntity.setDataNascita(new Date());
-        utenteEntity.setTelefono("123");
+        UtenteEntity utenteEntity = creaUtenteEntity(Long.valueOf(1), "Davide", "De Rosa", new Date(), "123");
 
         UtenteDTO utenteDTO = utenteMapper.utenteEntityToUtenteDTO(utenteEntity);
 
@@ -69,30 +64,50 @@ public class MapperTests extends AbstractTests {
     }
 
     @Test
+    void testMapUtenteModelNull() {
+        Utente utente = null;
+
+        UtenteDTO utenteDTO = utenteMapper.utenteToUtenteDTO(utente);
+
+        assertEquals(utente, utenteDTO);
+
+        utente = utenteMapper.utenteDTOToUtente(utenteDTO);
+
+        assertEquals(utenteDTO, utente);
+    }
+
+    @Test
+    void testMapUtenteEntityNull() {
+        UtenteEntity utenteEntity = null;
+
+        UtenteDTO utenteDTO = utenteMapper.utenteEntityToUtenteDTO(utenteEntity);
+
+        assertEquals(utenteEntity, utenteDTO);
+
+        utenteEntity = utenteMapper.utenteDTOToUtenteEntity(utenteDTO);
+
+        assertEquals(utenteDTO, utenteEntity);
+    }
+
+    @Test
+    void testMapUtenteWrongDate() {
+        Utente utente = creaUtenteModel("Davide", "De Rosa", Long.valueOf(1), "errore", "123");
+
+        try {
+            utenteMapper.utenteToUtenteDTO(utente);
+            fail();
+        } catch (RuntimeException e) {
+            assertEquals(e.getMessage(), "Error converting String to Date");
+        }
+    }
+
+    @Test
     void testMapPrenotazioneEntity() {
-        PrenotazioneEntity prenotazioneEntity = new PrenotazioneEntity();
-        prenotazioneEntity.setId(Long.valueOf(1));
-        prenotazioneEntity.setDataPrenotazione(new Date());
-        prenotazioneEntity.setDurataPrenotazioneOre(2);
-        prenotazioneEntity.setNumeroPartecipanti(2);
-        prenotazioneEntity.setQuota(2);
-        prenotazioneEntity.setDurataDeadlineCancellazione(2);
+        UtenteEntity utenteEntity = creaUtenteEntity(Long.valueOf(1), "Davide", "De Rosa", new Date(), "123");
 
-        UtenteEntity utenteEntity = new UtenteEntity();
-        utenteEntity.setId(Long.valueOf(1));
-        utenteEntity.setNome("Davide");
-        utenteEntity.setCognome("De Rosa");
-        utenteEntity.setDataNascita(new Date());
-        utenteEntity.setTelefono("123");
+        CampoEntity campoEntity = creaCampoEntity(Long.valueOf(1), "prova", "prova");
 
-        prenotazioneEntity.setIdUtentePrenotato(utenteEntity);
-
-        CampoEntity campoEntity = new CampoEntity();
-        campoEntity.setId(Long.valueOf(1));
-        campoEntity.setCodice("prova");
-        campoEntity.setTipologia("prova");
-
-        prenotazioneEntity.setCampo(campoEntity);
+        PrenotazioneEntity prenotazioneEntity = creaPrenotazioneEntity(Long.valueOf(1), new Date(), 2, 2, 2, 2, utenteEntity, campoEntity);
 
         PrenotazioneDTO prenotazioneDTO = prenotazioneMapper.prenotazioneEntityToPrenotazioneDTO(prenotazioneEntity);
 
@@ -116,31 +131,15 @@ public class MapperTests extends AbstractTests {
 
     @Test
     void testMapPrenotazione() {
-        UtenteEntity utenteEntity = new UtenteEntity();
-        utenteEntity.setId(Long.valueOf(1));
-        utenteEntity.setNome("Davide");
-        utenteEntity.setCognome("De Rosa");
-        utenteEntity.setDataNascita(new Date());
-        utenteEntity.setTelefono("123");
+        UtenteEntity utenteEntity = creaUtenteEntity(Long.valueOf(1), "Davide", "De Rosa", new Date(), "123");
 
         utenteRepository.save(utenteEntity);
 
-        CampoEntity campoEntity = new CampoEntity();
-        campoEntity.setId(Long.valueOf(1));
-        campoEntity.setCodice("prova");
-        campoEntity.setTipologia("prova");
+        CampoEntity campoEntity = creaCampoEntity(Long.valueOf(1), "prova", "prova");
 
         campoRepository.save(campoEntity);
 
-        Prenotazione prenotazione = new Prenotazione();
-        prenotazione.setId(Long.valueOf(1));
-        prenotazione.setDataPrenotazione("24-09-2002 15:00");
-        prenotazione.setDurataPrenotazioneOre("2");
-        prenotazione.setNumeroPartecipanti("2");
-        prenotazione.setQuota("2");
-        prenotazione.setDurataDeadlineCancellazioneOre("2");
-        prenotazione.setIdCampo(campoEntity.getId());
-        prenotazione.setIdUtentePrenotato(utenteEntity.getId());
+        Prenotazione prenotazione = creaPrenotazioneModel(Long.valueOf(1), "24-09-2002 15:00", "2", "2", "2", "2", utenteEntity.getId(), campoEntity.getId());
 
         PrenotazioneDTO prenotazioneDTO = prenotazioneMapper.prenotazioneToPrenotazioneDTO(prenotazione);
 
@@ -163,14 +162,85 @@ public class MapperTests extends AbstractTests {
     }
 
     @Test
-    void testMapUtenteWrongDate() {
-        Utente utente = creaUtenteModel("Davide", "De Rosa", Long.valueOf(1), "errore", "123");
+    void testMapPrenotazioneModelNull() {
+        Prenotazione prenotazione = null;
+
+        PrenotazioneDTO prenotazioneDTO = prenotazioneMapper.prenotazioneToPrenotazioneDTO(prenotazione);
+
+        assertEquals(prenotazione, prenotazioneDTO);
+
+        prenotazione = prenotazioneMapper.prenotazioneDTOToPrenotazione(prenotazioneDTO);
+
+        assertEquals(prenotazioneDTO, prenotazione);
+    }
+
+    @Test
+    void testMapPrenotazioneEntityNull() {
+        PrenotazioneEntity prenotazioneEntity = null;
+
+        PrenotazioneDTO prenotazioneDTO = prenotazioneMapper.prenotazioneEntityToPrenotazioneDTO(prenotazioneEntity);
+
+        assertEquals(prenotazioneEntity, prenotazioneDTO);
+
+        prenotazioneEntity = prenotazioneMapper.prenotazioneDTOToPrenotazioneEntity(prenotazioneDTO);
+
+        assertEquals(prenotazioneDTO, prenotazioneEntity);
+    }
+
+    @Test
+    void testMapPrenotazioneWrongDate() {
+        UtenteEntity utenteEntity = creaUtenteEntity(Long.valueOf(1), "Davide", "De Rosa", new Date(), "123");
+
+        utenteRepository.save(utenteEntity);
+
+        CampoEntity campoEntity = creaCampoEntity(Long.valueOf(1), "prova", "prova");
+
+        campoRepository.save(campoEntity);
+
+        Prenotazione prenotazione = creaPrenotazioneModel(Long.valueOf(1), "errore", "2", "2", "2", "2", utenteEntity.getId(), campoEntity.getId());
 
         try {
-            utenteMapper.utenteToUtenteDTO(utente);
+            prenotazioneMapper.prenotazioneToPrenotazioneDTO(prenotazione);
             fail();
         } catch (RuntimeException e) {
             assertEquals(e.getMessage(), "Error converting String to Date");
+        }
+    }
+
+    @Test
+    void testMapPrenotazioneCampoNull() {
+        UtenteEntity utenteEntity = creaUtenteEntity(Long.valueOf(1), "Davide", "De Rosa", new Date(), "123");
+
+        utenteRepository.save(utenteEntity);
+
+        CampoEntity campoEntity = creaCampoEntity(Long.valueOf(0), "prova", "prova");
+
+        campoRepository.save(campoEntity);
+
+        Prenotazione prenotazione = creaPrenotazioneModel(Long.valueOf(1), "24-09-2002 15:00", "2", "2", "2", "2", utenteEntity.getId(), campoEntity.getId());
+
+        PrenotazioneDTO prenotazioneDTO = prenotazioneMapper.prenotazioneToPrenotazioneDTO(prenotazione);
+
+        assertNull(prenotazioneDTO.getCampo());
+    }
+
+    @Test
+    void testMapPrenotazioneCampoNotFound() {
+        UtenteEntity utenteEntity = creaUtenteEntity(Long.valueOf(1), "Davide", "De Rosa", new Date(), "123");
+
+        utenteRepository.save(utenteEntity);
+
+        CampoEntity campoEntity = creaCampoEntity(Long.valueOf(-1), "prova", "prova");
+
+        campoRepository.save(campoEntity);
+
+        Prenotazione prenotazione = creaPrenotazioneModel(Long.valueOf(1), "24-09-2002 15:00", "2", "2", "2", "2", utenteEntity.getId(), campoEntity.getId());
+
+        try {
+            PrenotazioneDTO prenotazioneDTO = prenotazioneMapper.prenotazioneToPrenotazioneDTO(prenotazione);
+            fail();
+        } catch (ErrorException e) {
+            assertEquals(e.getMessage(), "CampoNotFound - Campo non presente!");
         }
     }
 
@@ -182,5 +252,49 @@ public class MapperTests extends AbstractTests {
         utente.setDataNascita(data);
         utente.setTelefono(telefono);
         return utente;
+    }
+
+    private UtenteEntity creaUtenteEntity(Long id, String nome, String cognome, Date data, String telefono) {
+        UtenteEntity utenteEntity = new UtenteEntity();
+        utenteEntity.setId(id);
+        utenteEntity.setNome(nome);
+        utenteEntity.setCognome(cognome);
+        utenteEntity.setDataNascita(data);
+        utenteEntity.setTelefono(telefono);
+        return utenteEntity;
+    }
+
+    private CampoEntity creaCampoEntity(Long id, String codice, String tipologia) {
+        CampoEntity campoEntity = new CampoEntity();
+        campoEntity.setId(id);
+        campoEntity.setCodice(codice);
+        campoEntity.setTipologia(tipologia);
+        return campoEntity;
+    }
+
+    private PrenotazioneEntity creaPrenotazioneEntity(Long id, Date data, int durataPrenotazione, int numeroPartecipanti, int quota, int durataDeadline, UtenteEntity utenteEntity, CampoEntity campoEntity) {
+        PrenotazioneEntity prenotazioneEntity = new PrenotazioneEntity();
+        prenotazioneEntity.setId(id);
+        prenotazioneEntity.setDataPrenotazione(data);
+        prenotazioneEntity.setDurataPrenotazioneOre(durataPrenotazione);
+        prenotazioneEntity.setNumeroPartecipanti(numeroPartecipanti);
+        prenotazioneEntity.setQuota(quota);
+        prenotazioneEntity.setDurataDeadlineCancellazione(durataDeadline);
+        prenotazioneEntity.setIdUtentePrenotato(utenteEntity);
+        prenotazioneEntity.setCampo(campoEntity);
+        return prenotazioneEntity;
+    }
+
+    private Prenotazione creaPrenotazioneModel(Long id, String data, String durataPrenotazione, String numeroPartecipanti, String quota, String durataDeadline, Long utenteEntity, Long campoEntity) {
+        Prenotazione prenotazione = new Prenotazione();
+        prenotazione.setId(id);
+        prenotazione.setDataPrenotazione(data);
+        prenotazione.setDurataPrenotazioneOre(durataPrenotazione);
+        prenotazione.setNumeroPartecipanti(numeroPartecipanti);
+        prenotazione.setQuota(quota);
+        prenotazione.setDurataDeadlineCancellazioneOre(durataDeadline);
+        prenotazione.setIdCampo(campoEntity);
+        prenotazione.setIdUtentePrenotato(utenteEntity);
+        return prenotazione;
     }
 }
