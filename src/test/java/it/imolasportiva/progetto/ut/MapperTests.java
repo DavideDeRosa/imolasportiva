@@ -69,11 +69,11 @@ public class MapperTests extends AbstractTests {
 
         UtenteDTO utenteDTO = utenteMapper.utenteToUtenteDTO(utente);
 
-        assertEquals(utente, utenteDTO);
+        assertNull(utenteDTO);
 
         utente = utenteMapper.utenteDTOToUtente(utenteDTO);
 
-        assertEquals(utenteDTO, utente);
+        assertNull(utente);
     }
 
     @Test
@@ -82,11 +82,11 @@ public class MapperTests extends AbstractTests {
 
         UtenteDTO utenteDTO = utenteMapper.utenteEntityToUtenteDTO(utenteEntity);
 
-        assertEquals(utenteEntity, utenteDTO);
+        assertNull(utenteDTO);
 
         utenteEntity = utenteMapper.utenteDTOToUtenteEntity(utenteDTO);
 
-        assertEquals(utenteDTO, utenteEntity);
+        assertNull(utenteEntity);
     }
 
     @Test
@@ -167,11 +167,11 @@ public class MapperTests extends AbstractTests {
 
         PrenotazioneDTO prenotazioneDTO = prenotazioneMapper.prenotazioneToPrenotazioneDTO(prenotazione);
 
-        assertEquals(prenotazione, prenotazioneDTO);
+        assertNull(prenotazioneDTO);
 
         prenotazione = prenotazioneMapper.prenotazioneDTOToPrenotazione(prenotazioneDTO);
 
-        assertEquals(prenotazioneDTO, prenotazione);
+        assertNull(prenotazione);
     }
 
     @Test
@@ -180,11 +180,11 @@ public class MapperTests extends AbstractTests {
 
         PrenotazioneDTO prenotazioneDTO = prenotazioneMapper.prenotazioneEntityToPrenotazioneDTO(prenotazioneEntity);
 
-        assertEquals(prenotazioneEntity, prenotazioneDTO);
+        assertNull(prenotazioneDTO);
 
         prenotazioneEntity = prenotazioneMapper.prenotazioneDTOToPrenotazioneEntity(prenotazioneDTO);
 
-        assertEquals(prenotazioneDTO, prenotazioneEntity);
+        assertNull(prenotazioneEntity);
     }
 
     @Test
@@ -237,7 +237,7 @@ public class MapperTests extends AbstractTests {
         Prenotazione prenotazione = creaPrenotazioneModel(Long.valueOf(1), "24-09-2002 15:00", "2", "2", "2", "2", utenteEntity.getId(), campoEntity.getId());
 
         try {
-            PrenotazioneDTO prenotazioneDTO = prenotazioneMapper.prenotazioneToPrenotazioneDTO(prenotazione);
+            prenotazioneMapper.prenotazioneToPrenotazioneDTO(prenotazione);
             fail();
         } catch (ErrorException e) {
             assertEquals(e.getMessage(), "CampoNotFound - Campo non presente!");
