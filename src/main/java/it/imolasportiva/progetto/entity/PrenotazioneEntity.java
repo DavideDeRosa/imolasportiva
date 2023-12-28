@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -26,7 +26,10 @@ public class PrenotazioneEntity {
     private int durataDeadlineCancellazione; // quante ore prima si puo cancellare
 
     @Column(name = "dataprenotazione")
-    private Date dataPrenotazione;
+    private LocalDateTime dataPrenotazione;
+
+    @Column(name = "datafineprenotazione")
+    private LocalDateTime dataFinePrenotazione;
 
     @Column(name = "numeropartecipanti")
     private int numeroPartecipanti;

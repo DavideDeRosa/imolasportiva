@@ -5,7 +5,7 @@ import it.imolasportiva.progetto.repository.CampoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,11 +22,11 @@ public class CampoService {
         return campoRepository.findById(id);
     }
 
-    public List<CampoEntity> findCampiLiberiPost(Date data, String tipologia, int durata) {
-        return campoRepository.findCampiLiberiPost(data, tipologia, durata);
+    public List<CampoEntity> findCampiLiberiPost(LocalDateTime data, LocalDateTime dataFine, String tipologia) {
+        return campoRepository.findCampiLiberiPost(data, dataFine, tipologia);
     }
 
-    public List<CampoEntity> findCampiLiberiPut(Date data, String tipologia, int durata, Long idPrenotazione) {
-        return campoRepository.findCampiLiberiPut(data, tipologia, durata, idPrenotazione);
+    public List<CampoEntity> findCampiLiberiPut(LocalDateTime data, LocalDateTime dataFine, String tipologia, Long idPrenotazione) {
+        return campoRepository.findCampiLiberiPut(data, dataFine, tipologia, idPrenotazione);
     }
 }

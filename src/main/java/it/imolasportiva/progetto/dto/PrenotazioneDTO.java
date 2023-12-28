@@ -3,14 +3,15 @@ package it.imolasportiva.progetto.dto;
 import it.imolasportiva.progetto.entity.CampoEntity;
 import it.imolasportiva.progetto.entity.UtenteEntity;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 public class PrenotazioneDTO {
     private Long id;
     private UtenteEntity idUtentePrenotato;
     private int durataPrenotazioneOre;
     private int durataDeadlineCancellazione;
-    private Date dataPrenotazione;
+    private LocalDateTime dataPrenotazione;
+    private LocalDateTime dataFinePrenotazione;
     private int numeroPartecipanti;
     private int quota;
     private CampoEntity campo;
@@ -47,11 +48,11 @@ public class PrenotazioneDTO {
         this.durataDeadlineCancellazione = durataDeadlineCancellazione;
     }
 
-    public Date getDataPrenotazione() {
+    public LocalDateTime getDataPrenotazione() {
         return dataPrenotazione;
     }
 
-    public void setDataPrenotazione(Date dataPrenotazione) {
+    public void setDataPrenotazione(LocalDateTime dataPrenotazione) {
         this.dataPrenotazione = dataPrenotazione;
     }
 
@@ -77,5 +78,13 @@ public class PrenotazioneDTO {
 
     public void setCampo(CampoEntity campo) {
         this.campo = campo;
+    }
+
+    public LocalDateTime getDataFinePrenotazione() {
+        return dataFinePrenotazione;
+    }
+
+    public void setDataFinePrenotazione(LocalDateTime dataFinePrenotazione) {
+        this.dataFinePrenotazione = dataFinePrenotazione;
     }
 }

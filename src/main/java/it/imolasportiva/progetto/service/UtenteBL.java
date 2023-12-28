@@ -7,6 +7,8 @@ import it.imolasportiva.progetto.error.ErrorException;
 import it.imolasportiva.progetto.mapper.UtenteMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -31,12 +33,14 @@ public class UtenteBL {
         return utenteMapper.utenteEntityToUtenteDTO(utente.get());
     }
 
+    @Transactional(isolation = Isolation.READ_COMMITTED, rollbackFor = Exception.class)
     public UtenteDTO postUtente(UtenteDTO utenteDTO) {
         UtenteEntity utenteEntity = utenteMapper.utenteDTOToUtenteEntity(utenteDTO);
         utenteEntity = utenteService.saveUtente(utenteEntity);
         return utenteMapper.utenteEntityToUtenteDTO(utenteEntity);
     }
 
+    @Transactional(isolation = Isolation.READ_COMMITTED, rollbackFor = Exception.class)
     public UtenteDTO putUtente(Long id, UtenteDTO utenteDTO) {
         Optional<UtenteEntity> utente = utenteService.findById(id);
         if (!utente.isPresent()) {
@@ -50,6 +54,7 @@ public class UtenteBL {
         return utenteMapper.utenteEntityToUtenteDTO(utenteEntity);
     }
 
+    @Transactional(isolation = Isolation.READ_COMMITTED, rollbackFor = Exception.class)
     public void deleteUtente(Long id) {
         if (getUtenteDTObyId(id) != null) {
             utenteService.deleteUtente(id);

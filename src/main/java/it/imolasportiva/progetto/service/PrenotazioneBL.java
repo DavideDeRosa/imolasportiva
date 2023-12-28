@@ -8,8 +8,14 @@ import it.imolasportiva.progetto.error.ErrorException;
 import it.imolasportiva.progetto.mapper.PrenotazioneMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.time.DayOfWeek;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PrenotazioneBL {
@@ -34,12 +40,14 @@ public class PrenotazioneBL {
         return prenotazioneMapper.prenotazioneEntityToPrenotazioneDTO(prenotazione.get());
     }
 
+    @Transactional(isolation = Isolation.READ_COMMITTED, rollbackFor = Exception.class)
     public PrenotazioneDTO postPrenotazione(PrenotazioneDTO prenotazioneDTO) {
         PrenotazioneEntity prenotazioneEntity = prenotazioneMapper.prenotazioneDTOToPrenotazioneEntity(prenotazioneDTO);
         prenotazioneEntity = prenotazioneService.savePrenotazione(prenotazioneEntity);
         return prenotazioneMapper.prenotazioneEntityToPrenotazioneDTO(prenotazioneEntity);
     }
 
+    @Transactional(isolation = Isolation.READ_COMMITTED, rollbackFor = Exception.class)
     public PrenotazioneDTO putPrenotazione(Long id, PrenotazioneDTO prenotazioneDTO) {
         Optional<PrenotazioneEntity> prenotazione = prenotazioneService.findById(id);
         if (!prenotazione.isPresent()) {
@@ -53,6 +61,7 @@ public class PrenotazioneBL {
         return prenotazioneMapper.prenotazioneEntityToPrenotazioneDTO(prenotazioneEntity);
     }
 
+    @Transactional(isolation = Isolation.READ_COMMITTED, rollbackFor = Exception.class)
     public void deletePrenotazione(Long id) {
         if (getPrenotazioneDTOById(id) != null) {
             prenotazioneService.deletePrenotazione(id);
@@ -119,9 +128,9 @@ public class PrenotazioneBL {
             List<CampoEntity> campoList;
 
             if (prenotazioneDTO.getNumeroPartecipanti() == 10) {
-                campoList = campoService.findCampiLiberiPost(prenotazioneDTO.getDataPrenotazione(), "Calcio", prenotazioneDTO.getDurataPrenotazioneOre());
+                campoList = campoService.findCampiLiberiPost(prenotazioneDTO.getDataPrenotazione(), prenotazioneDTO.getDataFinePrenotazione(), "Calcio");
             } else {
-                campoList = campoService.findCampiLiberiPost(prenotazioneDTO.getDataPrenotazione(), "Tennis", prenotazioneDTO.getDurataPrenotazioneOre());
+                campoList = campoService.findCampiLiberiPost(prenotazioneDTO.getDataPrenotazione(), prenotazioneDTO.getDataFinePrenotazione(), "Tennis");
             }
 
             if (campoList.isEmpty()) {
@@ -130,7 +139,7 @@ public class PrenotazioneBL {
 
             prenotazioneDTO.setCampo(campoList.get(0));
         } else {
-            if (!prenotazioneService.findCampoOccupatoPost(prenotazioneDTO.getCampo().getId(), prenotazioneDTO.getDataPrenotazione(), prenotazioneDTO.getDurataPrenotazioneOre()).isEmpty()) {
+            if (!prenotazioneService.findCampoOccupatoPost(prenotazioneDTO.getCampo().getId(), prenotazioneDTO.getDataPrenotazione(), prenotazioneDTO.getDataFinePrenotazione()).isEmpty()) {
                 throw new ErrorException(ErrorEnum.CampoNotAvailable);
             } else {
                 checkCampoTipo(prenotazioneDTO);
@@ -147,9 +156,9 @@ public class PrenotazioneBL {
             List<CampoEntity> campoList;
 
             if (prenotazioneDTO.getNumeroPartecipanti() == 10) {
-                campoList = campoService.findCampiLiberiPut(prenotazioneDTO.getDataPrenotazione(), "Calcio", prenotazioneDTO.getDurataPrenotazioneOre(), idPrenotazione);
+                campoList = campoService.findCampiLiberiPut(prenotazioneDTO.getDataPrenotazione(), prenotazioneDTO.getDataFinePrenotazione(), "Calcio", idPrenotazione);
             } else {
-                campoList = campoService.findCampiLiberiPut(prenotazioneDTO.getDataPrenotazione(), "Tennis", prenotazioneDTO.getDurataPrenotazioneOre(), idPrenotazione);
+                campoList = campoService.findCampiLiberiPut(prenotazioneDTO.getDataPrenotazione(), prenotazioneDTO.getDataFinePrenotazione(), "Tennis", idPrenotazione);
             }
 
             if (campoList.isEmpty()) {
@@ -158,7 +167,7 @@ public class PrenotazioneBL {
 
             prenotazioneDTO.setCampo(campoList.get(0));
         } else {
-            if (!prenotazioneService.findCampoOccupatoPut(prenotazioneDTO.getCampo().getId(), prenotazioneDTO.getDataPrenotazione(), prenotazioneDTO.getDurataPrenotazioneOre(), idPrenotazione).isEmpty()) {
+            if (!prenotazioneService.findCampoOccupatoPut(prenotazioneDTO.getCampo().getId(), prenotazioneDTO.getDataPrenotazione(), prenotazioneDTO.getDataFinePrenotazione(), idPrenotazione).isEmpty()) {
                 throw new ErrorException(ErrorEnum.CampoNotAvailable);
             } else {
                 checkCampoTipo(prenotazioneDTO);
@@ -169,13 +178,10 @@ public class PrenotazioneBL {
     }
 
     private void checkDataENumeroP(PrenotazioneDTO prenotazioneDTO) {
-        Calendar c = Calendar.getInstance();
-        c.setTime(prenotazioneDTO.getDataPrenotazione());
-        Calendar now = Calendar.getInstance();
-        now.setTime(new Date());
-
-        if (c.get(Calendar.DAY_OF_WEEK) == Calendar.TUESDAY || c.get(Calendar.HOUR_OF_DAY) < 8 || c.before(now)
-                || c.get(Calendar.HOUR_OF_DAY) + prenotazioneDTO.getDurataPrenotazioneOre() > 24) {
+        if (prenotazioneDTO.getDataPrenotazione().getDayOfWeek() == DayOfWeek.TUESDAY ||
+                prenotazioneDTO.getDataPrenotazione().getHour() < 7 ||
+                prenotazioneDTO.getDataPrenotazione().isBefore(LocalDateTime.now()) ||
+                prenotazioneDTO.getDataPrenotazione().getHour() + prenotazioneDTO.getDurataPrenotazioneOre() > 23) {
             throw new ErrorException(ErrorEnum.PrenotazioneWrongTime);
         }
 
