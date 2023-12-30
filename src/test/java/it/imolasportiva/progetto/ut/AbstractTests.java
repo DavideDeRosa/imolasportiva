@@ -2,6 +2,8 @@ package it.imolasportiva.progetto.ut;
 
 import imolasportiva.model.Prenotazione;
 import imolasportiva.model.Utente;
+import it.imolasportiva.progetto.dto.PrenotazioneDTO;
+import it.imolasportiva.progetto.dto.UtenteDTO;
 import it.imolasportiva.progetto.entity.CampoEntity;
 import it.imolasportiva.progetto.entity.PrenotazioneEntity;
 import it.imolasportiva.progetto.entity.UtenteEntity;
@@ -42,12 +44,6 @@ public class AbstractTests {
     public static void init() {
         URL propertiesDir = AbstractTests.class.getClassLoader().getResource("conf/ut");
         System.setProperty("openjdk.app.properties.dir", propertiesDir.getPath());
-    }
-
-    public void drop() {
-        prenotazioneRepository.deleteAll();
-        utenteRepository.deleteAll();
-        campoRepository.deleteAll();
     }
 
     public Utente creaUtenteModel(String nome, String cognome, Long id, String data, String telefono) {
@@ -104,5 +100,27 @@ public class AbstractTests {
         prenotazione.setIdCampo(campoEntity);
         prenotazione.setIdUtentePrenotato(utenteEntity);
         return prenotazione;
+    }
+
+    public UtenteDTO creaUtenteDTO(String nome, String cognome, Date data, String telefono) {
+        UtenteDTO utenteDTO = new UtenteDTO();
+        utenteDTO.setNome(nome);
+        utenteDTO.setCognome(cognome);
+        utenteDTO.setDataNascita(data);
+        utenteDTO.setTelefono(telefono);
+        return utenteDTO;
+    }
+
+    public PrenotazioneDTO creaPrenotazioneDTO(LocalDateTime data, LocalDateTime dataFine, int durataPrenotazione, int numeroPartecipanti, int quota, int durataDeadline, UtenteEntity utenteEntity, CampoEntity campoEntity) {
+        PrenotazioneDTO prenotazioneDTO = new PrenotazioneDTO();
+        prenotazioneDTO.setDataPrenotazione(data);
+        prenotazioneDTO.setDataFinePrenotazione(dataFine);
+        prenotazioneDTO.setDurataPrenotazioneOre(durataPrenotazione);
+        prenotazioneDTO.setNumeroPartecipanti(numeroPartecipanti);
+        prenotazioneDTO.setQuota(quota);
+        prenotazioneDTO.setDurataDeadlineCancellazione(durataDeadline);
+        prenotazioneDTO.setIdUtentePrenotato(utenteEntity);
+        prenotazioneDTO.setCampo(campoEntity);
+        return prenotazioneDTO;
     }
 }

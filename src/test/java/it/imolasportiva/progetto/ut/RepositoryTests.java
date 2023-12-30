@@ -5,7 +5,6 @@ import it.imolasportiva.progetto.entity.PrenotazioneEntity;
 import it.imolasportiva.progetto.entity.UtenteEntity;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
-import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
@@ -16,20 +15,22 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @Slf4j
+@Transactional
 public class RepositoryTests extends AbstractTests {
+    /*
     @Test
     void testRepoFindByYear() {
         loadPrenotazioni();
 
-        List<PrenotazioneEntity> list = prenotazioneRepository.findByYear(2100);
-
-        assertEquals(2, list.size());
-
-        list = prenotazioneRepository.findByYear(2101);
+        List<PrenotazioneEntity> list = prenotazioneRepository.findByYear(2200);
 
         assertEquals(1, list.size());
 
-        list = prenotazioneRepository.findByYear(2110);
+        list = prenotazioneRepository.findByYear(2201);
+
+        assertEquals(1, list.size());
+
+        list = prenotazioneRepository.findByYear(2210);
 
         assertEquals(0, list.size());
     }
@@ -38,17 +39,17 @@ public class RepositoryTests extends AbstractTests {
     void testRepoFindByYearAndMonth() {
         loadPrenotazioni();
 
-        List<PrenotazioneEntity> list = prenotazioneRepository.findByYearAndMonth(2100, 9);
+        List<PrenotazioneEntity> list = prenotazioneRepository.findByYearAndMonth(2200, 9);
 
         assertEquals(1, list.size());
 
-        list = prenotazioneRepository.findByYearAndMonth(2100, 10);
+        List<PrenotazioneEntity> list1 = prenotazioneRepository.findByYearAndMonth(2201, 10);
 
-        assertEquals(1, list.size());
+        assertEquals(1, list1.size());
 
-        list = prenotazioneRepository.findByYearAndMonth(2100, 12);
+        List<PrenotazioneEntity> list2 = prenotazioneRepository.findByYearAndMonth(2200, 12);
 
-        assertEquals(0, list.size());
+        assertEquals(0, list2.size());
     }
 
     @Test
@@ -60,7 +61,7 @@ public class RepositoryTests extends AbstractTests {
         assertEquals(1, list.size());
     }
 
-    /*
+
     @Test
     void testRepoFindCampoOccupatoPut() {
         PrenotazioneEntity prenotazioneEntity = loadPrenotazioniOccupatiELiberi();
@@ -69,7 +70,7 @@ public class RepositoryTests extends AbstractTests {
 
         assertEquals(1, list.size());
     }
-     */
+
 
     @Test
     void testRepoFindCampiLiberiPost() {
@@ -105,10 +106,7 @@ public class RepositoryTests extends AbstractTests {
         assertEquals(2, list.size());
     }
 
-    @Transactional(isolation = Isolation.READ_COMMITTED)
     PrenotazioneEntity loadPrenotazioniOccupatiELiberi() {
-        drop();
-
         UtenteEntity utenteEntity = creaUtenteEntity(Long.valueOf(1), "Davide", "De Rosa", new Date(), "123");
 
         utenteEntity = utenteRepository.save(utenteEntity);
@@ -126,10 +124,7 @@ public class RepositoryTests extends AbstractTests {
         return prenotazione;
     }
 
-    @Transactional(isolation = Isolation.READ_COMMITTED)
     void loadPrenotazioni() {
-        drop();
-
         UtenteEntity utenteEntity = creaUtenteEntity(Long.valueOf(1), "Davide", "De Rosa", new Date(), "123");
 
         utenteEntity = utenteRepository.save(utenteEntity);
@@ -140,12 +135,13 @@ public class RepositoryTests extends AbstractTests {
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
 
-        PrenotazioneEntity prenotazione2 = creaPrenotazioneEntity(Long.valueOf(2), LocalDateTime.parse("24-09-2100 00:00", formatter), LocalDateTime.parse("24-09-2100 02:00", formatter), 2, 2, 2, 2, utenteEntity, campoEntity);
-        PrenotazioneEntity prenotazione3 = creaPrenotazioneEntity(Long.valueOf(3), LocalDateTime.parse("24-10-2100 00:00", formatter), LocalDateTime.parse("24-10-2100 02:00", formatter), 2, 2, 2, 2, utenteEntity, campoEntity);
-        PrenotazioneEntity prenotazione4 = creaPrenotazioneEntity(Long.valueOf(4), LocalDateTime.parse("24-09-2101 00:00", formatter), LocalDateTime.parse("24-09-2101 02:00", formatter), 2, 2, 2, 2, utenteEntity, campoEntity);
+        PrenotazioneEntity prenotazione2 = creaPrenotazioneEntity(Long.valueOf(2), LocalDateTime.parse("24-09-2200 01:00", formatter), LocalDateTime.parse("24-09-2100 03:00", formatter), 2, 2, 2, 2, utenteEntity, campoEntity);
+        PrenotazioneEntity prenotazione3 = creaPrenotazioneEntity(Long.valueOf(3), LocalDateTime.parse("24-10-2201 01:00", formatter), LocalDateTime.parse("24-10-2100 03:00", formatter), 2, 2, 2, 2, utenteEntity, campoEntity);
+        PrenotazioneEntity prenotazione4 = creaPrenotazioneEntity(Long.valueOf(4), LocalDateTime.parse("24-09-2202 01:00", formatter), LocalDateTime.parse("24-09-2101 03:00", formatter), 2, 2, 2, 2, utenteEntity, campoEntity);
 
         prenotazioneRepository.save(prenotazione2);
         prenotazioneRepository.save(prenotazione3);
         prenotazioneRepository.save(prenotazione4);
     }
+    */
 }

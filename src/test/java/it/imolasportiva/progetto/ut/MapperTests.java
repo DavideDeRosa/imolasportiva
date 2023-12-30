@@ -10,6 +10,7 @@ import it.imolasportiva.progetto.entity.UtenteEntity;
 import it.imolasportiva.progetto.error.ErrorException;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -18,11 +19,10 @@ import java.util.Date;
 import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
+@Transactional
 public class MapperTests extends AbstractTests {
     @Test
     void testMapUtenteEntity() {
-        drop();
-
         UtenteEntity utenteEntity = creaUtenteEntity(Long.valueOf(1), "Davide", "De Rosa", new Date(), "123");
 
         UtenteDTO utenteDTO = utenteMapper.utenteEntityToUtenteDTO(utenteEntity);
@@ -44,8 +44,6 @@ public class MapperTests extends AbstractTests {
 
     @Test
     void testMapUtente() {
-        drop();
-
         Utente utente = creaUtenteModel("Davide", "De Rosa", Long.valueOf(1), "24-09-2002", "123");
 
         UtenteDTO utenteDTO = utenteMapper.utenteToUtenteDTO(utente);
@@ -93,8 +91,6 @@ public class MapperTests extends AbstractTests {
 
     @Test
     void testMapUtenteWrongDate() {
-        drop();
-
         Utente utente = creaUtenteModel("Davide", "De Rosa", Long.valueOf(1), "errore", "123");
 
         try {
@@ -107,8 +103,6 @@ public class MapperTests extends AbstractTests {
 
     @Test
     void testMapPrenotazioneEntity() {
-        drop();
-
         UtenteEntity utenteEntity = creaUtenteEntity(Long.valueOf(1), "Davide", "De Rosa", new Date(), "123");
 
         CampoEntity campoEntity = creaCampoEntity(Long.valueOf(1), "prova", "prova");
@@ -137,8 +131,6 @@ public class MapperTests extends AbstractTests {
 
     @Test
     void testMapPrenotazione() {
-        drop();
-
         UtenteEntity utenteEntity = creaUtenteEntity(Long.valueOf(1), "Davide", "De Rosa", new Date(), "123");
 
         utenteEntity = utenteRepository.save(utenteEntity);
@@ -194,8 +186,6 @@ public class MapperTests extends AbstractTests {
 
     @Test
     void testMapPrenotazioneWrongDate() {
-        drop();
-
         UtenteEntity utenteEntity = creaUtenteEntity(Long.valueOf(1), "Davide", "De Rosa", new Date(), "123");
 
         utenteEntity = utenteRepository.save(utenteEntity);
@@ -216,8 +206,6 @@ public class MapperTests extends AbstractTests {
 
     @Test
     void testMapPrenotazioneCampoNull() {
-        drop();
-
         UtenteEntity utenteEntity = creaUtenteEntity(Long.valueOf(1), "Davide", "De Rosa", new Date(), "123");
 
         utenteEntity = utenteRepository.save(utenteEntity);
@@ -231,8 +219,6 @@ public class MapperTests extends AbstractTests {
 
     @Test
     void testMapPrenotazioneCampoNotFound() {
-        drop();
-
         UtenteEntity utenteEntity = creaUtenteEntity(Long.valueOf(1), "Davide", "De Rosa", new Date(), "123");
 
         utenteEntity = utenteRepository.save(utenteEntity);

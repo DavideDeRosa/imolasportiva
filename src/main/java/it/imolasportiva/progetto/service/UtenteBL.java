@@ -27,7 +27,7 @@ public class UtenteBL {
     public UtenteDTO getUtenteDTObyId(Long id) {
         Optional<UtenteEntity> utente = utenteService.findById(id);
         if (!utente.isPresent()) {
-            throw new ErrorException(ErrorEnum.UtenteNotFound);
+            throw new ErrorException(ErrorEnum.UTENTENOTFOUND);
         }
 
         return utenteMapper.utenteEntityToUtenteDTO(utente.get());
@@ -44,7 +44,7 @@ public class UtenteBL {
     public UtenteDTO putUtente(Long id, UtenteDTO utenteDTO) {
         Optional<UtenteEntity> utente = utenteService.findById(id);
         if (!utente.isPresent()) {
-            throw new ErrorException(ErrorEnum.UtenteNotFound);
+            throw new ErrorException(ErrorEnum.UTENTENOTFOUND);
         }
 
         utenteDTO.setId(id);

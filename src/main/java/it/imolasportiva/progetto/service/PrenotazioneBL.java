@@ -34,7 +34,7 @@ public class PrenotazioneBL {
     public PrenotazioneDTO getPrenotazioneDTOById(Long id) {
         Optional<PrenotazioneEntity> prenotazione = prenotazioneService.findById(id);
         if (!prenotazione.isPresent()) {
-            throw new ErrorException(ErrorEnum.PrenotazioneNotFound);
+            throw new ErrorException(ErrorEnum.PRENOTAZIONENOTFOUND);
         }
 
         return prenotazioneMapper.prenotazioneEntityToPrenotazioneDTO(prenotazione.get());
@@ -51,7 +51,7 @@ public class PrenotazioneBL {
     public PrenotazioneDTO putPrenotazione(Long id, PrenotazioneDTO prenotazioneDTO) {
         Optional<PrenotazioneEntity> prenotazione = prenotazioneService.findById(id);
         if (!prenotazione.isPresent()) {
-            throw new ErrorException(ErrorEnum.PrenotazioneNotFound);
+            throw new ErrorException(ErrorEnum.PRENOTAZIONENOTFOUND);
         }
 
         prenotazioneDTO.setId(id);
@@ -74,14 +74,14 @@ public class PrenotazioneBL {
                 return findAll();
             }
 
-            throw new ErrorException(ErrorEnum.AnnoNotFound);
+            throw new ErrorException(ErrorEnum.ANNONOTFOUND);
         }
 
         if (mese == null) {
             return getPrenotazioneAnno(anno);
         } else {
             if (mese <= 0 || mese > 12) {
-                throw new ErrorException(ErrorEnum.MeseError);
+                throw new ErrorException(ErrorEnum.MESEERROR);
             }
 
             return getPrenotazioneAnnoMese(anno, mese);
@@ -134,13 +134,13 @@ public class PrenotazioneBL {
             }
 
             if (campoList.isEmpty()) {
-                throw new ErrorException(ErrorEnum.CampoNotAvailable);
+                throw new ErrorException(ErrorEnum.CAMPONOTAVAILABLE);
             }
 
             prenotazioneDTO.setCampo(campoList.get(0));
         } else {
             if (!prenotazioneService.findCampoOccupatoPost(prenotazioneDTO.getCampo().getId(), prenotazioneDTO.getDataPrenotazione(), prenotazioneDTO.getDataFinePrenotazione()).isEmpty()) {
-                throw new ErrorException(ErrorEnum.CampoNotAvailable);
+                throw new ErrorException(ErrorEnum.CAMPONOTAVAILABLE);
             } else {
                 checkCampoTipo(prenotazioneDTO);
             }
@@ -162,13 +162,13 @@ public class PrenotazioneBL {
             }
 
             if (campoList.isEmpty()) {
-                throw new ErrorException(ErrorEnum.CampoNotAvailable);
+                throw new ErrorException(ErrorEnum.CAMPONOTAVAILABLE);
             }
 
             prenotazioneDTO.setCampo(campoList.get(0));
         } else {
             if (!prenotazioneService.findCampoOccupatoPut(prenotazioneDTO.getCampo().getId(), prenotazioneDTO.getDataPrenotazione(), prenotazioneDTO.getDataFinePrenotazione(), idPrenotazione).isEmpty()) {
-                throw new ErrorException(ErrorEnum.CampoNotAvailable);
+                throw new ErrorException(ErrorEnum.CAMPONOTAVAILABLE);
             } else {
                 checkCampoTipo(prenotazioneDTO);
             }
@@ -182,13 +182,13 @@ public class PrenotazioneBL {
                 prenotazioneDTO.getDataPrenotazione().getHour() < 7 ||
                 prenotazioneDTO.getDataPrenotazione().isBefore(LocalDateTime.now()) ||
                 prenotazioneDTO.getDataPrenotazione().getHour() + prenotazioneDTO.getDurataPrenotazioneOre() > 23) {
-            throw new ErrorException(ErrorEnum.PrenotazioneWrongTime);
+            throw new ErrorException(ErrorEnum.PRENOTAZIONEWRONGTIME);
         }
 
         if (prenotazioneDTO.getNumeroPartecipanti() != 10 &&
                 prenotazioneDTO.getNumeroPartecipanti() != 2 &&
                 prenotazioneDTO.getNumeroPartecipanti() != 4) {
-            throw new ErrorException(ErrorEnum.NumeroPartecipantiError);
+            throw new ErrorException(ErrorEnum.NUMEROPARTECIPANTIERROR);
         }
     }
 
@@ -198,11 +198,11 @@ public class PrenotazioneBL {
 
         if (numeroPrenotati == 10) {
             if (!campoEntity.getTipologia().equals("Calcio")) {
-                throw new ErrorException(ErrorEnum.CampoError);
+                throw new ErrorException(ErrorEnum.CAMPOERROR);
             }
         } else {
             if (!campoEntity.getTipologia().equals("Tennis")) {
-                throw new ErrorException(ErrorEnum.CampoError);
+                throw new ErrorException(ErrorEnum.CAMPOERROR);
             }
         }
     }
