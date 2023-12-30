@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @Slf4j
 @Transactional
 public class RepositoryTests extends AbstractTests {
-    /*
+
     @Test
     void testRepoFindByYear() {
         loadPrenotazioni();
@@ -143,5 +143,4 @@ public class RepositoryTests extends AbstractTests {
         prenotazioneRepository.save(prenotazione3);
         prenotazioneRepository.save(prenotazione4);
     }
-    */
 }
