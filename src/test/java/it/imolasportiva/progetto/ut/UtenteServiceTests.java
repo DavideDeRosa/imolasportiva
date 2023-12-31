@@ -4,9 +4,10 @@ import it.imolasportiva.progetto.dto.UtenteDTO;
 import it.imolasportiva.progetto.error.ErrorException;
 import it.imolasportiva.progetto.service.UtenteBL;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 
 import java.util.Date;
 
@@ -14,8 +15,15 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
 @Slf4j
-@Transactional
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class UtenteServiceTests extends AbstractTests {
+
+    @BeforeEach
+    void drop() {
+        prenotazioneRepository.deleteAll();
+        campoRepository.deleteAll();
+        utenteRepository.deleteAll();
+    }
 
     @Autowired
     private UtenteBL utenteBL;

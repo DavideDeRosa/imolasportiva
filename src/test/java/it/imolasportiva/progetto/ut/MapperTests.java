@@ -9,18 +9,26 @@ import it.imolasportiva.progetto.entity.PrenotazioneEntity;
 import it.imolasportiva.progetto.entity.UtenteEntity;
 import it.imolasportiva.progetto.error.ErrorException;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
-@Transactional
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class MapperTests extends AbstractTests {
+
+    @BeforeEach
+    void drop() {
+        prenotazioneRepository.deleteAll();
+        campoRepository.deleteAll();
+        utenteRepository.deleteAll();
+    }
+
     @Test
     void testMapUtenteEntity() {
         UtenteEntity utenteEntity = creaUtenteEntity(Long.valueOf(1), "Davide", "De Rosa", new Date(), "123");
@@ -142,8 +150,6 @@ public class MapperTests extends AbstractTests {
         Prenotazione prenotazione = creaPrenotazioneModel(Long.valueOf(1), "24-09-2002 15:00", "24-09-2002 17:00", "2", "2", "2", "2", utenteEntity.getId(), campoEntity.getId());
 
         PrenotazioneDTO prenotazioneDTO = prenotazioneMapper.prenotazioneToPrenotazioneDTO(prenotazione);
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
 
         //Testing from model to DTO
         assertEquals(LocalDateTime.parse(prenotazione.getDataPrenotazione(), formatter), prenotazioneDTO.getDataPrenotazione());
