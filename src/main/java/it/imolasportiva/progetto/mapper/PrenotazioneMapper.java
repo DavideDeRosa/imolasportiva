@@ -72,7 +72,7 @@ public abstract class PrenotazioneMapper {
         } else {
             Optional<CampoEntity> campo = campoService.findById(id);
             if (!campo.isPresent()) {
-                throw new ErrorException(ErrorEnum.CampoNotFound);
+                throw new ErrorException(ErrorEnum.CAMPONOTFOUND);
             }
 
             return campo.get();
