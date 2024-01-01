@@ -438,9 +438,11 @@ public class PrenotazioneServiceTests extends AbstractTests {
 
         campoEntity = campoRepository.save(campoEntity);
 
-        PrenotazioneDTO prenotazioneDTO = creaPrenotazioneDTO(LocalDateTime.parse("25-10-2200 10:00", formatter), LocalDateTime.parse("25-10-2200 12:00", formatter), 2, 2, 2, 3, utenteEntity, campoEntity);
+        PrenotazioneEntity prenotazioneEntity = prenotazioneRepository.save(creaPrenotazioneEntity(Long.valueOf(1), LocalDateTime.parse("25-10-2200 10:00", formatter), LocalDateTime.parse("25-10-2200 12:00", formatter), 2, 2, 2, 3, utenteEntity, campoEntity));
 
-        PrenotazioneDTO validPrenotazioneDTO = prenotazioneBL.validPrenotazionePut(prenotazioneDTO, null);
+        PrenotazioneDTO prenotazioneDTO = creaPrenotazioneDTO(LocalDateTime.parse("25-10-2200 10:00", formatter), LocalDateTime.parse("25-10-2200 12:00", formatter), 2, 2, 2, 2, utenteEntity, campoEntity);
+
+        PrenotazioneDTO validPrenotazioneDTO = prenotazioneBL.validPrenotazionePut(prenotazioneDTO, prenotazioneEntity.getId());
 
         assertEquals(prenotazioneDTO.getDataPrenotazione(), validPrenotazioneDTO.getDataPrenotazione());
         assertEquals(prenotazioneDTO.getIdUtentePrenotato().getId(), validPrenotazioneDTO.getIdUtentePrenotato().getId());
@@ -571,7 +573,7 @@ public class PrenotazioneServiceTests extends AbstractTests {
     }
 
     @Test
-    void testValidPrenotazionePutCampoNullEmpty() { // CREDO QUESTO TEST SIA SBAGLIATO CONCETTUALMENTE!
+    void testValidPrenotazionePutCampoNullEmpty() {
         UtenteEntity utenteEntity = creaUtenteEntity(Long.valueOf(1), "Davide", "De Rosa", new Date(), "123");
 
         utenteEntity = utenteRepository.save(utenteEntity);
@@ -580,11 +582,11 @@ public class PrenotazioneServiceTests extends AbstractTests {
 
         campoEntity = campoRepository.save(campoEntity);
 
-        prenotazioneRepository.save(creaPrenotazioneEntity(Long.valueOf(1), LocalDateTime.parse("25-10-2200 10:00", formatter), LocalDateTime.parse("25-10-2200 12:00", formatter), 2, 10, 2, 2, utenteEntity, campoEntity));
+        prenotazioneRepository.save(creaPrenotazioneEntity(Long.valueOf(1), LocalDateTime.parse("25-10-2200 08:00", formatter), LocalDateTime.parse("25-10-2200 10:00", formatter), 2, 10, 2, 2, utenteEntity, campoEntity));
 
         PrenotazioneEntity prenotazioneEntity = prenotazioneRepository.save(creaPrenotazioneEntity(Long.valueOf(1), LocalDateTime.parse("25-10-2200 10:00", formatter), LocalDateTime.parse("25-10-2200 12:00", formatter), 2, 10, 2, 2, utenteEntity, campoEntity));
 
-        PrenotazioneDTO prenotazioneDTO = creaPrenotazioneDTO(LocalDateTime.parse("25-10-2200 10:00", formatter), LocalDateTime.parse("25-10-2200 12:00", formatter), 2, 10, 2, 2, utenteEntity, null);
+        PrenotazioneDTO prenotazioneDTO = creaPrenotazioneDTO(LocalDateTime.parse("25-10-2200 09:00", formatter), LocalDateTime.parse("25-10-2200 11:00", formatter), 2, 10, 2, 2, utenteEntity, null);
 
         try {
             prenotazioneBL.validPrenotazionePut(prenotazioneDTO, prenotazioneEntity.getId());
@@ -595,7 +597,7 @@ public class PrenotazioneServiceTests extends AbstractTests {
     }
 
     @Test
-    void testValidPrenotazionePutCampoNotAv() { // CREDO QUESTO TEST SIA SBAGLIATO CONCETTUALMENTE!
+    void testValidPrenotazionePutCampoNotAv() {
         UtenteEntity utenteEntity = creaUtenteEntity(Long.valueOf(1), "Davide", "De Rosa", new Date(), "123");
 
         utenteEntity = utenteRepository.save(utenteEntity);
@@ -604,11 +606,11 @@ public class PrenotazioneServiceTests extends AbstractTests {
 
         campoEntity = campoRepository.save(campoEntity);
 
-        prenotazioneRepository.save(creaPrenotazioneEntity(Long.valueOf(1), LocalDateTime.parse("25-10-2200 10:00", formatter), LocalDateTime.parse("25-10-2200 12:00", formatter), 2, 10, 2, 2, utenteEntity, campoEntity));
+        prenotazioneRepository.save(creaPrenotazioneEntity(Long.valueOf(1), LocalDateTime.parse("25-10-2200 08:00", formatter), LocalDateTime.parse("25-10-2200 10:00", formatter), 2, 10, 2, 2, utenteEntity, campoEntity));
 
         PrenotazioneEntity prenotazioneEntity = prenotazioneRepository.save(creaPrenotazioneEntity(Long.valueOf(1), LocalDateTime.parse("25-10-2200 10:00", formatter), LocalDateTime.parse("25-10-2200 12:00", formatter), 2, 10, 2, 2, utenteEntity, campoEntity));
 
-        PrenotazioneDTO prenotazioneDTO = creaPrenotazioneDTO(LocalDateTime.parse("25-10-2200 10:00", formatter), LocalDateTime.parse("25-10-2200 12:00", formatter), 2, 10, 2, 2, utenteEntity, campoEntity);
+        PrenotazioneDTO prenotazioneDTO = creaPrenotazioneDTO(LocalDateTime.parse("25-10-2200 09:00", formatter), LocalDateTime.parse("25-10-2200 11:00", formatter), 2, 10, 2, 2, utenteEntity, campoEntity);
 
         try {
             prenotazioneBL.validPrenotazionePut(prenotazioneDTO, prenotazioneEntity.getId());
