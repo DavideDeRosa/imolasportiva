@@ -15,8 +15,8 @@ import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 @Mapper(componentModel = "spring")
@@ -32,6 +32,7 @@ public abstract class PrenotazioneMapper {
 
     @Mappings({
             @Mapping(target = "dataPrenotazione", expression = "java(convertStringToDate(prenotazione.getDataPrenotazione()))"),
+            @Mapping(target = "dataFinePrenotazione", expression = "java(convertStringToDate(prenotazione.getDataFinePrenotazione()))"),
             @Mapping(source = "durataDeadlineCancellazioneOre", target = "durataDeadlineCancellazione"),
             @Mapping(source = "idCampo", target = "campo")
     })
@@ -47,11 +48,12 @@ public abstract class PrenotazioneMapper {
 
     public abstract PrenotazioneDTO prenotazioneEntityToPrenotazioneDTO(PrenotazioneEntity prenotazioneEntity);
 
-    Date convertStringToDate(String date) {
+    LocalDateTime convertStringToDate(String date) {
         try {
-            return new SimpleDateFormat("dd-MM-yyyy HH:mm").parse(date);
-        } catch (Exception e) {
-            throw new RuntimeException("Error converting String to Date");
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
+            return LocalDateTime.parse(date, formatter);
+        } catch (RuntimeException e) {
+            throw new RuntimeException("Error converting String to LocalDateTime");
         }
     }
 
@@ -70,7 +72,7 @@ public abstract class PrenotazioneMapper {
         } else {
             Optional<CampoEntity> campo = campoService.findById(id);
             if (!campo.isPresent()) {
-                throw new ErrorException(ErrorEnum.CampoNotFound);
+                throw new ErrorException(ErrorEnum.CAMPONOTFOUND);
             }
 
             return campo.get();

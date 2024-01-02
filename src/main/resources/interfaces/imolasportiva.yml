@@ -510,6 +510,7 @@ components:
         - durataPrenotazioneOre
         - durataDeadlineCancellazione
         - dataPrenotazione
+        - dataFinePrenotazione
         - numeroPartecipanti
         - quota
         - idCampo
@@ -525,6 +526,8 @@ components:
         durataDeadlineCancellazioneOre:
           type: string
         dataPrenotazione:
+          type: string
+        dataFinePrenotazione:
           type: string
         numeroPartecipanti:
           type: string

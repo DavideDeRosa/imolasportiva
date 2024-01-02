@@ -7,164 +7,99 @@ import it.imolasportiva.progetto.dto.UtenteDTO;
 import it.imolasportiva.progetto.entity.CampoEntity;
 import it.imolasportiva.progetto.entity.PrenotazioneEntity;
 import it.imolasportiva.progetto.entity.UtenteEntity;
+import it.imolasportiva.progetto.error.ErrorException;
+import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.*;
 
+@Slf4j
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class MapperTests extends AbstractTests {
+
+    @BeforeEach
+    void drop() {
+        prenotazioneRepository.deleteAll();
+        campoRepository.deleteAll();
+        utenteRepository.deleteAll();
+    }
+
     @Test
     void testMapUtenteEntity() {
-        UtenteEntity utenteEntity = new UtenteEntity();
-        utenteEntity.setId(Long.valueOf(1));
-        utenteEntity.setNome("Davide");
-        utenteEntity.setCognome("De Rosa");
-        utenteEntity.setDataNascita(new Date());
-        utenteEntity.setTelefono("123");
+        UtenteEntity utenteEntity = creaUtenteEntity(1L, "Davide", "De Rosa", new Date(), "123");
 
         UtenteDTO utenteDTO = utenteMapper.utenteEntityToUtenteDTO(utenteEntity);
 
         //Testing from entity to DTO
-        assertEquals(utenteEntity.getId(), utenteDTO.getId());
         assertEquals(utenteEntity.getNome(), utenteDTO.getNome());
         assertEquals(utenteEntity.getCognome(), utenteDTO.getCognome());
 
         UtenteEntity utenteEntity1 = utenteMapper.utenteDTOToUtenteEntity(utenteDTO);
 
         //Testing from DTO to entity
-        assertEquals(utenteDTO.getId(), utenteEntity1.getId());
         assertEquals(utenteDTO.getNome(), utenteEntity1.getNome());
         assertEquals(utenteDTO.getCognome(), utenteEntity1.getCognome());
 
         //Testing from entity to entity
-        assertEquals(utenteEntity.getId(), utenteEntity1.getId());
         assertEquals(utenteEntity.getNome(), utenteEntity1.getNome());
         assertEquals(utenteEntity.getCognome(), utenteEntity1.getCognome());
     }
 
     @Test
     void testMapUtente() {
-        Utente utente = creaUtenteModel("Davide", "De Rosa", Long.valueOf(1), "24-09-2002", "123");
+        Utente utente = creaUtenteModel("Davide", "De Rosa", 1L, "24-09-2002", "123");
 
         UtenteDTO utenteDTO = utenteMapper.utenteToUtenteDTO(utente);
 
         //Testing from model to DTO
-        assertEquals(utente.getId(), utenteDTO.getId());
         assertEquals(utente.getNome(), utenteDTO.getNome());
         assertEquals(utente.getCognome(), utenteDTO.getCognome());
 
         Utente utente1 = utenteMapper.utenteDTOToUtente(utenteDTO);
 
         //Testing from DTO to model
-        assertEquals(utenteDTO.getId(), utente1.getId());
         assertEquals(utenteDTO.getNome(), utente1.getNome());
         assertEquals(utenteDTO.getCognome(), utente1.getCognome());
 
         //Testing from model to model
-        assertEquals(utente.getId(), utente1.getId());
         assertEquals(utente.getNome(), utente1.getNome());
         assertEquals(utente.getCognome(), utente1.getCognome());
     }
 
     @Test
-    void testMapPrenotazioneEntity() {
-        PrenotazioneEntity prenotazioneEntity = new PrenotazioneEntity();
-        prenotazioneEntity.setId(Long.valueOf(1));
-        prenotazioneEntity.setDataPrenotazione(new Date());
-        prenotazioneEntity.setDurataPrenotazioneOre(2);
-        prenotazioneEntity.setNumeroPartecipanti(2);
-        prenotazioneEntity.setQuota(2);
-        prenotazioneEntity.setDurataDeadlineCancellazione(2);
+    void testMapUtenteModelNull() {
+        Utente utente = null;
 
-        UtenteEntity utenteEntity = new UtenteEntity();
-        utenteEntity.setId(Long.valueOf(1));
-        utenteEntity.setNome("Davide");
-        utenteEntity.setCognome("De Rosa");
-        utenteEntity.setDataNascita(new Date());
-        utenteEntity.setTelefono("123");
+        UtenteDTO utenteDTO = utenteMapper.utenteToUtenteDTO(utente);
 
-        prenotazioneEntity.setIdUtentePrenotato(utenteEntity);
+        assertNull(utenteDTO);
 
-        CampoEntity campoEntity = new CampoEntity();
-        campoEntity.setId(Long.valueOf(1));
-        campoEntity.setCodice("prova");
-        campoEntity.setTipologia("prova");
+        utente = utenteMapper.utenteDTOToUtente(utenteDTO);
 
-        prenotazioneEntity.setCampo(campoEntity);
-
-        PrenotazioneDTO prenotazioneDTO = prenotazioneMapper.prenotazioneEntityToPrenotazioneDTO(prenotazioneEntity);
-
-        //Testing from entity to DTO
-        assertEquals(prenotazioneEntity.getId(), prenotazioneDTO.getId());
-        assertEquals(prenotazioneEntity.getIdUtentePrenotato().getId(), prenotazioneDTO.getIdUtentePrenotato().getId());
-        assertEquals(prenotazioneEntity.getCampo().getId(), prenotazioneDTO.getCampo().getId());
-
-        PrenotazioneEntity prenotazioneEntity1 = prenotazioneMapper.prenotazioneDTOToPrenotazioneEntity(prenotazioneDTO);
-
-        //Testing from DTO to entity
-        assertEquals(prenotazioneDTO.getId(), prenotazioneEntity1.getId());
-        assertEquals(prenotazioneDTO.getIdUtentePrenotato().getId(), prenotazioneEntity1.getIdUtentePrenotato().getId());
-        assertEquals(prenotazioneDTO.getCampo().getId(), prenotazioneEntity1.getCampo().getId());
-
-        //Testing from entity to entity
-        assertEquals(prenotazioneEntity.getId(), prenotazioneEntity1.getId());
-        assertEquals(prenotazioneEntity.getIdUtentePrenotato().getId(), prenotazioneEntity1.getIdUtentePrenotato().getId());
-        assertEquals(prenotazioneEntity.getCampo().getId(), prenotazioneEntity1.getCampo().getId());
+        assertNull(utente);
     }
 
     @Test
-    void testMapPrenotazione() {
-        UtenteEntity utenteEntity = new UtenteEntity();
-        utenteEntity.setId(Long.valueOf(1));
-        utenteEntity.setNome("Davide");
-        utenteEntity.setCognome("De Rosa");
-        utenteEntity.setDataNascita(new Date());
-        utenteEntity.setTelefono("123");
+    void testMapUtenteEntityNull() {
+        UtenteEntity utenteEntity = null;
 
-        utenteRepository.save(utenteEntity);
+        UtenteDTO utenteDTO = utenteMapper.utenteEntityToUtenteDTO(utenteEntity);
 
-        CampoEntity campoEntity = new CampoEntity();
-        campoEntity.setId(Long.valueOf(1));
-        campoEntity.setCodice("prova");
-        campoEntity.setTipologia("prova");
+        assertNull(utenteDTO);
 
-        campoRepository.save(campoEntity);
+        utenteEntity = utenteMapper.utenteDTOToUtenteEntity(utenteDTO);
 
-        Prenotazione prenotazione = new Prenotazione();
-        prenotazione.setId(Long.valueOf(1));
-        prenotazione.setDataPrenotazione("24-09-2002 15:00");
-        prenotazione.setDurataPrenotazioneOre("2");
-        prenotazione.setNumeroPartecipanti("2");
-        prenotazione.setQuota("2");
-        prenotazione.setDurataDeadlineCancellazioneOre("2");
-        prenotazione.setIdCampo(campoEntity.getId());
-        prenotazione.setIdUtentePrenotato(utenteEntity.getId());
-
-        PrenotazioneDTO prenotazioneDTO = prenotazioneMapper.prenotazioneToPrenotazioneDTO(prenotazione);
-
-        //Testing from model to DTO
-        assertEquals(prenotazione.getId(), prenotazioneDTO.getId());
-        assertEquals(prenotazione.getIdCampo(), prenotazioneDTO.getCampo().getId());
-        assertEquals(prenotazione.getIdUtentePrenotato(), prenotazioneDTO.getIdUtentePrenotato().getId());
-
-        Prenotazione prenotazione1 = prenotazioneMapper.prenotazioneDTOToPrenotazione(prenotazioneDTO);
-
-        //Testing from DTO to model
-        assertEquals(prenotazioneDTO.getId(), prenotazione1.getId());
-        assertEquals(prenotazioneDTO.getCampo().getId(), prenotazione1.getIdCampo());
-        assertEquals(prenotazioneDTO.getIdUtentePrenotato().getId(), prenotazione1.getIdUtentePrenotato());
-
-        //Testing from model to model
-        assertEquals(prenotazione.getId(), prenotazione1.getId());
-        assertEquals(prenotazione.getIdCampo(), prenotazione1.getIdCampo());
-        assertEquals(prenotazione.getIdUtentePrenotato(), prenotazione1.getIdUtentePrenotato());
+        assertNull(utenteEntity);
     }
 
     @Test
     void testMapUtenteWrongDate() {
-        Utente utente = creaUtenteModel("Davide", "De Rosa", Long.valueOf(1), "errore", "123");
+        Utente utente = creaUtenteModel("Davide", "De Rosa", 1L, "errore", "123");
 
         try {
             utenteMapper.utenteToUtenteDTO(utente);
@@ -174,13 +109,133 @@ public class MapperTests extends AbstractTests {
         }
     }
 
-    private Utente creaUtenteModel(String nome, String cognome, Long id, String data, String telefono) {
-        Utente utente = new Utente();
-        utente.setId(id);
-        utente.setNome(nome);
-        utente.setCognome(cognome);
-        utente.setDataNascita(data);
-        utente.setTelefono(telefono);
-        return utente;
+    @Test
+    void testMapPrenotazioneEntity() {
+        UtenteEntity utenteEntity = creaUtenteEntity(1L, "Davide", "De Rosa", new Date(), "123");
+
+        CampoEntity campoEntity = creaCampoEntity(1L, "prova", "prova");
+
+        PrenotazioneEntity prenotazioneEntity = creaPrenotazioneEntity(1L, LocalDateTime.now(), LocalDateTime.now(), 2, 2, 2, 2, utenteEntity, campoEntity);
+
+        PrenotazioneDTO prenotazioneDTO = prenotazioneMapper.prenotazioneEntityToPrenotazioneDTO(prenotazioneEntity);
+
+        //Testing from entity to DTO
+        assertEquals(prenotazioneEntity.getDataPrenotazione(), prenotazioneDTO.getDataPrenotazione());
+        assertEquals(prenotazioneEntity.getIdUtentePrenotato().getNome(), prenotazioneDTO.getIdUtentePrenotato().getNome());
+        assertEquals(prenotazioneEntity.getCampo().getTipologia(), prenotazioneDTO.getCampo().getTipologia());
+
+        PrenotazioneEntity prenotazioneEntity1 = prenotazioneMapper.prenotazioneDTOToPrenotazioneEntity(prenotazioneDTO);
+
+        //Testing from DTO to entity
+        assertEquals(prenotazioneDTO.getDataPrenotazione(), prenotazioneEntity1.getDataPrenotazione());
+        assertEquals(prenotazioneDTO.getIdUtentePrenotato().getNome(), prenotazioneEntity1.getIdUtentePrenotato().getNome());
+        assertEquals(prenotazioneDTO.getCampo().getTipologia(), prenotazioneEntity1.getCampo().getTipologia());
+
+        //Testing from entity to entity
+        assertEquals(prenotazioneEntity.getDataPrenotazione(), prenotazioneEntity1.getDataPrenotazione());
+        assertEquals(prenotazioneEntity.getIdUtentePrenotato().getNome(), prenotazioneEntity1.getIdUtentePrenotato().getNome());
+        assertEquals(prenotazioneEntity.getCampo().getTipologia(), prenotazioneEntity1.getCampo().getTipologia());
+    }
+
+    @Test
+    void testMapPrenotazione() {
+        UtenteEntity utenteEntity = creaUtenteEntity(1L, "Davide", "De Rosa", new Date(), "123");
+
+        utenteEntity = utenteRepository.save(utenteEntity);
+
+        CampoEntity campoEntity = creaCampoEntity(1L, "prova", "prova");
+
+        campoEntity = campoRepository.save(campoEntity);
+
+        Prenotazione prenotazione = creaPrenotazioneModel(1L, "24-09-2002 15:00", "24-09-2002 17:00", "2", "2", "2", "2", utenteEntity.getId(), campoEntity.getId());
+
+        PrenotazioneDTO prenotazioneDTO = prenotazioneMapper.prenotazioneToPrenotazioneDTO(prenotazione);
+
+        //Testing from model to DTO
+        assertEquals(LocalDateTime.parse(prenotazione.getDataPrenotazione(), formatter), prenotazioneDTO.getDataPrenotazione());
+        assertEquals(campoEntity.getTipologia(), prenotazioneDTO.getCampo().getTipologia());
+        assertEquals(utenteEntity.getNome(), prenotazioneDTO.getIdUtentePrenotato().getNome());
+
+        Prenotazione prenotazione1 = prenotazioneMapper.prenotazioneDTOToPrenotazione(prenotazioneDTO);
+
+        //Testing from DTO to model
+        assertEquals(prenotazioneDTO.getDataPrenotazione(), LocalDateTime.parse(prenotazione1.getDataPrenotazione()));
+        assertEquals(prenotazioneDTO.getCampo().getTipologia(), campoEntity.getTipologia());
+        assertEquals(prenotazioneDTO.getIdUtentePrenotato().getNome(), utenteEntity.getNome());
+    }
+
+    @Test
+    void testMapPrenotazioneModelNull() {
+        Prenotazione prenotazione = null;
+
+        PrenotazioneDTO prenotazioneDTO = prenotazioneMapper.prenotazioneToPrenotazioneDTO(prenotazione);
+
+        assertNull(prenotazioneDTO);
+
+        prenotazione = prenotazioneMapper.prenotazioneDTOToPrenotazione(prenotazioneDTO);
+
+        assertNull(prenotazione);
+    }
+
+    @Test
+    void testMapPrenotazioneEntityNull() {
+        PrenotazioneEntity prenotazioneEntity = null;
+
+        PrenotazioneDTO prenotazioneDTO = prenotazioneMapper.prenotazioneEntityToPrenotazioneDTO(prenotazioneEntity);
+
+        assertNull(prenotazioneDTO);
+
+        prenotazioneEntity = prenotazioneMapper.prenotazioneDTOToPrenotazioneEntity(prenotazioneDTO);
+
+        assertNull(prenotazioneEntity);
+    }
+
+    @Test
+    void testMapPrenotazioneWrongDate() {
+        UtenteEntity utenteEntity = creaUtenteEntity(1L, "Davide", "De Rosa", new Date(), "123");
+
+        utenteEntity = utenteRepository.save(utenteEntity);
+
+        CampoEntity campoEntity = creaCampoEntity(1L, "prova", "prova");
+
+        campoEntity = campoRepository.save(campoEntity);
+
+        Prenotazione prenotazione = creaPrenotazioneModel(1L, "errore", "24-09-2002 17:00", "2", "2", "2", "2", utenteEntity.getId(), campoEntity.getId());
+
+        try {
+            prenotazioneMapper.prenotazioneToPrenotazioneDTO(prenotazione);
+            fail();
+        } catch (RuntimeException e) {
+            assertEquals(e.getMessage(), "Error converting String to LocalDateTime");
+        }
+    }
+
+    @Test
+    void testMapPrenotazioneCampoNull() {
+        UtenteEntity utenteEntity = creaUtenteEntity(1L, "Davide", "De Rosa", new Date(), "123");
+
+        utenteEntity = utenteRepository.save(utenteEntity);
+
+        Prenotazione prenotazione = creaPrenotazioneModel(1L, "24-09-2002 15:00", "24-09-2002 17:00", "2", "2", "2", "2", utenteEntity.getId(), Long.valueOf(0));
+
+        PrenotazioneDTO prenotazioneDTO = prenotazioneMapper.prenotazioneToPrenotazioneDTO(prenotazione);
+
+        assertNull(prenotazioneDTO.getCampo());
+    }
+
+    @Test
+    void testMapPrenotazioneCampoNotFound() {
+        UtenteEntity utenteEntity = creaUtenteEntity(1L, "Davide", "De Rosa", new Date(), "123");
+
+        utenteEntity = utenteRepository.save(utenteEntity);
+
+        Prenotazione prenotazione = creaPrenotazioneModel(1L, "24-09-2002 15:00", "24-09-2002 17:00", "2", "2", "2", "2", utenteEntity.getId(), Long.valueOf(-1));
+
+        try {
+            prenotazioneMapper.prenotazioneToPrenotazioneDTO(prenotazione);
+            fail();
+        } catch (ErrorException e) {
+            assertEquals(e.getMessage(), "CampoNotFound - Campo non presente!");
+        }
     }
 }
