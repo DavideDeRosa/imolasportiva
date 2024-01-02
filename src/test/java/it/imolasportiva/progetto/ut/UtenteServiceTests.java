@@ -55,7 +55,7 @@ public class UtenteServiceTests extends AbstractTests {
     @Test
     void testGetUtenteByIdFail() {
         try {
-            utenteBL.getUtenteDTObyId(Long.valueOf(1));
+            utenteBL.getUtenteDTObyId(1L);
             fail();
         } catch (ErrorException e) {
             assertEquals(e.getMessage(), "UtenteNotFound - Utente non presente!");
@@ -80,7 +80,7 @@ public class UtenteServiceTests extends AbstractTests {
     @Test
     void testPutUtenteFail() {
         try {
-            utenteBL.putUtente(Long.valueOf(1), new UtenteDTO());
+            utenteBL.putUtente(1L, new UtenteDTO());
             fail();
         } catch (ErrorException e) {
             assertEquals(e.getMessage(), "UtenteNotFound - Utente non presente!");

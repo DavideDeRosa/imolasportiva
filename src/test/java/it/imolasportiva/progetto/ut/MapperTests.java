@@ -31,7 +31,7 @@ public class MapperTests extends AbstractTests {
 
     @Test
     void testMapUtenteEntity() {
-        UtenteEntity utenteEntity = creaUtenteEntity(Long.valueOf(1), "Davide", "De Rosa", new Date(), "123");
+        UtenteEntity utenteEntity = creaUtenteEntity(1L, "Davide", "De Rosa", new Date(), "123");
 
         UtenteDTO utenteDTO = utenteMapper.utenteEntityToUtenteDTO(utenteEntity);
 
@@ -52,7 +52,7 @@ public class MapperTests extends AbstractTests {
 
     @Test
     void testMapUtente() {
-        Utente utente = creaUtenteModel("Davide", "De Rosa", Long.valueOf(1), "24-09-2002", "123");
+        Utente utente = creaUtenteModel("Davide", "De Rosa", 1L, "24-09-2002", "123");
 
         UtenteDTO utenteDTO = utenteMapper.utenteToUtenteDTO(utente);
 
@@ -99,7 +99,7 @@ public class MapperTests extends AbstractTests {
 
     @Test
     void testMapUtenteWrongDate() {
-        Utente utente = creaUtenteModel("Davide", "De Rosa", Long.valueOf(1), "errore", "123");
+        Utente utente = creaUtenteModel("Davide", "De Rosa", 1L, "errore", "123");
 
         try {
             utenteMapper.utenteToUtenteDTO(utente);
@@ -111,11 +111,11 @@ public class MapperTests extends AbstractTests {
 
     @Test
     void testMapPrenotazioneEntity() {
-        UtenteEntity utenteEntity = creaUtenteEntity(Long.valueOf(1), "Davide", "De Rosa", new Date(), "123");
+        UtenteEntity utenteEntity = creaUtenteEntity(1L, "Davide", "De Rosa", new Date(), "123");
 
-        CampoEntity campoEntity = creaCampoEntity(Long.valueOf(1), "prova", "prova");
+        CampoEntity campoEntity = creaCampoEntity(1L, "prova", "prova");
 
-        PrenotazioneEntity prenotazioneEntity = creaPrenotazioneEntity(Long.valueOf(1), LocalDateTime.now(), LocalDateTime.now(), 2, 2, 2, 2, utenteEntity, campoEntity);
+        PrenotazioneEntity prenotazioneEntity = creaPrenotazioneEntity(1L, LocalDateTime.now(), LocalDateTime.now(), 2, 2, 2, 2, utenteEntity, campoEntity);
 
         PrenotazioneDTO prenotazioneDTO = prenotazioneMapper.prenotazioneEntityToPrenotazioneDTO(prenotazioneEntity);
 
@@ -139,15 +139,15 @@ public class MapperTests extends AbstractTests {
 
     @Test
     void testMapPrenotazione() {
-        UtenteEntity utenteEntity = creaUtenteEntity(Long.valueOf(1), "Davide", "De Rosa", new Date(), "123");
+        UtenteEntity utenteEntity = creaUtenteEntity(1L, "Davide", "De Rosa", new Date(), "123");
 
         utenteEntity = utenteRepository.save(utenteEntity);
 
-        CampoEntity campoEntity = creaCampoEntity(Long.valueOf(1), "prova", "prova");
+        CampoEntity campoEntity = creaCampoEntity(1L, "prova", "prova");
 
         campoEntity = campoRepository.save(campoEntity);
 
-        Prenotazione prenotazione = creaPrenotazioneModel(Long.valueOf(1), "24-09-2002 15:00", "24-09-2002 17:00", "2", "2", "2", "2", utenteEntity.getId(), campoEntity.getId());
+        Prenotazione prenotazione = creaPrenotazioneModel(1L, "24-09-2002 15:00", "24-09-2002 17:00", "2", "2", "2", "2", utenteEntity.getId(), campoEntity.getId());
 
         PrenotazioneDTO prenotazioneDTO = prenotazioneMapper.prenotazioneToPrenotazioneDTO(prenotazione);
 
@@ -192,15 +192,15 @@ public class MapperTests extends AbstractTests {
 
     @Test
     void testMapPrenotazioneWrongDate() {
-        UtenteEntity utenteEntity = creaUtenteEntity(Long.valueOf(1), "Davide", "De Rosa", new Date(), "123");
+        UtenteEntity utenteEntity = creaUtenteEntity(1L, "Davide", "De Rosa", new Date(), "123");
 
         utenteEntity = utenteRepository.save(utenteEntity);
 
-        CampoEntity campoEntity = creaCampoEntity(Long.valueOf(1), "prova", "prova");
+        CampoEntity campoEntity = creaCampoEntity(1L, "prova", "prova");
 
         campoEntity = campoRepository.save(campoEntity);
 
-        Prenotazione prenotazione = creaPrenotazioneModel(Long.valueOf(1), "errore", "24-09-2002 17:00", "2", "2", "2", "2", utenteEntity.getId(), campoEntity.getId());
+        Prenotazione prenotazione = creaPrenotazioneModel(1L, "errore", "24-09-2002 17:00", "2", "2", "2", "2", utenteEntity.getId(), campoEntity.getId());
 
         try {
             prenotazioneMapper.prenotazioneToPrenotazioneDTO(prenotazione);
@@ -212,11 +212,11 @@ public class MapperTests extends AbstractTests {
 
     @Test
     void testMapPrenotazioneCampoNull() {
-        UtenteEntity utenteEntity = creaUtenteEntity(Long.valueOf(1), "Davide", "De Rosa", new Date(), "123");
+        UtenteEntity utenteEntity = creaUtenteEntity(1L, "Davide", "De Rosa", new Date(), "123");
 
         utenteEntity = utenteRepository.save(utenteEntity);
 
-        Prenotazione prenotazione = creaPrenotazioneModel(Long.valueOf(1), "24-09-2002 15:00", "24-09-2002 17:00", "2", "2", "2", "2", utenteEntity.getId(), Long.valueOf(0));
+        Prenotazione prenotazione = creaPrenotazioneModel(1L, "24-09-2002 15:00", "24-09-2002 17:00", "2", "2", "2", "2", utenteEntity.getId(), Long.valueOf(0));
 
         PrenotazioneDTO prenotazioneDTO = prenotazioneMapper.prenotazioneToPrenotazioneDTO(prenotazione);
 
@@ -225,11 +225,11 @@ public class MapperTests extends AbstractTests {
 
     @Test
     void testMapPrenotazioneCampoNotFound() {
-        UtenteEntity utenteEntity = creaUtenteEntity(Long.valueOf(1), "Davide", "De Rosa", new Date(), "123");
+        UtenteEntity utenteEntity = creaUtenteEntity(1L, "Davide", "De Rosa", new Date(), "123");
 
         utenteEntity = utenteRepository.save(utenteEntity);
 
-        Prenotazione prenotazione = creaPrenotazioneModel(Long.valueOf(1), "24-09-2002 15:00", "24-09-2002 17:00", "2", "2", "2", "2", utenteEntity.getId(), Long.valueOf(-1));
+        Prenotazione prenotazione = creaPrenotazioneModel(1L, "24-09-2002 15:00", "24-09-2002 17:00", "2", "2", "2", "2", utenteEntity.getId(), Long.valueOf(-1));
 
         try {
             prenotazioneMapper.prenotazioneToPrenotazioneDTO(prenotazione);

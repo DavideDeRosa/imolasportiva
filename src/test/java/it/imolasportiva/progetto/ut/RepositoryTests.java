@@ -85,7 +85,7 @@ public class RepositoryTests extends AbstractTests {
 
         assertEquals(0, list.size());
 
-        CampoEntity campoEntity = creaCampoEntity(Long.valueOf(2), "prova", "prova");
+        CampoEntity campoEntity = creaCampoEntity(2L, "prova", "prova");
 
         campoEntity = campoRepository.save(campoEntity);
 
@@ -102,7 +102,7 @@ public class RepositoryTests extends AbstractTests {
 
         assertEquals(1, list.size());
 
-        CampoEntity campoEntity = creaCampoEntity(Long.valueOf(2), "prova", "prova");
+        CampoEntity campoEntity = creaCampoEntity(2L, "prova", "prova");
 
         campoEntity = campoRepository.save(campoEntity);
 
@@ -112,15 +112,15 @@ public class RepositoryTests extends AbstractTests {
     }
 
     PrenotazioneEntity loadPrenotazioniOccupatiELiberi() {
-        UtenteEntity utenteEntity = creaUtenteEntity(Long.valueOf(1), "Davide", "De Rosa", new Date(), "123");
+        UtenteEntity utenteEntity = creaUtenteEntity(1L, "Davide", "De Rosa", new Date(), "123");
 
         utenteEntity = utenteRepository.save(utenteEntity);
 
-        CampoEntity campoEntity = creaCampoEntity(Long.valueOf(1), "prova", "prova");
+        CampoEntity campoEntity = creaCampoEntity(1L, "prova", "prova");
 
         campoEntity = campoRepository.save(campoEntity);
 
-        PrenotazioneEntity prenotazione = creaPrenotazioneEntity(Long.valueOf(1), LocalDateTime.parse("25-10-2100 00:00", formatter), LocalDateTime.parse("25-10-2100 02:00", formatter), 2, 2, 2, 2, utenteEntity, campoEntity);
+        PrenotazioneEntity prenotazione = creaPrenotazioneEntity(1L, LocalDateTime.parse("25-10-2100 00:00", formatter), LocalDateTime.parse("25-10-2100 02:00", formatter), 2, 2, 2, 2, utenteEntity, campoEntity);
 
         prenotazione = prenotazioneRepository.save(prenotazione);
 
@@ -128,17 +128,17 @@ public class RepositoryTests extends AbstractTests {
     }
 
     void loadPrenotazioni() {
-        UtenteEntity utenteEntity = creaUtenteEntity(Long.valueOf(1), "Davide", "De Rosa", new Date(), "123");
+        UtenteEntity utenteEntity = creaUtenteEntity(1L, "Davide", "De Rosa", new Date(), "123");
 
         utenteEntity = utenteRepository.save(utenteEntity);
 
-        CampoEntity campoEntity = creaCampoEntity(Long.valueOf(1), "prova", "prova");
+        CampoEntity campoEntity = creaCampoEntity(1L, "prova", "prova");
 
         campoEntity = campoRepository.save(campoEntity);
 
-        PrenotazioneEntity prenotazione2 = creaPrenotazioneEntity(Long.valueOf(2), LocalDateTime.parse("24-09-2200 01:00", formatter), LocalDateTime.parse("24-09-2100 03:00", formatter), 2, 2, 2, 2, utenteEntity, campoEntity);
-        PrenotazioneEntity prenotazione3 = creaPrenotazioneEntity(Long.valueOf(3), LocalDateTime.parse("24-10-2201 01:00", formatter), LocalDateTime.parse("24-10-2100 03:00", formatter), 2, 2, 2, 2, utenteEntity, campoEntity);
-        PrenotazioneEntity prenotazione4 = creaPrenotazioneEntity(Long.valueOf(4), LocalDateTime.parse("24-09-2202 01:00", formatter), LocalDateTime.parse("24-09-2101 03:00", formatter), 2, 2, 2, 2, utenteEntity, campoEntity);
+        PrenotazioneEntity prenotazione2 = creaPrenotazioneEntity(2L, LocalDateTime.parse("24-09-2200 01:00", formatter), LocalDateTime.parse("24-09-2100 03:00", formatter), 2, 2, 2, 2, utenteEntity, campoEntity);
+        PrenotazioneEntity prenotazione3 = creaPrenotazioneEntity(3L, LocalDateTime.parse("24-10-2201 01:00", formatter), LocalDateTime.parse("24-10-2100 03:00", formatter), 2, 2, 2, 2, utenteEntity, campoEntity);
+        PrenotazioneEntity prenotazione4 = creaPrenotazioneEntity(4L, LocalDateTime.parse("24-09-2202 01:00", formatter), LocalDateTime.parse("24-09-2101 03:00", formatter), 2, 2, 2, 2, utenteEntity, campoEntity);
 
         prenotazioneRepository.save(prenotazione2);
         prenotazioneRepository.save(prenotazione3);

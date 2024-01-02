@@ -34,12 +34,12 @@ public class PrenotazioneServiceTests extends AbstractTests {
     private PrenotazioneBL prenotazioneBL;
 
     @Test
-    void testPostPrenotazione() {
-        UtenteEntity utenteEntity = creaUtenteEntity(Long.valueOf(1), "Davide", "De Rosa", new Date(), "123");
+    void testPostPrenotazione() throws ErrorException {
+        UtenteEntity utenteEntity = creaUtenteEntity(1L, "Davide", "De Rosa", new Date(), "123");
 
         utenteEntity = utenteRepository.save(utenteEntity);
 
-        CampoEntity campoEntity = creaCampoEntity(Long.valueOf(1), "prova", "prova");
+        CampoEntity campoEntity = creaCampoEntity(1L, "prova", "prova");
 
         campoEntity = campoRepository.save(campoEntity);
 
@@ -53,12 +53,12 @@ public class PrenotazioneServiceTests extends AbstractTests {
     }
 
     @Test
-    void testGetPrenotazioneById() {
-        UtenteEntity utenteEntity = creaUtenteEntity(Long.valueOf(1), "Davide", "De Rosa", new Date(), "123");
+    void testGetPrenotazioneById() throws ErrorException {
+        UtenteEntity utenteEntity = creaUtenteEntity(1L, "Davide", "De Rosa", new Date(), "123");
 
         utenteEntity = utenteRepository.save(utenteEntity);
 
-        CampoEntity campoEntity = creaCampoEntity(Long.valueOf(1), "prova", "prova");
+        CampoEntity campoEntity = creaCampoEntity(1L, "prova", "prova");
 
         campoEntity = campoRepository.save(campoEntity);
 
@@ -76,7 +76,7 @@ public class PrenotazioneServiceTests extends AbstractTests {
     @Test
     void testGetPrenotazioneByIdFail() {
         try {
-            prenotazioneBL.getPrenotazioneDTOById(Long.valueOf(1));
+            prenotazioneBL.getPrenotazioneDTOById(1L);
             fail();
         } catch (ErrorException e) {
             assertEquals(e.getMessage(), "PrenotazioneNotFound - Prenotazione non presente!");
@@ -84,12 +84,12 @@ public class PrenotazioneServiceTests extends AbstractTests {
     }
 
     @Test
-    void testPutPrenotazione() {
-        UtenteEntity utenteEntity = creaUtenteEntity(Long.valueOf(1), "Davide", "De Rosa", new Date(), "123");
+    void testPutPrenotazione() throws ErrorException {
+        UtenteEntity utenteEntity = creaUtenteEntity(1L, "Davide", "De Rosa", new Date(), "123");
 
         utenteEntity = utenteRepository.save(utenteEntity);
 
-        CampoEntity campoEntity = creaCampoEntity(Long.valueOf(1), "prova", "prova");
+        CampoEntity campoEntity = creaCampoEntity(1L, "prova", "prova");
 
         campoEntity = campoRepository.save(campoEntity);
 
@@ -109,7 +109,7 @@ public class PrenotazioneServiceTests extends AbstractTests {
     @Test
     void testPutPrenotazioneFail() {
         try {
-            prenotazioneBL.putPrenotazione(Long.valueOf(1), new PrenotazioneDTO());
+            prenotazioneBL.putPrenotazione(1L, new PrenotazioneDTO());
             fail();
         } catch (ErrorException e) {
             assertEquals(e.getMessage(), "PrenotazioneNotFound - Prenotazione non presente!");
@@ -117,12 +117,12 @@ public class PrenotazioneServiceTests extends AbstractTests {
     }
 
     @Test
-    void testDeletePrenotazione() {
-        UtenteEntity utenteEntity = creaUtenteEntity(Long.valueOf(1), "Davide", "De Rosa", new Date(), "123");
+    void testDeletePrenotazione() throws ErrorException {
+        UtenteEntity utenteEntity = creaUtenteEntity(1L, "Davide", "De Rosa", new Date(), "123");
 
         utenteEntity = utenteRepository.save(utenteEntity);
 
-        CampoEntity campoEntity = creaCampoEntity(Long.valueOf(1), "prova", "prova");
+        CampoEntity campoEntity = creaCampoEntity(1L, "prova", "prova");
 
         campoEntity = campoRepository.save(campoEntity);
 
@@ -144,11 +144,11 @@ public class PrenotazioneServiceTests extends AbstractTests {
 
     @Test
     void testGetPrenotazioniAll() {
-        UtenteEntity utenteEntity = creaUtenteEntity(Long.valueOf(1), "Davide", "De Rosa", new Date(), "123");
+        UtenteEntity utenteEntity = creaUtenteEntity(1L, "Davide", "De Rosa", new Date(), "123");
 
         utenteEntity = utenteRepository.save(utenteEntity);
 
-        CampoEntity campoEntity = creaCampoEntity(Long.valueOf(1), "prova", "prova");
+        CampoEntity campoEntity = creaCampoEntity(1L, "prova", "prova");
 
         campoEntity = campoRepository.save(campoEntity);
 
@@ -167,11 +167,11 @@ public class PrenotazioneServiceTests extends AbstractTests {
 
     @Test
     void testGetPrenotazioniAnno() {
-        UtenteEntity utenteEntity = creaUtenteEntity(Long.valueOf(1), "Davide", "De Rosa", new Date(), "123");
+        UtenteEntity utenteEntity = creaUtenteEntity(1L, "Davide", "De Rosa", new Date(), "123");
 
         utenteEntity = utenteRepository.save(utenteEntity);
 
-        CampoEntity campoEntity = creaCampoEntity(Long.valueOf(1), "prova", "prova");
+        CampoEntity campoEntity = creaCampoEntity(1L, "prova", "prova");
 
         campoEntity = campoRepository.save(campoEntity);
 
@@ -198,11 +198,11 @@ public class PrenotazioneServiceTests extends AbstractTests {
 
     @Test
     void testGetPrenotazioniAnnoMese() {
-        UtenteEntity utenteEntity = creaUtenteEntity(Long.valueOf(1), "Davide", "De Rosa", new Date(), "123");
+        UtenteEntity utenteEntity = creaUtenteEntity(1L, "Davide", "De Rosa", new Date(), "123");
 
         utenteEntity = utenteRepository.save(utenteEntity);
 
-        CampoEntity campoEntity = creaCampoEntity(Long.valueOf(1), "prova", "prova");
+        CampoEntity campoEntity = creaCampoEntity(1L, "prova", "prova");
 
         campoEntity = campoRepository.save(campoEntity);
 
@@ -248,12 +248,22 @@ public class PrenotazioneServiceTests extends AbstractTests {
     }
 
     @Test
+    void testGetPrenotazioniAnnoMeseFail2() {
+        try {
+            prenotazioneBL.getPrenotazioni(2200, 0);
+            fail();
+        } catch (ErrorException e) {
+            assertEquals(e.getMessage(), "MeseError - Mese non compreso tra 1 e 12!");
+        }
+    }
+
+    @Test
     void testValidPrenotazionePost() {
-        UtenteEntity utenteEntity = creaUtenteEntity(Long.valueOf(1), "Davide", "De Rosa", new Date(), "123");
+        UtenteEntity utenteEntity = creaUtenteEntity(1L, "Davide", "De Rosa", new Date(), "123");
 
         utenteEntity = utenteRepository.save(utenteEntity);
 
-        CampoEntity campoEntity = creaCampoEntity(Long.valueOf(1), "prova", "Tennis");
+        CampoEntity campoEntity = creaCampoEntity(1L, "prova", "Tennis");
 
         campoEntity = campoRepository.save(campoEntity);
 
@@ -268,11 +278,11 @@ public class PrenotazioneServiceTests extends AbstractTests {
 
     @Test
     void testValidPrenotazionePostFailData() {
-        UtenteEntity utenteEntity = creaUtenteEntity(Long.valueOf(1), "Davide", "De Rosa", new Date(), "123");
+        UtenteEntity utenteEntity = creaUtenteEntity(1L, "Davide", "De Rosa", new Date(), "123");
 
         utenteEntity = utenteRepository.save(utenteEntity);
 
-        CampoEntity campoEntity = creaCampoEntity(Long.valueOf(1), "prova", "Tennis");
+        CampoEntity campoEntity = creaCampoEntity(1L, "prova", "Tennis");
 
         campoEntity = campoRepository.save(campoEntity);
 
@@ -287,12 +297,52 @@ public class PrenotazioneServiceTests extends AbstractTests {
     }
 
     @Test
-    void testValidPrenotazionePostFailNumP() {
-        UtenteEntity utenteEntity = creaUtenteEntity(Long.valueOf(1), "Davide", "De Rosa", new Date(), "123");
+    void testValidPrenotazionePostFailData2() {
+        UtenteEntity utenteEntity = creaUtenteEntity(1L, "Davide", "De Rosa", new Date(), "123");
 
         utenteEntity = utenteRepository.save(utenteEntity);
 
-        CampoEntity campoEntity = creaCampoEntity(Long.valueOf(1), "prova", "Tennis");
+        CampoEntity campoEntity = creaCampoEntity(1L, "prova", "Tennis");
+
+        campoEntity = campoRepository.save(campoEntity);
+
+        PrenotazioneDTO prenotazioneDTO = creaPrenotazioneDTO(LocalDateTime.parse("21-10-2200 20:00", formatter), LocalDateTime.parse("21-10-2200 23:00", formatter), 3, 2, 2, 2, utenteEntity, campoEntity);
+
+        try {
+            prenotazioneBL.validPrenotazionePost(prenotazioneDTO);
+            fail();
+        } catch (ErrorException e) {
+            assertEquals(e.getMessage(), "PrenotazioneWrongTime - La prenotazione è errata! Può essere eseguita una prenotazione tutti i giorni dalle 8 alle 24, tranne il Martedì!");
+        }
+    }
+
+    @Test
+    void testValidPrenotazionePostFailData3() {
+        UtenteEntity utenteEntity = creaUtenteEntity(1L, "Davide", "De Rosa", new Date(), "123");
+
+        utenteEntity = utenteRepository.save(utenteEntity);
+
+        CampoEntity campoEntity = creaCampoEntity(1L, "prova", "Tennis");
+
+        campoEntity = campoRepository.save(campoEntity);
+
+        PrenotazioneDTO prenotazioneDTO = creaPrenotazioneDTO(LocalDateTime.parse("25-10-1900 23:00", formatter), LocalDateTime.parse("26-10-1900 01:00", formatter), 3, 2, 2, 2, utenteEntity, campoEntity);
+
+        try {
+            prenotazioneBL.validPrenotazionePost(prenotazioneDTO);
+            fail();
+        } catch (ErrorException e) {
+            assertEquals(e.getMessage(), "PrenotazioneWrongTime - La prenotazione è errata! Può essere eseguita una prenotazione tutti i giorni dalle 8 alle 24, tranne il Martedì!");
+        }
+    }
+
+    @Test
+    void testValidPrenotazionePostFailNumP() {
+        UtenteEntity utenteEntity = creaUtenteEntity(1L, "Davide", "De Rosa", new Date(), "123");
+
+        utenteEntity = utenteRepository.save(utenteEntity);
+
+        CampoEntity campoEntity = creaCampoEntity(1L, "prova", "Tennis");
 
         campoEntity = campoRepository.save(campoEntity);
 
@@ -308,11 +358,11 @@ public class PrenotazioneServiceTests extends AbstractTests {
 
     @Test
     void testValidPrenotazionePostFailTipoCampo1() {
-        UtenteEntity utenteEntity = creaUtenteEntity(Long.valueOf(1), "Davide", "De Rosa", new Date(), "123");
+        UtenteEntity utenteEntity = creaUtenteEntity(1L, "Davide", "De Rosa", new Date(), "123");
 
         utenteEntity = utenteRepository.save(utenteEntity);
 
-        CampoEntity campoEntity = creaCampoEntity(Long.valueOf(1), "prova", "Tennis");
+        CampoEntity campoEntity = creaCampoEntity(1L, "prova", "Tennis");
 
         campoEntity = campoRepository.save(campoEntity);
 
@@ -328,11 +378,11 @@ public class PrenotazioneServiceTests extends AbstractTests {
 
     @Test
     void testValidPrenotazionePostFailTipoCampo2() {
-        UtenteEntity utenteEntity = creaUtenteEntity(Long.valueOf(1), "Davide", "De Rosa", new Date(), "123");
+        UtenteEntity utenteEntity = creaUtenteEntity(1L, "Davide", "De Rosa", new Date(), "123");
 
         utenteEntity = utenteRepository.save(utenteEntity);
 
-        CampoEntity campoEntity = creaCampoEntity(Long.valueOf(1), "prova", "Calcio");
+        CampoEntity campoEntity = creaCampoEntity(1L, "prova", "Calcio");
 
         campoEntity = campoRepository.save(campoEntity);
 
@@ -347,12 +397,32 @@ public class PrenotazioneServiceTests extends AbstractTests {
     }
 
     @Test
-    void testValidPrenotazionePostCampoNullTennis() {
-        UtenteEntity utenteEntity = creaUtenteEntity(Long.valueOf(1), "Davide", "De Rosa", new Date(), "123");
+    void testValidPrenotazionePostFailTipoCampo3() {
+        UtenteEntity utenteEntity = creaUtenteEntity(1L, "Davide", "De Rosa", new Date(), "123");
 
         utenteEntity = utenteRepository.save(utenteEntity);
 
-        CampoEntity campoEntity = creaCampoEntity(Long.valueOf(1), "prova", "Tennis");
+        CampoEntity campoEntity = creaCampoEntity(1L, "prova", "Calcio");
+
+        campoEntity = campoRepository.save(campoEntity);
+
+        PrenotazioneDTO prenotazioneDTO = creaPrenotazioneDTO(LocalDateTime.parse("25-10-2200 20:00", formatter), LocalDateTime.parse("25-10-2200 23:00", formatter), 3, 4, 2, 2, utenteEntity, campoEntity);
+
+        try {
+            prenotazioneBL.validPrenotazionePost(prenotazioneDTO);
+            fail();
+        } catch (ErrorException e) {
+            assertEquals(e.getMessage(), "CampoError - Campo non corretto!");
+        }
+    }
+
+    @Test
+    void testValidPrenotazionePostCampoNullTennis() {
+        UtenteEntity utenteEntity = creaUtenteEntity(1L, "Davide", "De Rosa", new Date(), "123");
+
+        utenteEntity = utenteRepository.save(utenteEntity);
+
+        CampoEntity campoEntity = creaCampoEntity(1L, "prova", "Tennis");
 
         campoEntity = campoRepository.save(campoEntity);
 
@@ -367,11 +437,11 @@ public class PrenotazioneServiceTests extends AbstractTests {
 
     @Test
     void testValidPrenotazionePostCampoNullCalcio() {
-        UtenteEntity utenteEntity = creaUtenteEntity(Long.valueOf(1), "Davide", "De Rosa", new Date(), "123");
+        UtenteEntity utenteEntity = creaUtenteEntity(1L, "Davide", "De Rosa", new Date(), "123");
 
         utenteEntity = utenteRepository.save(utenteEntity);
 
-        CampoEntity campoEntity = creaCampoEntity(Long.valueOf(1), "prova", "Calcio");
+        CampoEntity campoEntity = creaCampoEntity(1L, "prova", "Calcio");
 
         campoEntity = campoRepository.save(campoEntity);
 
@@ -386,15 +456,15 @@ public class PrenotazioneServiceTests extends AbstractTests {
 
     @Test
     void testValidPrenotazionePostCampoNullEmpty() {
-        UtenteEntity utenteEntity = creaUtenteEntity(Long.valueOf(1), "Davide", "De Rosa", new Date(), "123");
+        UtenteEntity utenteEntity = creaUtenteEntity(1L, "Davide", "De Rosa", new Date(), "123");
 
         utenteEntity = utenteRepository.save(utenteEntity);
 
-        CampoEntity campoEntity = creaCampoEntity(Long.valueOf(1), "prova", "Calcio");
+        CampoEntity campoEntity = creaCampoEntity(1L, "prova", "Calcio");
 
         campoEntity = campoRepository.save(campoEntity);
 
-        prenotazioneRepository.save(creaPrenotazioneEntity(Long.valueOf(1), LocalDateTime.parse("25-10-2200 10:00", formatter), LocalDateTime.parse("25-10-2200 12:00", formatter), 2, 10, 2, 2, utenteEntity, campoEntity));
+        prenotazioneRepository.save(creaPrenotazioneEntity(1L, LocalDateTime.parse("25-10-2200 10:00", formatter), LocalDateTime.parse("25-10-2200 12:00", formatter), 2, 10, 2, 2, utenteEntity, campoEntity));
 
         PrenotazioneDTO prenotazioneDTO = creaPrenotazioneDTO(LocalDateTime.parse("25-10-2200 10:00", formatter), LocalDateTime.parse("25-10-2200 12:00", formatter), 2, 10, 2, 2, utenteEntity, null);
 
@@ -408,15 +478,15 @@ public class PrenotazioneServiceTests extends AbstractTests {
 
     @Test
     void testValidPrenotazionePostCampoNotAv() {
-        UtenteEntity utenteEntity = creaUtenteEntity(Long.valueOf(1), "Davide", "De Rosa", new Date(), "123");
+        UtenteEntity utenteEntity = creaUtenteEntity(1L, "Davide", "De Rosa", new Date(), "123");
 
         utenteEntity = utenteRepository.save(utenteEntity);
 
-        CampoEntity campoEntity = creaCampoEntity(Long.valueOf(1), "prova", "Calcio");
+        CampoEntity campoEntity = creaCampoEntity(1L, "prova", "Calcio");
 
         campoEntity = campoRepository.save(campoEntity);
 
-        prenotazioneRepository.save(creaPrenotazioneEntity(Long.valueOf(1), LocalDateTime.parse("25-10-2200 10:00", formatter), LocalDateTime.parse("25-10-2200 12:00", formatter), 2, 10, 2, 2, utenteEntity, campoEntity));
+        prenotazioneRepository.save(creaPrenotazioneEntity(1L, LocalDateTime.parse("25-10-2200 10:00", formatter), LocalDateTime.parse("25-10-2200 12:00", formatter), 2, 10, 2, 2, utenteEntity, campoEntity));
 
         PrenotazioneDTO prenotazioneDTO = creaPrenotazioneDTO(LocalDateTime.parse("25-10-2200 10:00", formatter), LocalDateTime.parse("25-10-2200 12:00", formatter), 2, 10, 2, 2, utenteEntity, campoEntity);
 
@@ -430,15 +500,15 @@ public class PrenotazioneServiceTests extends AbstractTests {
 
     @Test
     void testValidPrenotazionePut() {
-        UtenteEntity utenteEntity = creaUtenteEntity(Long.valueOf(1), "Davide", "De Rosa", new Date(), "123");
+        UtenteEntity utenteEntity = creaUtenteEntity(1L, "Davide", "De Rosa", new Date(), "123");
 
         utenteEntity = utenteRepository.save(utenteEntity);
 
-        CampoEntity campoEntity = creaCampoEntity(Long.valueOf(1), "prova", "Tennis");
+        CampoEntity campoEntity = creaCampoEntity(1L, "prova", "Tennis");
 
         campoEntity = campoRepository.save(campoEntity);
 
-        PrenotazioneEntity prenotazioneEntity = prenotazioneRepository.save(creaPrenotazioneEntity(Long.valueOf(1), LocalDateTime.parse("25-10-2200 10:00", formatter), LocalDateTime.parse("25-10-2200 12:00", formatter), 2, 2, 2, 3, utenteEntity, campoEntity));
+        PrenotazioneEntity prenotazioneEntity = prenotazioneRepository.save(creaPrenotazioneEntity(1L, LocalDateTime.parse("25-10-2200 10:00", formatter), LocalDateTime.parse("25-10-2200 12:00", formatter), 2, 2, 2, 3, utenteEntity, campoEntity));
 
         PrenotazioneDTO prenotazioneDTO = creaPrenotazioneDTO(LocalDateTime.parse("25-10-2200 10:00", formatter), LocalDateTime.parse("25-10-2200 12:00", formatter), 2, 2, 2, 2, utenteEntity, campoEntity);
 
@@ -452,11 +522,11 @@ public class PrenotazioneServiceTests extends AbstractTests {
 
     @Test
     void testValidPrenotazionePutFailData() {
-        UtenteEntity utenteEntity = creaUtenteEntity(Long.valueOf(1), "Davide", "De Rosa", new Date(), "123");
+        UtenteEntity utenteEntity = creaUtenteEntity(1L, "Davide", "De Rosa", new Date(), "123");
 
         utenteEntity = utenteRepository.save(utenteEntity);
 
-        CampoEntity campoEntity = creaCampoEntity(Long.valueOf(1), "prova", "Tennis");
+        CampoEntity campoEntity = creaCampoEntity(1L, "prova", "Tennis");
 
         campoEntity = campoRepository.save(campoEntity);
 
@@ -472,11 +542,11 @@ public class PrenotazioneServiceTests extends AbstractTests {
 
     @Test
     void testValidPrenotazionePutFailNumP() {
-        UtenteEntity utenteEntity = creaUtenteEntity(Long.valueOf(1), "Davide", "De Rosa", new Date(), "123");
+        UtenteEntity utenteEntity = creaUtenteEntity(1L, "Davide", "De Rosa", new Date(), "123");
 
         utenteEntity = utenteRepository.save(utenteEntity);
 
-        CampoEntity campoEntity = creaCampoEntity(Long.valueOf(1), "prova", "Tennis");
+        CampoEntity campoEntity = creaCampoEntity(1L, "prova", "Tennis");
 
         campoEntity = campoRepository.save(campoEntity);
 
@@ -492,11 +562,11 @@ public class PrenotazioneServiceTests extends AbstractTests {
 
     @Test
     void testValidPrenotazionePutFailTipoCampo1() {
-        UtenteEntity utenteEntity = creaUtenteEntity(Long.valueOf(1), "Davide", "De Rosa", new Date(), "123");
+        UtenteEntity utenteEntity = creaUtenteEntity(1L, "Davide", "De Rosa", new Date(), "123");
 
         utenteEntity = utenteRepository.save(utenteEntity);
 
-        CampoEntity campoEntity = creaCampoEntity(Long.valueOf(1), "prova", "Tennis");
+        CampoEntity campoEntity = creaCampoEntity(1L, "prova", "Tennis");
 
         campoEntity = campoRepository.save(campoEntity);
 
@@ -512,11 +582,11 @@ public class PrenotazioneServiceTests extends AbstractTests {
 
     @Test
     void testValidPrenotazionePutFailTipoCampo2() {
-        UtenteEntity utenteEntity = creaUtenteEntity(Long.valueOf(1), "Davide", "De Rosa", new Date(), "123");
+        UtenteEntity utenteEntity = creaUtenteEntity(1L, "Davide", "De Rosa", new Date(), "123");
 
         utenteEntity = utenteRepository.save(utenteEntity);
 
-        CampoEntity campoEntity = creaCampoEntity(Long.valueOf(1), "prova", "Calcio");
+        CampoEntity campoEntity = creaCampoEntity(1L, "prova", "Calcio");
 
         campoEntity = campoRepository.save(campoEntity);
 
@@ -532,11 +602,11 @@ public class PrenotazioneServiceTests extends AbstractTests {
 
     @Test
     void testValidPrenotazionePutCampoNullTennis() {
-        UtenteEntity utenteEntity = creaUtenteEntity(Long.valueOf(1), "Davide", "De Rosa", new Date(), "123");
+        UtenteEntity utenteEntity = creaUtenteEntity(1L, "Davide", "De Rosa", new Date(), "123");
 
         utenteEntity = utenteRepository.save(utenteEntity);
 
-        CampoEntity campoEntity = creaCampoEntity(Long.valueOf(1), "prova", "Tennis");
+        CampoEntity campoEntity = creaCampoEntity(1L, "prova", "Tennis");
 
         campoEntity = campoRepository.save(campoEntity);
 
@@ -553,15 +623,15 @@ public class PrenotazioneServiceTests extends AbstractTests {
 
     @Test
     void testValidPrenotazionePutCampoNullCalcio() {
-        UtenteEntity utenteEntity = creaUtenteEntity(Long.valueOf(1), "Davide", "De Rosa", new Date(), "123");
+        UtenteEntity utenteEntity = creaUtenteEntity(1L, "Davide", "De Rosa", new Date(), "123");
 
         utenteEntity = utenteRepository.save(utenteEntity);
 
-        CampoEntity campoEntity = creaCampoEntity(Long.valueOf(1), "prova", "Calcio");
+        CampoEntity campoEntity = creaCampoEntity(1L, "prova", "Calcio");
 
         campoEntity = campoRepository.save(campoEntity);
 
-        PrenotazioneEntity prenotazioneEntity = prenotazioneRepository.save(creaPrenotazioneEntity(Long.valueOf(1), LocalDateTime.parse("25-10-2200 10:00", formatter), LocalDateTime.parse("25-10-2200 12:00", formatter), 2, 10, 2, 2, utenteEntity, campoEntity));
+        PrenotazioneEntity prenotazioneEntity = prenotazioneRepository.save(creaPrenotazioneEntity(1L, LocalDateTime.parse("25-10-2200 10:00", formatter), LocalDateTime.parse("25-10-2200 12:00", formatter), 2, 10, 2, 2, utenteEntity, campoEntity));
 
         PrenotazioneDTO prenotazioneDTO = creaPrenotazioneDTO(LocalDateTime.parse("25-10-2200 10:00", formatter), LocalDateTime.parse("25-10-2200 12:00", formatter), 2, 10, 2, 2, utenteEntity, null);
 
@@ -574,17 +644,17 @@ public class PrenotazioneServiceTests extends AbstractTests {
 
     @Test
     void testValidPrenotazionePutCampoNullEmpty() {
-        UtenteEntity utenteEntity = creaUtenteEntity(Long.valueOf(1), "Davide", "De Rosa", new Date(), "123");
+        UtenteEntity utenteEntity = creaUtenteEntity(1L, "Davide", "De Rosa", new Date(), "123");
 
         utenteEntity = utenteRepository.save(utenteEntity);
 
-        CampoEntity campoEntity = creaCampoEntity(Long.valueOf(1), "prova", "Calcio");
+        CampoEntity campoEntity = creaCampoEntity(1L, "prova", "Calcio");
 
         campoEntity = campoRepository.save(campoEntity);
 
-        prenotazioneRepository.save(creaPrenotazioneEntity(Long.valueOf(1), LocalDateTime.parse("25-10-2200 08:00", formatter), LocalDateTime.parse("25-10-2200 10:00", formatter), 2, 10, 2, 2, utenteEntity, campoEntity));
+        prenotazioneRepository.save(creaPrenotazioneEntity(1L, LocalDateTime.parse("25-10-2200 08:00", formatter), LocalDateTime.parse("25-10-2200 10:00", formatter), 2, 10, 2, 2, utenteEntity, campoEntity));
 
-        PrenotazioneEntity prenotazioneEntity = prenotazioneRepository.save(creaPrenotazioneEntity(Long.valueOf(1), LocalDateTime.parse("25-10-2200 10:00", formatter), LocalDateTime.parse("25-10-2200 12:00", formatter), 2, 10, 2, 2, utenteEntity, campoEntity));
+        PrenotazioneEntity prenotazioneEntity = prenotazioneRepository.save(creaPrenotazioneEntity(1L, LocalDateTime.parse("25-10-2200 10:00", formatter), LocalDateTime.parse("25-10-2200 12:00", formatter), 2, 10, 2, 2, utenteEntity, campoEntity));
 
         PrenotazioneDTO prenotazioneDTO = creaPrenotazioneDTO(LocalDateTime.parse("25-10-2200 09:00", formatter), LocalDateTime.parse("25-10-2200 11:00", formatter), 2, 10, 2, 2, utenteEntity, null);
 
@@ -598,17 +668,17 @@ public class PrenotazioneServiceTests extends AbstractTests {
 
     @Test
     void testValidPrenotazionePutCampoNotAv() {
-        UtenteEntity utenteEntity = creaUtenteEntity(Long.valueOf(1), "Davide", "De Rosa", new Date(), "123");
+        UtenteEntity utenteEntity = creaUtenteEntity(1L, "Davide", "De Rosa", new Date(), "123");
 
         utenteEntity = utenteRepository.save(utenteEntity);
 
-        CampoEntity campoEntity = creaCampoEntity(Long.valueOf(1), "prova", "Calcio");
+        CampoEntity campoEntity = creaCampoEntity(1L, "prova", "Calcio");
 
         campoEntity = campoRepository.save(campoEntity);
 
-        prenotazioneRepository.save(creaPrenotazioneEntity(Long.valueOf(1), LocalDateTime.parse("25-10-2200 08:00", formatter), LocalDateTime.parse("25-10-2200 10:00", formatter), 2, 10, 2, 2, utenteEntity, campoEntity));
+        prenotazioneRepository.save(creaPrenotazioneEntity(1L, LocalDateTime.parse("25-10-2200 08:00", formatter), LocalDateTime.parse("25-10-2200 10:00", formatter), 2, 10, 2, 2, utenteEntity, campoEntity));
 
-        PrenotazioneEntity prenotazioneEntity = prenotazioneRepository.save(creaPrenotazioneEntity(Long.valueOf(1), LocalDateTime.parse("25-10-2200 10:00", formatter), LocalDateTime.parse("25-10-2200 12:00", formatter), 2, 10, 2, 2, utenteEntity, campoEntity));
+        PrenotazioneEntity prenotazioneEntity = prenotazioneRepository.save(creaPrenotazioneEntity(1L, LocalDateTime.parse("25-10-2200 10:00", formatter), LocalDateTime.parse("25-10-2200 12:00", formatter), 2, 10, 2, 2, utenteEntity, campoEntity));
 
         PrenotazioneDTO prenotazioneDTO = creaPrenotazioneDTO(LocalDateTime.parse("25-10-2200 09:00", formatter), LocalDateTime.parse("25-10-2200 11:00", formatter), 2, 10, 2, 2, utenteEntity, campoEntity);
 
