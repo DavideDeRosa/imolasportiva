@@ -1,8 +1,4 @@
-DROP TABLE prenotazione;
-DROP TABLE utente;
-DROP TABLE campo;
-
-CREATE TABLE utente(
+CREATE TABLE IF NOT EXISTS utente(
 	id SERIAL PRIMARY KEY,
     nome VARCHAR(50) NOT NULL,
     cognome VARCHAR(50) NOT NULL,
@@ -10,7 +6,13 @@ CREATE TABLE utente(
 	dataNascita TIMESTAMP NOT NULL
 );
 
-CREATE TABLE prenotazione(
+CREATE TABLE IF NOT EXISTS campo(
+                      id SERIAL PRIMARY KEY,
+                      codice VARCHAR(50) NOT NULL,
+                      tipologia VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS prenotazione(
                              id SERIAL PRIMARY KEY,
                              id_utente INTEGER REFERENCES Utente(id) ON DELETE CASCADE NOT NULL,
                              durataprenotazione INTEGER NOT NULL,
@@ -20,10 +22,4 @@ CREATE TABLE prenotazione(
                              dataprenotazione TIMESTAMP NOT NULL,
                              datafineprenotazione TIMESTAMP NOT NULL,
                              id_campo INTEGER REFERENCES Campo(id) ON DELETE CASCADE NOT NULL
-);
-
-CREATE TABLE campo(
-                             id SERIAL PRIMARY KEY,
-                             codice VARCHAR(50) NOT NULL,
-                             tipologia VARCHAR(50) NOT NULL
 );
