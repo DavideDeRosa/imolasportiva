@@ -1,0 +1,28 @@
+version: '3'
+
+services:
+  db:
+    image: 'postgres:16'
+    environment:
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_DB=imolasportiva
+    container_name: db
+    networks:
+      - imolasportivanetwork
+    volumes:
+      - /Users/davidederosa/Desktop/UNIBO/Tirocinio/volumes/data:/var/lib/postgresql/data
+      - /Users/davidederosa/Desktop/UNIBO/Tirocinio/Progetto/imolasportiva/database/:/docker-entrypoint-initdb.d/
+
+  app:
+    image: 'imolasportiva:1.2.0'
+    container_name: imolasportiva
+    depends_on:
+      - db
+    networks:
+      - imolasportivanetwork
+    ports:
+      - "8080:8080"
+
+networks:
+    imolasportivanetwork:
+      driver: bridge
