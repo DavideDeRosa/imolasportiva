@@ -10,8 +10,8 @@ services:
     networks:
       - imolasportivanetwork
     volumes:
-      - /Users/davidederosa/Desktop/UNIBO/Tirocinio/volumes/data:/var/lib/postgresql/data
-      - /Users/davidederosa/Desktop/UNIBO/Tirocinio/Progetto/imolasportiva/database/:/docker-entrypoint-initdb.d/
+      - ./volumes/data:/var/lib/postgresql/data
+      - ./sql/:/docker-entrypoint-initdb.d/
 
   app:
     image: 'imolasportiva:1.2.0'
