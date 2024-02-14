@@ -1,4 +1,4 @@
-# Install all
+# Install
 ```bash
 mvn clean install
 ```
