@@ -22,3 +22,4 @@ mvn clean install -DskipTests -DskipITs
 ```bash
 mvn springboot:run
 ```
+
