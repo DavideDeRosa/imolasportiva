@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.List;
 
@@ -43,7 +44,7 @@ public class PrenotazioneServiceTests extends AbstractTests {
 
         campoEntity = campoRepository.save(campoEntity);
 
-        PrenotazioneDTO prenotazioneDTO = creaPrenotazioneDTO(LocalDateTime.now(), LocalDateTime.now(), 2, 2, 2, 2, utenteEntity, campoEntity);
+        PrenotazioneDTO prenotazioneDTO = creaPrenotazioneDTO(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES), LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES), 2, 2, 2, 2, utenteEntity, campoEntity);
 
         PrenotazioneDTO postPrenotazioneDTO = prenotazioneBL.postPrenotazione(prenotazioneDTO);
 
@@ -62,7 +63,7 @@ public class PrenotazioneServiceTests extends AbstractTests {
 
         campoEntity = campoRepository.save(campoEntity);
 
-        PrenotazioneDTO prenotazioneDTO = creaPrenotazioneDTO(LocalDateTime.now(), LocalDateTime.now(), 2, 2, 2, 2, utenteEntity, campoEntity);
+        PrenotazioneDTO prenotazioneDTO = creaPrenotazioneDTO(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES), LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES), 2, 2, 2, 2, utenteEntity, campoEntity);
 
         PrenotazioneDTO postPrenotazioneDTO = prenotazioneBL.postPrenotazione(prenotazioneDTO);
 
@@ -93,7 +94,7 @@ public class PrenotazioneServiceTests extends AbstractTests {
 
         campoEntity = campoRepository.save(campoEntity);
 
-        PrenotazioneDTO prenotazioneDTO = creaPrenotazioneDTO(LocalDateTime.now(), LocalDateTime.now(), 2, 2, 2, 2, utenteEntity, campoEntity);
+        PrenotazioneDTO prenotazioneDTO = creaPrenotazioneDTO(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES), LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES), 2, 2, 2, 2, utenteEntity, campoEntity);
 
         PrenotazioneDTO createdPrenotazioneDTO = prenotazioneBL.postPrenotazione(prenotazioneDTO);
 
@@ -126,7 +127,7 @@ public class PrenotazioneServiceTests extends AbstractTests {
 
         campoEntity = campoRepository.save(campoEntity);
 
-        PrenotazioneDTO prenotazioneDTO = creaPrenotazioneDTO(LocalDateTime.now(), LocalDateTime.now(), 2, 2, 2, 2, utenteEntity, campoEntity);
+        PrenotazioneDTO prenotazioneDTO = creaPrenotazioneDTO(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES), LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES), 2, 2, 2, 2, utenteEntity, campoEntity);
 
         PrenotazioneDTO createdPrenotazioneDTO = prenotazioneBL.postPrenotazione(prenotazioneDTO);
 
@@ -152,9 +153,9 @@ public class PrenotazioneServiceTests extends AbstractTests {
 
         campoEntity = campoRepository.save(campoEntity);
 
-        PrenotazioneDTO prenotazioneDTO = creaPrenotazioneDTO(LocalDateTime.now(), LocalDateTime.now(), 2, 2, 2, 2, utenteEntity, campoEntity);
-        PrenotazioneDTO prenotazioneDTO1 = creaPrenotazioneDTO(LocalDateTime.now(), LocalDateTime.now(), 2, 2, 2, 2, utenteEntity, campoEntity);
-        PrenotazioneDTO prenotazioneDTO2 = creaPrenotazioneDTO(LocalDateTime.now(), LocalDateTime.now(), 2, 2, 2, 2, utenteEntity, campoEntity);
+        PrenotazioneDTO prenotazioneDTO = creaPrenotazioneDTO(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES), LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES), 2, 2, 2, 2, utenteEntity, campoEntity);
+        PrenotazioneDTO prenotazioneDTO1 = creaPrenotazioneDTO(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES), LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES), 2, 2, 2, 2, utenteEntity, campoEntity);
+        PrenotazioneDTO prenotazioneDTO2 = creaPrenotazioneDTO(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES), LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES), 2, 2, 2, 2, utenteEntity, campoEntity);
 
         prenotazioneBL.postPrenotazione(prenotazioneDTO);
         prenotazioneBL.postPrenotazione(prenotazioneDTO1);
