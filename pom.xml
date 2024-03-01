@@ -13,6 +13,7 @@
 		<relativePath />
 	</parent>
 	<properties>
+		<sonar.coverage.exclusions>imolasportiva/model/**,imolasportiva/api/**,it/imolasportiva/progetto/api/**,it/imolasportiva/progetto/error/**,it/imolasportiva/progetto/entity/**,it/imolasportiva/progetto/dto/**</sonar.coverage.exclusions>
 		<java.version>17</java.version>
 	</properties>
 
