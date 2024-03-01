@@ -12,7 +12,7 @@ public class ImolaSportivaApplication {
 
     public static void main(String[] args) {
         log.info("Avvio applicazione.");
-        String password = "password";
+
         SpringApplication.run(ImolaSportivaApplication.class, args);
     }
 
