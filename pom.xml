@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>it.imolasportiva.progetto</groupId>
 	<artifactId>imolasportiva</artifactId>
-	<version>1.4.0-SNAPSHOT</version>
+	<version>1.5.0-SNAPSHOT</version>
 	<name>ImolaSportiva</name>
 	<description>Progetto tirocinio sviluppo app Java EE con l'utilizzo di Spring Boot (De Rosa Davide)</description>
 	<parent>
